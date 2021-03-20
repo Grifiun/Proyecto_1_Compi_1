@@ -597,15 +597,14 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
 
-    //Listado de errores
-	private ArrayList<TokenError> listadoErroresSintacticos = new ArrayList();
+    //Listado de errores	
 	private FuncionesSolicitudes funcionesSolicitudes = new FuncionesSolicitudes();
 	//Controlador de error sintactico
 	@Override
 	public void syntax_error(Symbol a){
 		System.out.println("error de sintaxis");
 		String msgError = "Se esperaba: ";
-		Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna
+		//Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna
 		
 		 /*for(int i = 0; i < expected_token_ids().size(); i++){
 			msgError = msgError + mensajes[expected_token_ids().get(i)];
@@ -613,20 +612,13 @@ public class parser extends java_cup.runtime.lr_parser {
 				msgError = msgError + ", ";			
 		}*/
 		//recibe tipo error, lexema error, mensaje, linea, columna
-		TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
-		listadoErroresSintacticos.add(tokenErrorAux);
+		//TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		//listadoErroresSintacticos.add(tokenErrorAux);
 
 	}
 
-	public void agregarNuevoError(String lexema, String mensajeError, String linea, String columna){
-		/*
-		
-		TokenError tokenErrorAux = new TokenError("SINTACTICO", lexema, mensajeError, linea, columna);
-		listadoErroresSintacticos.add(tokenErrorAux);*/
-	}
-
-	public ArrayList<TokenError> getListadoErroresSintacticos(){
-		return listadoErroresSintacticos;
+	public ArrayList<TokenError> getListadoErroresParser(){
+		return funcionesSolicitudes.getListadoErroresParser();
 	}
 
     public parser(LexerIndigo lex){
@@ -676,7 +668,7 @@ class CUP$parser$actions {
           case 1: // s ::= MENOR EXCLAMACION INICIO_SOLICITUDES MAYOR bloque_solicitudes MENOR EXCLAMACION FIN_SOLICITUDES MAYOR 
             {
               Object RESULT =null;
-
+		 funcionesSolicitudes.imprimirListadoErrores();	
               CUP$parser$result = parser.getSymbolFactory().newSymbol("s",0, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-8)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -685,7 +677,7 @@ class CUP$parser$actions {
           case 2: // s ::= solicitud 
             {
               Object RESULT =null;
-
+		 funcionesSolicitudes.imprimirListadoErrores();	
               CUP$parser$result = parser.getSymbolFactory().newSymbol("s",0, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
