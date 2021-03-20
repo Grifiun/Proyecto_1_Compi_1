@@ -6,12 +6,16 @@
 package paquete;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import paquete.TokenError;
 
 /**
  *
  * @author grifiun
  */
 public class FuncionesSolicitudes {
+    ArrayList<TokenError> listadoErroresParser = new ArrayList();
+    
     /**
      * Funcion que analiza un bloque de parametros, revisa la entrada de todos los parametros obligatorios segun la clase y parametros invalidos
      * Principalmente guiada a los componentes 
@@ -25,7 +29,9 @@ public class FuncionesSolicitudes {
         /*
                 CODIGO PARA REVISAR ERRORES DE REPETICIONES
         */
-        if(bloqueParametros.getListadoTipoParametros().contains("\"CLASE\"")){
+        int ocurrenciasCLASE = Collections.frequency(bloqueParametros.getListadoTipoParametros(), "\"CLASE\"");
+        
+        if(ocurrenciasCLASE == 1 &&  bloqueParametros.getListadoTipoParametros().contains("\"CLASE\"")){
                 int index = bloqueParametros.getListadoTipoParametros().indexOf("\"CLASE\"");
                 TokenParametro parametroAux = bloqueParametros.getListadoParametros().get(index);			
 
@@ -74,8 +80,19 @@ public class FuncionesSolicitudes {
                 comprobarObligatoriosPorClase(paramObligatorios, bloqueParametros, clase);
                 comprobarParametrosInvalidosPorClase(paramInvalidos, bloqueParametros, clase);
         }else{
-                System.out.println("No tiene una clase definida para el bloque de parametros que inicia en linea:"+bloqueParametros.getLinea()+", Columna"+bloqueParametros.getColumna()
-                +" y termina en linea2: "+bloqueParametros.getLineaFin()+" columna2: "+bloqueParametros.getColumnaFin()+"\n");
+            if(ocurrenciasCLASE > 1){//Tiene mas de una clase
+                 String msgError = "Posee mas de una clase definida para el bloque de parametros que inicia en linea:"+bloqueParametros.getLinea()+", Columna"+bloqueParametros.getColumna()
+                +" y termina en linea2: "+bloqueParametros.getLineaFin()+" columna2: "+bloqueParametros.getColumnaFin()+" con lo cual no se pueden verificar los parametros obligatorios ni invalidos";
+                        
+                agregarNuevoError("ERROR SEMANTICO", "Mas de una clase definida", msgError, bloqueParametros.getLinea(), bloqueParametros.getColumna());  
+            }else{
+                 String msgError = "No tiene una clase definida para el bloque de parametros que inicia en linea:"+bloqueParametros.getLinea()+", Columna"+bloqueParametros.getColumna()
+                +" y termina en linea2: "+bloqueParametros.getLineaFin()+" columna2: "+bloqueParametros.getColumnaFin()+", por favor, defina una clase para verificar los parametros obligatorios e invalidos";
+                        
+                agregarNuevoError("ERROR SEMANTICO", "Falta clase", msgError, bloqueParametros.getLinea(), bloqueParametros.getColumna());  
+            }
+            
+                             
         }
     }
     /**
@@ -84,7 +101,7 @@ public class FuncionesSolicitudes {
      * @param bloqueParametros
      * @param clase 
      */
-    public void comprobarObligatoriosPorClase(String paramObligatorios, BloqueParametros bloqueParametros, String clase){
+    public void comprobarObligatoriosPorClase(String paramObligatorios, BloqueParametros bloqueParametros, String tipo){
         String[] arrParamObligatorio = paramObligatorios.split(",");
         ArrayList<String> listadoTipoParametros = bloqueParametros.getListadoTipoParametros();
         int contador = 0;
@@ -105,9 +122,13 @@ public class FuncionesSolicitudes {
                 if(contador == arrParamObligatorio.length)//encontramos todos los datos obligatorios
                         break;
         }
-        msjError = "Error sintactico: Faltan los siguientes parametros obligatorios para el bloque con clase \""+clase+"\": "+mensaje+"que inicia en linea:"+bloqueParametros.getLinea()+", columna:"+bloqueParametros.getColumna()
+        if(mensaje.isEmpty() == false || mensaje.equals("") == false){//hay errores
+            msjError = "Faltan los siguientes parametros obligatorios para el bloque con tipo \""+tipo+"\": "+mensaje+" que inicia en linea:"+bloqueParametros.getLinea()+", columna:"+bloqueParametros.getColumna()
                 +" y termina en linea: "+bloqueParametros.getLineaFin()+" columna: "+bloqueParametros.getColumnaFin();
-        System.out.println(msjError+"\n");
+        
+            agregarNuevoError("ERROR SEMANTICO", "Faltan parametros obligatorios", msjError, bloqueParametros.getLinea(), bloqueParametros.getColumna());
+        }        
+        
     }
     
     /**
@@ -127,8 +148,9 @@ public class FuncionesSolicitudes {
                         int index = listadoTipoParametros.indexOf(arrParamInvalidos[i]);
                         int linea = bloqueParametros.getListadoParametros().get(index).getLinea();
                         int columna = bloqueParametros.getListadoParametros().get(index).getColumna();
-                        String mensaje = "Error sintactico: Linea: "+linea+", Columna: "+columna+" La clase \""+clase+"\" no permite el parametro "+arrParamInvalidos[i]+" que usted ingreso: ";
-                        System.out.println(mensaje+"\n");							
+                        String mensaje = "Linea: "+linea+", Columna: "+columna+" La clase \""+clase+"\" no permite el parametro "+arrParamInvalidos[i]+" que usted ingreso: ";
+                                               
+                        agregarNuevoError("ERROR SEMANTICO", "Parametro invalido", mensaje, linea, columna);
                 }
         }
 
@@ -139,10 +161,12 @@ public class FuncionesSolicitudes {
      * @param a
      * @param b 
      */
-    public void analizarEntradasMultiples(BloqueParametros a, TokenParametro b){
-        String nombreParametroAux =  b.getTipoParametro();
-        if(a.getListadoTipoParametros().contains(nombreParametroAux)){//si ya lo contiene
-                System.out.println("Error semantico: Se detectaron multiples entradas del mismo parametro "+nombreParametroAux+ " con valor: "+b.getLexema()+" en la linea: "+ b.getLinea() + " y columna: "+b.getColumna());
+    public void analizarEntradasMultiples(BloqueParametros bloqueParametros, TokenParametro parametro){
+        String nombreParametroAux =  parametro.getTipoParametro();
+        if(bloqueParametros.getListadoTipoParametros().contains(nombreParametroAux)){//si ya lo contiene
+                String mensaje = "Se detectaron multiples entradas del mismo parametro "+nombreParametroAux+ " con valor: "+parametro.getLexema()+" en la linea: "+ parametro.getLinea() + " y columna: "+parametro.getColumna();
+               
+                agregarNuevoError("ERROR SEMANTICO", "Parametro invalido", mensaje, parametro.getLinea(), parametro.getColumna());
         }	
     }
     
@@ -161,9 +185,29 @@ public class FuncionesSolicitudes {
         } else if(tipo.equals("NUEVO_FORMULARIO")){
                 paramObligatorios = "\"ID\",\"TITULO\",\"NOMBRE\",\"TEMA\"";
         } else if(tipo.equals("MODIFICAR_FORMULARIO")){
-                paramObligatorios = "\"ID\"";
+                paramObligatorios = "\"ID\"";  
+                //Se necesita al menos otro dato ademas del ID
+                
+                int ocurrenciasID = Collections.frequency(parametros.getListadoTipoParametros(), "\"ID\"");
+                int cantidadParametros = parametros.getListadoTipoParametros().size();  
+                if(ocurrenciasID == 1 && cantidadParametros <= ocurrenciasID){//No hay mas de un parametro
+                    String msjError = "La solicitud MODIFICAR_FORMULARIO requiere que se ingrese al menos otro parametro \"TITULO\", \"NOMBRE\" o \"TEMA\" ) ademas del \"ID\", bloque lina: "+parametros.getLinea()+" columna: "+parametros.getColumna();
+
+                    agregarNuevoError("ERROR SEMANTICO", "Faltan parametros", msjError, parametros.getLinea(), parametros.getColumna());
+                }
         } else if(tipo.equals("MODIFICAR_COMPONENTE")){
-                paramObligatorios = "\"ID\",\"FORMULARIO\"";
+                paramObligatorios = "\"ID\",\"FORMULARIO\"";              
+                
+                
+                int ocurrenciasID = Collections.frequency(parametros.getListadoTipoParametros(), "\"ID\"");
+                int ocurrenciasFORMULARIO = Collections.frequency(parametros.getListadoTipoParametros(), "\"FORMULARIO\"");
+                int cantidadParametros = parametros.getListadoTipoParametros().size();  
+                if(ocurrenciasID == 1 && cantidadParametros <= (ocurrenciasID + ocurrenciasFORMULARIO)){//No contiene ningun parametro opcional
+                    String msjError = "La solicitud MODIFICAR_COMPONENTE requiere que se ingrese al menos otro parametro (\"INDICE\", \"TEXTO_VISIBLE\", \"ALINEACION\", etc ) ademas del \"ID\" y el \"FORMULARIO\", bloque lina: "+parametros.getLinea()+" columna: "+parametros.getColumna();
+
+                    agregarNuevoError("ERROR SEMANTICO", "Faltan parametros", msjError, parametros.getLinea(), parametros.getColumna());
+                }               
+                
         } 
 
         comprobarObligatoriosPorClase(paramObligatorios, parametros, tipo);		
@@ -175,11 +219,51 @@ public class FuncionesSolicitudes {
         param.setColumna(inicio.getColumna());
         param.setLineaFin(fin.getLinea());
         param.setColumnaFin(fin.getColumna());
-
-        if(tipoSolicitud.contains("USUARIO") || tipoSolicitud.contains("FORMULARIO"))
-            analizarParametrosUsuariosFormularios(param, tipoSolicitud); 
-        else if(tipoSolicitud.contains("COMPONENTE"))
+       
+        if(tipoSolicitud.contains("AGREGAR_COMPONENTE"))
             analizarParametros(param);
+        else
+            analizarParametrosUsuariosFormularios(param, tipoSolicitud); 
     }
+    
+    
+   /**
+    * Agregamos un tipo de error al listado mandado
+    * @param listadoErroresParser
+    * @param tipoError
+    * @param lexema
+    * @param mensajeError
+    * @param linea
+    * @param columna 
+    */
+    public void agregarNuevoError(String tipoError, String lexema, String mensajeError, int linea, int columna){			
+            TokenError tokenErrorAux = new TokenError(tipoError, lexema, mensajeError, linea, columna);
+            listadoErroresParser.add(tokenErrorAux);
+    }
+
+    /**
+     * Getter del listado de errores del parser
+     * @return 
+     */
+    public ArrayList<TokenError> getListadoErroresParser() {
+        return listadoErroresParser;
+    }
+
+    /**
+     * Setter del listado de errores del parser
+     * @param listadoErroresParser 
+     */
+    public void setListadoErroresParser(ArrayList<TokenError> listadoErroresParser) {
+        this.listadoErroresParser = listadoErroresParser;
+    }
+    
+    public void imprimirListadoErrores(){
+        
+        for(TokenError aux: listadoErroresParser){
+            System.out.println("TIPO: "+aux.getTipoToken()+" CAUSA: "+aux.getLexema()+" DESCRIPCION: "+aux.getMsgError());
+        }
+    }
+    
+    
 
 }
