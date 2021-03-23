@@ -33,6 +33,7 @@ public class sym {
   public static final int PASSWORD = 25;
   public static final int OPCIONES = 54;
   public static final int MODIFICAR_USUARIO = 20;
+  public static final int NOT = 83;
   public static final int VALOR_ITEMS_CON_ESPACIO = 73;
   public static final int ELIMINAR_USUARIO = 21;
   public static final int FICHERO = 62;
@@ -43,11 +44,14 @@ public class sym {
   public static final int NUEVO_PASSWORD = 28;
   public static final int AREA_TEXTO = 59;
   public static final int FORMULARIO = 48;
+  public static final int SELECT = 84;
   public static final int ELIMINAR_FORMULARIO = 31;
   public static final int COMA = 10;
   public static final int DIGITO = 78;
   public static final int VALOR_ITEMS_SIN_ESPACIO = 74;
   public static final int INICIO_SOLICITUD = 12;
+  public static final int IGUAL = 79;
+  public static final int SQFORM_VALOR_NUMERO = 88;
   public static final int VALOR_FECHA = 76;
   public static final int CLASE = 49;
   public static final int VALOR_ID = 77;
@@ -58,15 +62,19 @@ public class sym {
   public static final int COLUMNAS = 56;
   public static final int FIN_SOLICITUD = 13;
   public static final int INICIO_RESPUESTAS = 15;
+  public static final int MENOS = 80;
   public static final int CORCHETES_FIN = 5;
   public static final int MENOR = 6;
   public static final int USUARIO = 24;
   public static final int URL = 57;
+  public static final int FORM = 86;
   public static final int PARAMETROS_COMPONENTE = 46;
   public static final int EOF = 0;
+  public static final int WHERE = 87;
   public static final int CORCHETES_INICIO = 4;
   public static final int MODIFICAR_COMPONENTE = 44;
   public static final int IMAGEN = 63;
+  public static final int OR = 82;
   public static final int error = 1;
   public static final int CREDENCIALES_USUARIO = 23;
   public static final int BOTON = 65;
@@ -83,9 +91,13 @@ public class sym {
   public static final int INDICE = 50;
   public static final int ALINEACION = 52;
   public static final int NO = 71;
+  public static final int AND = 81;
   public static final int FIN_RESPUESTA = 17;
+  public static final int TO = 85;
   public static final int LLAVES_FIN = 3;
+  public static final int SQFORM_VALOR_NOMRE_CAMPOS = 90;
   public static final int FIN_RESPUESTAS = 18;
+  public static final int SQFORM_VALOR_TEXTO = 89;
   public static final int AGREGAR_COMPONENTE = 43;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -166,6 +178,18 @@ public class sym {
   "VALOR_PASSWORD",
   "VALOR_FECHA",
   "VALOR_ID",
-  "DIGITO"
+  "DIGITO",
+  "IGUAL",
+  "MENOS",
+  "AND",
+  "OR",
+  "NOT",
+  "SELECT",
+  "TO",
+  "FORM",
+  "WHERE",
+  "SQFORM_VALOR_NUMERO",
+  "SQFORM_VALOR_TEXTO",
+  "SQFORM_VALOR_NOMRE_CAMPOS"
   };
 }

@@ -226,6 +226,29 @@ public class FuncionesSolicitudes {
             analizarParametrosUsuariosFormularios(param, tipoSolicitud); 
     }
     
+    /**
+     * Funcion utilizada para retornar un bloque de parametros, si esta vacia se instancia uno nuevo y se añaden los parametros validos unicamente, ademas de llamar a las funciones de repeticion
+     * @param a
+     * @param b
+     * @param tipoBloque
+     * @param lexema
+     * @return 
+     */
+    public BloqueParametros agregarParametroABloque(BloqueParametros a, TokenParametro b, String tipoBloque, String lexema){
+        if(a == null){//si aun no se inicializa el bloque lo hacemos
+            a = new BloqueParametros("\""+tipoBloque+"\"",  "\""+lexema+"\"");
+        }
+
+        if(a != null && b != null){//si hay un parametro valido y ya esta inicializado el bloque
+            //Verificamos parámetros repetidos
+            analizarEntradasMultiples(a, b);	
+            a.insertarParametro(b);
+            a.insertarTipoParametros(b.getTipoParametro());				
+        }
+		
+        return a;
+    }
+    
     
    /**
     * Agregamos un tipo de error al listado mandado
@@ -260,7 +283,7 @@ public class FuncionesSolicitudes {
     public void imprimirListadoErrores(){
         
         for(TokenError aux: listadoErroresParser){
-            System.out.println("TIPO: "+aux.getTipoToken()+" CAUSA: "+aux.getLexema()+" DESCRIPCION: "+aux.getMsgError());
+            System.out.println("TIPO: "+aux.getTipoToken()+" LINEA: "+aux.getLinea()+" COLUMNA: "+aux.getColumna()+" CAUSA: "+aux.getLexema()+" DESCRIPCION: "+aux.getMsgError());
         }
     }
     
