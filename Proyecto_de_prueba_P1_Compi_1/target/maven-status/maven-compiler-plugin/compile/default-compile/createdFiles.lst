@@ -1,5 +1,7 @@
 paquete/LexerIndigo.class
+http/Cliente.class
 paquete/parser$CUP$parser$actions.class
+paquete/VentanaPrincipal$3.class
 paquete/sym.class
 paquete/parser.class
 paquete/TokenError.class
