@@ -1,12 +1,6 @@
-paquete/LexerIndigo.class
-http/Cliente.class
-paquete/parser$CUP$parser$actions.class
-paquete/VentanaPrincipal$3.class
-paquete/sym.class
-paquete/parser.class
-paquete/TokenError.class
-paquete/Token.class
-paquete/Main.class
-paquete/VentanaPrincipal.class
 paquete/VentanaPrincipal$1.class
+http/Cliente.class
+paquete/VentanaPrincipal$3.class
+paquete/Main.class
 paquete/VentanaPrincipal$2.class
+paquete/VentanaPrincipal.class
