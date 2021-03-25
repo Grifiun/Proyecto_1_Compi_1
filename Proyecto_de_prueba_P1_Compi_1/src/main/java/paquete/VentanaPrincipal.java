@@ -112,33 +112,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
-        String entradaTxt = entrada.getText();
-       
-       
-        
-        
-        try{   
-            StringReader sr = new StringReader(entradaTxt);
-            LexerIndigo lexer = new LexerIndigo(sr);
-            System.out.println(" Lexer Ejecutado");
-            parser pars = new parser(lexer);
-            pars.parse();
-            
-            System.out.println(" Parser Ejecutado");
-            System.out.println("_____________________________________________");
-        } catch (Exception ex) {
-            System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
-        } 
-            
-    }//GEN-LAST:event_btnAnalizarActionPerformed
-
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
         try {
             String entradaTxt = entrada.getText();
             Cliente peticion = new Cliente();
             
-            String respuesta = peticion.POST("http://localhost:8080/Proyecto_P1_Web_Compi_Compi_1/Indigo", entradaTxt);
+            String respuesta = peticion.POST("http://localhost:8080/Proyecto_P1_Web_Compi_1/Indigo", entradaTxt);
             
             salida.setText(respuesta);
         } catch (Exception ex) {
@@ -146,6 +125,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnConectarActionPerformed
+
+    private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
+        /*
+        String entradaTxt = entrada.getText();
+
+        try{
+            StringReader sr = new StringReader(entradaTxt);
+            LexerIndigo lexer = new LexerIndigo(sr);
+            System.out.println(" Lexer Ejecutado");
+            parser pars = new parser(lexer);
+            pars.parse();
+
+            System.out.println(" Parser Ejecutado");
+            System.out.println("_____________________________________________");
+        } catch (Exception ex) {
+            System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
+        } */
+
+    }//GEN-LAST:event_btnAnalizarActionPerformed
 
     /**
      * @param args the command line arguments
