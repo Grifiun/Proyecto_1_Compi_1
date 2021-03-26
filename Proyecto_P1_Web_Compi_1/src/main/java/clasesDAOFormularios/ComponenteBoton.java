@@ -23,4 +23,38 @@ public class ComponenteBoton extends Componente{
         return codigoHTML;
     }
     
+    @Override
+    public String generarCodigoAlmacenamiento() {
+        String codigoAlmacenamiento = "{\n";
+        
+        if(getIdComponente().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"ID_COMPONENTE\" : "+getIdComponente()+",\n";
+        }
+        if(getClase().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"CLASE\" : "+getClase()+",\n";
+        }
+        if(getIndice().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"INDICE\" : "+getIndice()+",\n";
+        }
+        if(getTextoVisible().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"TEXTO_VISIBLE\" : "+getTextoVisible()+",\n";
+        }
+        if(getAlineacion().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"ALINEACION\" : "+getAlineacion()+",\n";
+        }
+        
+        if(codigoAlmacenamiento.equals("{\n") == false){//tiene datos
+            int longitud = codigoAlmacenamiento.length() - 2;
+            codigoAlmacenamiento = codigoAlmacenamiento.substring(0, longitud); //removemos la ultima coma y el salto de linea
+        }        
+        
+        codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
+        
+        return codigoAlmacenamiento;
+        
+    }
+    
+    
+    
+    
 }

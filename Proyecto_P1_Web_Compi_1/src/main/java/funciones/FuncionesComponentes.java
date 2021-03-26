@@ -6,7 +6,7 @@
 package funciones;
 
 import clasesDAO.BloqueParametros;
-import clasesDAO.ComponenteCheckBox;
+import clasesDAOFormularios.ComponenteCheckBox;
 import clasesDAO.TokenParametro;
 import clasesDAOFormularios.Componente;
 import clasesDAOFormularios.ComponenteAreaTexto;
@@ -32,37 +32,37 @@ public class FuncionesComponentes {
     public Componente crearComponentePorClase(String clase){
         Componente componenteAux;
          switch (clase){
-            case "AREA_TEXTO":
+            case "\"AREA_TEXTO\"":
                 componenteAux = new ComponenteAreaTexto();
                 /*Llenamos el objeto con cada dato*/
 
                 break;
-            case "CHECKBOX":
+            case "\"CHECKBOX\"":
                 componenteAux = new ComponenteCheckBox();
                 /*Llenamos el objeto con cada dato*/
 
                 break;
-            case "RADIO":
+            case "\"RADIO\"":
                 componenteAux = new ComponenteRadio();
                 /*Llenamos el objeto con cada dato*/
 
                 break;
-            case "FICHERO":
+            case "\"FICHERO\"":
                 componenteAux = new ComponenteFichero();
                 /*Llenamos el objeto con cada dato*/
 
                 break;
-            case "IMAGEN":
+            case "\"IMAGEN\"":
                 componenteAux = new ComponenteImagen();
                 /*Llenamos el objeto con cada dato*/
 
                 break;
-            case "BOTON":
+            case "\"BOTON\"":
                 componenteAux = new ComponenteBoton();
                 /*Llenamos el objeto con cada dato*/
 
                 break;
-            case "COMBO":
+            case "\"COMBO\"":
                 componenteAux = new ComponenteCombo();
                 /*Llenamos el objeto con cada dato*/
 
@@ -114,7 +114,7 @@ public class FuncionesComponentes {
                             componenteAux.setRequerido(parametroAux.getLexema());
                         break;
                     case "\"OPCIONES\"":                                        
-                            componenteAux.setOpciones(parametroAux.getLexema());
+                            componenteAux.setOpciones(parametroAux.getLexema()); 
                         break;
                     case "\"FILAS\"":                                        
                             componenteAux.setFilas(parametroAux.getLexema());
