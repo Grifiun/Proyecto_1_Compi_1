@@ -5,13 +5,15 @@
  */
 package clasesDAOFormularios;
 
+import clasesDAOFormularios.Componente;
+
 /**
  *
  * @author grifiun
  */
-public class ComponenteRadio extends Componente{
+public class ComponenteCheckBox extends Componente{
     //Constructor
-    public ComponenteRadio() {
+    public ComponenteCheckBox() {
         super();
     }      
 
@@ -23,9 +25,9 @@ public class ComponenteRadio extends Componente{
         for(String auxTexto:  getOpciones()){
             if(auxTexto != null){
                 if(getRequerido().equalsIgnoreCase("SI")){
-                    codigoHTML = codigoHTML +" <input type=\"radio\" id=\""+getIdComponente()+"\" value=\""+auxTexto+"\" name=\""+getNombreCampo()+"\" required/> "+auxTexto+"\n";
+                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente()+"\" value=\""+auxTexto+"\" name=\""+getNombreCampo()+"\" required/> "+auxTexto+"\n";
                 }else{
-                    codigoHTML = codigoHTML + " <input type=\"radio\" id=\""+getIdComponente()+"\" value=\""+auxTexto+"\" name=\""+getNombreCampo()+"\"/> "+auxTexto+" \n";
+                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente()+"\" value=\""+auxTexto+"\" name=\""+getNombreCampo()+"\"/> "+auxTexto+" \n";
                 }
 
             }
@@ -34,7 +36,8 @@ public class ComponenteRadio extends Componente{
         codigoHTML = codigoHTML + "</div> \n";
         /*
          <div class="form-group">
-        <input type="radio" id="id_etiqueta" value="menos18" name="nombre_campo"/>Menos de 18
+        <input type="checkbox" id="id" name="nombre_campo" value="html">HTML
+
     </div> 
         
         */

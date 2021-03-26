@@ -29,6 +29,59 @@ public class Formulario {
         this.tema = "";        
     }
     
+    public String generarCodigoAlmacenamiento(){
+        String codigoAlmacenamiento = "{\n";
+        
+        if(id.equals("") == false){
+            codigoAlmacenamiento += "\"ID_FORMULARIO\" : "+id+",\n";
+        }
+        if(titulo.equals("") == false){
+            codigoAlmacenamiento += "\"TITULO\" : "+titulo+",\n";
+        }
+        if(nombre.equals("") == false){
+            codigoAlmacenamiento += "\"NOMBRE\" : "+nombre+",\n";
+        }
+        if(tema.equals("") == false){
+            codigoAlmacenamiento += "\"TEMA\" : "+tema+",\n";
+        }
+        
+        codigoAlmacenamiento += generarCodigoEstructura() + ",\n";
+        
+        if(codigoAlmacenamiento.equals("{\n") == false){//tiene datos
+            int longitud = codigoAlmacenamiento.length() - 2;
+            codigoAlmacenamiento = codigoAlmacenamiento.substring(0, longitud); //removemos la ultima coma y el salto de linea
+        }        
+
+       codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
+        
+        return codigoAlmacenamiento;
+    }
+    
+    public String generarCodigoEstructura(){
+        String codigoEstructura = "";
+        
+        if(listadoComponentes != null && listadoComponentes.size() > 0){
+            codigoEstructura +=  "\"ESTRUCTURA\" : (\n";
+            
+            for(Componente componenteAux: listadoComponentes){
+                codigoEstructura += componenteAux.generarCodigoAlmacenamiento() + ",\n";
+                
+            }
+            if(codigoEstructura.equals("") == false){//tiene datos
+                int longitud = codigoEstructura.length() - 2;
+                codigoEstructura = codigoEstructura.substring(0, longitud); //removemos la ultima coma y el salto de linea
+            }  
+            
+            codigoEstructura +=  "\n)\n";
+        } 
+       
+        return codigoEstructura;
+    }
+    
+    /**
+     * Funcion para generar el codigo de un formulario
+     * @return 
+     */
     public String generarCodigoHTMLFormulario(){
         String codigoHTMLFormulario = "";
         String inicioFormulario = "<form class=\"col-12 caja2\" method=\"post\" action=\"../ControladorIngresoRegistro\"> \n";

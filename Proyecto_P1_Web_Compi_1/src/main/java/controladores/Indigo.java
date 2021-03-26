@@ -6,12 +6,17 @@ package controladores;
  * and open the template in the editor.
  */
 
+import archivos.CargarDatos;
+import archivos.GuardarDatos;
 import clasesDAO.BloqueParametros;
 import clasesDAO.TokenParametro;
 import clasesDAOFormularios.Componente;
 import clasesDAOFormularios.ComponenteBoton;
 import clasesDAOFormularios.Formulario;
+import clasesDAOUsuario.Usuario;
 import funciones.FuncionesComponentes;
+import funciones.FuncionesFormularios;
+import funciones.FuncionesUsuario;
 import gramatica_indigo.LexerIndigo;
 import gramatica_indigo.parser;
 import java.io.BufferedReader;
@@ -91,11 +96,16 @@ public class Indigo extends HttpServlet {
                 System.out.println(" Parser Ejecutado");
                 System.out.println("_____________________________________________");
                 
-                
-                ArrayList<BloqueParametros> listadoSolicitudes = pars.getListadoSolicitudes();
+                //FUNCIONEs
                 FuncionesComponentes funcionesComponentes = new FuncionesComponentes(); 
+                FuncionesFormularios funcionesFormularios = new FuncionesFormularios();
+                FuncionesUsuario funcionesUsuarios = new FuncionesUsuario();
+                
+                /////
+                ArrayList<BloqueParametros> listadoSolicitudes = pars.getListadoSolicitudes();                
                 ArrayList<Formulario> listadoFormularios = new ArrayList();
                 ArrayList<String> listadoIdFormularios = new ArrayList();
+                ArrayList<Usuario> listadoUsuarios = new ArrayList();
                 
                 if(listadoSolicitudes != null){//Si existe un listado de solicitudes
                     
@@ -126,6 +136,19 @@ public class Indigo extends HttpServlet {
                                     componenteAux = funcionesComponentes.agregarDatosCompoente(bloqueAux, componenteAux);
                                     listadoFormularios = funcionesComponentes.agregarComponenteFormularioPorId(componenteAux, listadoFormularios, listadoIdFormularios);                                
                                     break;
+                                case "\"CREAR_USUARIO\"":
+                                    System.out.println("Agregamos un nuevo usuario");
+                                    Usuario usuarioAux = new Usuario();
+
+                                    //Agregamos los datos al usuario
+                                    usuarioAux = funcionesUsuarios.agregarDatosUsuario(bloqueAux, usuarioAux);
+                                    
+                                    //comprobamos que el nombre de usuario sea unico
+                                    if(funcionesUsuarios.verificarNombreUsuario(listadoUsuarios, usuarioAux.getUsuario()) != true){//Si no existe
+                                        listadoUsuarios.add(usuarioAux);//Agregmamos el usuario
+                                    }
+                                    
+                                    break;
                                 default:
                                     
                             }
@@ -140,11 +163,21 @@ public class Indigo extends HttpServlet {
                         }         
                     }
                     
+                    
+                    System.out.println(funcionesFormularios.generarCodigoAlmacenamientoFormularios(listadoFormularios));
+                    System.out.println(funcionesUsuarios.generarCodigoAlmacenamientoUsuarios(listadoUsuarios));
+                    
+                    GuardarDatos gd = new GuardarDatos();
+                    gd.guardarDatos(funcionesFormularios.generarCodigoAlmacenamientoFormularios(listadoFormularios),"formularios");
+                    gd.guardarDatos(funcionesUsuarios.generarCodigoAlmacenamientoUsuarios(listadoUsuarios),"usuarios");
+                    
+                    CargarDatos cd = new CargarDatos();
+                    cd.leerDatos("formularios");
+                    cd.leerDatos("usuarios");
                 }
                 
-                for(Formulario form: listadoFormularios){
-                    System.out.println(form.generarCodigoHTMLFormulario());
-                }
+                
+                
                 
             } catch (Exception ex) {
                 System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());

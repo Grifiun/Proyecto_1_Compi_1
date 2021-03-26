@@ -22,6 +22,7 @@ public abstract class Componente {
     private String alineacion;
     private String requerido;
     private ArrayList<String> opciones;
+    private String opcionesCadena;
     private String filas;
     private String columnas;
     private String URL;   
@@ -36,10 +37,12 @@ public abstract class Componente {
         this.alineacion = "";
         this.requerido = "";
         ArrayList<String> opciones = new ArrayList();
+        this.opcionesCadena = "";
         this.filas = "";
         this.columnas = "";
         this.URL = "";          
     }
+    public abstract String generarCodigoAlmacenamiento();
     
     public abstract String generarCodigoHTMLCompoente();    
 
@@ -112,6 +115,7 @@ public abstract class Componente {
     }
 
     public void setOpciones(String opciones) {
+        this.opcionesCadena = opciones;
         String[] auxOp = opciones.split("|");        
         this.opciones = new ArrayList<>(Arrays.asList(auxOp));
     }
@@ -139,7 +143,66 @@ public abstract class Componente {
     public void setURL(String URL) {
         this.URL = URL;
     }
+
+    public String getOpcionesCadena() {
+        return opcionesCadena;
+    }
+    
     
     
     
 }
+
+
+
+/*
+    @Override
+    public String generarCodigoAlmacenamiento() {
+        String codigoAlmacenamiento = "{\n";
+         
+        if(getIdComponente().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"ID_COMPONENTE\" : "+getIdComponente()+",\n";
+        }
+        if(getNombreCampo().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"NOMBRE_CAMPO\" : "+getNombreCampo()+",\n";
+        }
+        if(getClase().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"CLASE\" : "+getClase()+",\n";
+        }
+        if(getIndice().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"INDICE\" : "+getIndice()+",\n";
+        }
+        if(getTextoVisible().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"TEXTO_VISIBLE\" : "+getTextoVisible()+",\n";
+        }
+        if(getAlineacion().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"ALINEACION\" : "+getAlineacion()+",\n";
+        }
+        if(getRequerido().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"REQUERIDO\" : "+getRequerido()+",\n";
+        }
+        if(getOpcionesCadena().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"OPCIONES\" : "+getOpcionesCadena()+",\n";
+        }
+        if(getFilas().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"FILAS\" : "+getFilas()+",\n";
+        }
+        if(getColumnas().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"COLUMNAS\" : "+getColumnas()+",\n";
+        }
+        if(getURL().equals("") == false){//no esta vacio
+            codigoAlmacenamiento += "\"URL\" : "+getURL()+",\n";
+        }
+
+        if(codigoAlmacenamiento.equals("{\n") == false){//tiene datos
+               int longitud = codigoAlmacenamiento.length() - 2;
+               codigoAlmacenamiento = codigoAlmacenamiento.substring(0, longitud); //removemos la ultima coma y el salto de linea
+           }        
+
+       codigoAlmacenamiento = codigoAlmacenamiento + "}\n";
+
+       return codigoAlmacenamiento;
+
+   }
+
+*/
