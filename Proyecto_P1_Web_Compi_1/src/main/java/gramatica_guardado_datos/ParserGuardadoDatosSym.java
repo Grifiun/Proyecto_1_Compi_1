@@ -9,65 +9,66 @@ package gramatica_guardado_datos;
 public class ParserGuardadoDatosSym {
   /* terminals */
   public static final int PARENTESIS_FIN = 5;
-  public static final int REGISTRO = 50;
+  public static final int REGISTRO = 51;
   public static final int PARENTESIS_INICIO = 4;
-  public static final int BOTON = 43;
-  public static final int ALINEACION = 30;
-  public static final int VALOR_FECHA = 57;
+  public static final int BOTON = 44;
+  public static final int ALINEACION = 31;
+  public static final int PUBLICO = 22;
+  public static final int VALOR_FECHA = 58;
   public static final int NOMBRE = 18;
-  public static final int SI = 48;
-  public static final int CHECKBOX = 38;
-  public static final int WHITE = 24;
+  public static final int SI = 49;
+  public static final int CHECKBOX = 39;
+  public static final int WHITE = 25;
   public static final int DOS_PUNTOS = 6;
-  public static final int IZQUIERDA = 45;
-  public static final int ESTRUCTURA = 51;
-  public static final int INDICE = 28;
-  public static final int VALOR_ITEMS_SIN_ESPACIO = 55;
+  public static final int IZQUIERDA = 46;
+  public static final int ESTRUCTURA = 52;
+  public static final int INDICE = 29;
+  public static final int VALOR_ITEMS_SIN_ESPACIO = 56;
   public static final int USUARIO = 10;
   public static final int DBFORMULARIOS = 8;
-  public static final int CENTRO = 44;
+  public static final int CENTRO = 45;
   public static final int TITULO = 17;
   public static final int USUARIO_NUEVO = 13;
-  public static final int FICHERO = 40;
+  public static final int FICHERO = 41;
   public static final int LLAVES_INICIO = 2;
   public static final int EOF = 0;
-  public static final int CLASE = 27;
-  public static final int DATOS_RECOPILADOS = 52;
+  public static final int CLASE = 28;
+  public static final int DATOS_RECOPILADOS = 53;
   public static final int error = 1;
-  public static final int DIGITO = 59;
-  public static final int VALOR_ITEMS_CON_ESPACIO = 54;
+  public static final int DIGITO = 60;
+  public static final int VALOR_ITEMS_CON_ESPACIO = 55;
   public static final int COMA = 7;
   public static final int FECHA_MODIFICACION = 15;
-  public static final int URL = 35;
-  public static final int VALOR_ID = 58;
+  public static final int URL = 36;
+  public static final int VALOR_ID = 59;
   public static final int LLAVES_FIN = 3;
   public static final int PASSWORD = 11;
-  public static final int ID_COMPONENTE = 26;
+  public static final int ID_COMPONENTE = 27;
   public static final int FECHA_CREACION = 21;
   public static final int USUARIO_CREACION = 20;
   public static final int TEMA = 19;
   public static final int ID_FORMULARIO = 16;
   public static final int NUEVO_PASSWORD = 14;
-  public static final int REQUERIDO = 31;
-  public static final int NO = 49;
-  public static final int RADIO = 39;
+  public static final int REQUERIDO = 32;
+  public static final int NO = 50;
+  public static final int RADIO = 40;
   public static final int DBUSUARIOS = 9;
-  public static final int DERECHA = 46;
-  public static final int IMAGEN = 41;
-  public static final int NOMBRE_CAMPO = 25;
+  public static final int DERECHA = 47;
+  public static final int IMAGEN = 42;
+  public static final int NOMBRE_CAMPO = 26;
   public static final int USUARIO_ANTIGUO = 12;
-  public static final int COMBO = 42;
-  public static final int VALOR_TEXTO_VISIBLE_CON_ESPACIO = 53;
-  public static final int BLUE = 23;
-  public static final int DARK = 22;
-  public static final int VALOR_PASSWORD = 56;
-  public static final int COLUMNAS = 34;
-  public static final int JUSTIFICAR = 47;
-  public static final int FILAS = 33;
-  public static final int AREA_TEXTO = 37;
-  public static final int CAMPO_TEXTO = 36;
-  public static final int TEXTO_VISIBLE = 29;
-  public static final int OPCIONES = 32;
+  public static final int COMBO = 43;
+  public static final int VALOR_TEXTO_VISIBLE_CON_ESPACIO = 54;
+  public static final int BLUE = 24;
+  public static final int DARK = 23;
+  public static final int VALOR_PASSWORD = 57;
+  public static final int COLUMNAS = 35;
+  public static final int JUSTIFICAR = 48;
+  public static final int FILAS = 34;
+  public static final int AREA_TEXTO = 38;
+  public static final int CAMPO_TEXTO = 37;
+  public static final int TEXTO_VISIBLE = 30;
+  public static final int OPCIONES = 33;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -91,6 +92,7 @@ public class ParserGuardadoDatosSym {
   "TEMA",
   "USUARIO_CREACION",
   "FECHA_CREACION",
+  "PUBLICO",
   "DARK",
   "BLUE",
   "WHITE",
@@ -131,4 +133,3 @@ public class ParserGuardadoDatosSym {
   "DIGITO"
   };
 }
-

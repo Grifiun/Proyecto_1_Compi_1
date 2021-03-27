@@ -18,8 +18,8 @@ public class ComponenteImagen extends Componente{
     @Override
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
-        codigoHTML = codigoHTML + "<h5>"+getTextoVisible()+"</h5> \n";        
-        codigoHTML = codigoHTML +" <input type=\"image\" id=\""+getIdComponente()+"\" src=\""+getURL()+"\"/> \n";       
+        codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n";        
+        codigoHTML = codigoHTML +" <input type=\"image\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" src=\""+getURL().replaceAll("\"", "").trim()+"\"/> \n";       
         codigoHTML = codigoHTML + "</div>\n";
         /*
         <div class="form-group">

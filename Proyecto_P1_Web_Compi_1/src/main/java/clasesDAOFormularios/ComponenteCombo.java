@@ -18,16 +18,16 @@ public class ComponenteCombo extends Componente{
     @Override
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
-        codigoHTML = codigoHTML + "<h5>"+getTextoVisible()+"</h5> \n"; 
+        codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n"; 
         if(getRequerido().equalsIgnoreCase("SI")){
-            codigoHTML = codigoHTML + " <select name=\""+getNombreCampo()+"\" class=\"cont\" id=\""+getIdComponente()+"\" required> \n";
+            codigoHTML = codigoHTML + " <select name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" class=\"cont\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" required> \n";
         }else{
-            codigoHTML = codigoHTML + " <select name=\""+getNombreCampo()+"\" class=\"cont\" id=\""+getIdComponente()+"\" > \n";
+            codigoHTML = codigoHTML + " <select name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" class=\"cont\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" > \n";
         }
         
         for(String auxTexto:  getOpciones()){
             if(auxTexto != null){
-                codigoHTML = codigoHTML + "<option value=\""+auxTexto+"\">"+auxTexto+"</option> \n"; 
+                codigoHTML = codigoHTML + "<option value=\""+auxTexto.replaceAll("\"", "").trim()+"\">"+auxTexto.replaceAll("\"", "").trim()+"</option> \n"; 
             }
         }
            

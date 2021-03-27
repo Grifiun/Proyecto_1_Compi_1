@@ -1,0 +1,22 @@
+.modal-content{  
+    border: 0px;
+    margin: 45px auto;    
+}
+
+.caja2{
+    margin-top: -15px;
+}
+
+h5, h6{
+   text-align: left;    
+}
+
+td{
+   padding-right: 100px;
+}
+
+table{
+   margin: 25px auto;
+   border: 5px;
+   border-color: #000;
+}

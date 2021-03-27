@@ -91,6 +91,8 @@ public class FuncionesComponentes {
                 switch(parametroAux.getTipoParametro()){
                     case "\"ID\"":                                        
                             componenteAux.setIdComponente(parametroAux.getLexema());
+                    case "\"ID_COMPONENTE\"":  //Para el guardado de datos                                      
+                            componenteAux.setIdComponente(parametroAux.getLexema());
                         break;
                     case "\"NOMBRE_CAMPO\"":                                        
                             componenteAux.setNombreCampo(parametroAux.getLexema());
@@ -132,34 +134,6 @@ public class FuncionesComponentes {
         }
         
         return componenteAux;
-    }
-    
-    public Formulario agregarDatosFormulario(BloqueParametros bloqueAux){
-        Formulario formularioAux = new Formulario();
-        
-        for(TokenParametro parametroAux: bloqueAux.getListadoParametros()){
-            if(parametroAux != null){ //dependiendo del tipo de dato llamaremos a diferentes funciones                  
-                String tipoParametro = parametroAux.getTipoParametro();
-                System.out.println("Tipo parametro: "+tipoParametro);
-                switch(tipoParametro){
-                    case "\"ID\"":                                        
-                            formularioAux.setId(parametroAux.getLexema());
-                        break;
-                    case "\"TITULO\"":                                        
-                            formularioAux.setTitulo(parametroAux.getLexema());
-                        break;
-                    case "\"NOMBRE\"":                                        
-                            formularioAux.setNombre(parametroAux.getLexema());
-                        break;
-                    case "\"TEMA\"":                                        
-                            formularioAux.setTema(parametroAux.getLexema());
-                        break;
-
-                }                                  
-            }
-        }
-        
-        return formularioAux;
     }
     
     public ArrayList<Formulario> agregarComponenteFormularioPorId(Componente componenteAux, ArrayList<Formulario> listadoFormularios, ArrayList<String> listadoIdFormularios){

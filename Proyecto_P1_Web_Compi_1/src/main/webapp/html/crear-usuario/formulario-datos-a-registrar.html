@@ -1,0 +1,47 @@
+<form class="col-12 caja2" method="get" action="../ControladorCrearUsuario" > 
+    <div class="titulo">
+        <h5>Registro de paciente</h5>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" required placeholder="nombre*" name="nombre"/>
+    </div>
+    <div class="form-group">
+        <select class="cont" name="sexo" id="sexo" required>
+            <option value="" disabled selected hidden>Seleccione el genero</option>
+            <option value="Hombre">Masculino</option>
+            <option value="Mujer">Femenino</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="date" class="form-control" placeholder="cumpleanios" name="birth"/>
+    </div>
+    <div class="form-group">
+        <input type="number" class="form-control" placeholder="DPI" name="dpi"/>
+    </div> 
+    <div class="form-group">
+        <input type="number" class="form-control"  placeholder="telefono" name="telefono"/>
+    </div>
+    <div class="form-group">
+        <input type="number" class="form-control" placeholder="peso" name="peso"/>
+    </div> 
+    <div class="form-group">
+        <select name="sangre" class="cont" id="sangre" required>   
+            <option value="" disabled selected hidden>Tipo de sangre</option>
+            <option value="O-">O-</option>
+            <option value="O+">O+</option>
+            <option value="A-">A-</option>
+            <option value="A+">A+</option>
+            <option value="B-">B-</option>
+            <option value="B+">B+</option>
+            <option value="AB-">AB-</option>
+            <option value="AB+">AB+</option>
+        </select>
+    </div> 
+    <div class="form-group">
+        <input type="email" class="form-control" placeholder="correo" name="correo"/>
+    </div> 
+    <div class="form-group">
+        <input type="password" class="form-control" placeholder="password" name="password"/>
+    </div>   
+    <button type="submit" class="btn btn-primary">Crear cuenta</button>
+</form>

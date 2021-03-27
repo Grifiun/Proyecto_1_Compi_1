@@ -251,6 +251,18 @@ public class FuncionesSolicitudes {
 		
         return a;
     }
+    /**
+     * Funcion que nos agrega en inicio y el fin de los bloques de parametros
+     * @return 
+     */
+    public BloqueParametros agregarInicioFinBloque(Token inicio, Token fin, BloqueParametros param){
+        param.setLinea(inicio.getLinea());
+        param.setColumna(inicio.getColumna());
+        param.setLineaFin(fin.getLinea());
+        param.setColumnaFin(fin.getColumna());
+        
+        return param;
+    }
     
     
    /**
