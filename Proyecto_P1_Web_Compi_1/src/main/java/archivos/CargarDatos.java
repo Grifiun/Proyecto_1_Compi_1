@@ -5,6 +5,8 @@
  */
 package archivos;
 
+import clasesDAOFormularios.Formulario;
+import clasesDAOUsuario.Usuario;
 import gramatica_guardado_datos.LexerGuardadoDatos;
 import gramatica_guardado_datos.ParserGuardadoDatos;
 import java.io.BufferedReader;
@@ -13,12 +15,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
+import java.util.ArrayList;
 
 /**
  *
  * @author grifiun
  */
 public class CargarDatos {
+    
+    ArrayList<Usuario> listadoUsuariosCargados = new ArrayList();
+    ArrayList<Formulario> listadoFormulariosCargados = new ArrayList();
+    
     /**
      * Funcion dedicada a leer archivos
      * @param contenido
@@ -42,12 +49,46 @@ public class CargarDatos {
                 ParserGuardadoDatos parser = new ParserGuardadoDatos(lexer);
                 parser.parse();
                 
+                System.out.println("EL ARCHIVO DE GUARDADO SE PROCESO SIN ERROR \n");
+                
+                if(nombreArchivo.equals("formularios")){
+                    ArrayList<Formulario> listadoFormularios = parser.getListadoFormularioLeidos();
+                    System.out.println("FORMULARIOS:----------------------\n");
+                    
+                    if(listadoFormularios != null && listadoFormularios.size() > 0){
+                        this.listadoFormulariosCargados = listadoFormularios;
+                        /*
+                        for(Formulario formAux: listadoFormularios){
+                            System.out.println("\n\n");
+                            System.out.println(formAux.generarCodigoHTMLFormulario());
+                        }*/
+                    }                   
+                }else if(nombreArchivo.equals("usuarios")){
+                    ArrayList<Usuario> listadoUsuarios = parser.getListadoUsuario();
+                    System.out.println("USUARIOS:----------------------\n");
+                    
+                    if(listadoUsuarios != null && listadoUsuarios.size() > 0){
+                        this.listadoUsuariosCargados = listadoUsuarios;
+                    } 
+                }
+                
             }
             
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("No se pudo guardar");
+            System.out.println("No se pudo leer: "+e);
         }
     
     }
+
+    public ArrayList<Usuario> getListadoUsuariosCargados() {
+        return listadoUsuariosCargados;
+    }
+
+    public ArrayList<Formulario> getListadoFormulariosCargados() {
+        return listadoFormulariosCargados;
+    }
+    
+    
+    
 }

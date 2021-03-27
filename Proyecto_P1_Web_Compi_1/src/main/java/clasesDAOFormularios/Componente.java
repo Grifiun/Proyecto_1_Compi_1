@@ -116,7 +116,7 @@ public abstract class Componente {
 
     public void setOpciones(String opciones) {
         this.opcionesCadena = opciones;
-        String[] auxOp = opciones.split("|");        
+        String[] auxOp = opciones.split("\\|");  
         this.opciones = new ArrayList<>(Arrays.asList(auxOp));
     }
 

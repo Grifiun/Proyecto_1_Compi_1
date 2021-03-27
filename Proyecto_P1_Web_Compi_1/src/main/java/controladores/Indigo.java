@@ -119,7 +119,7 @@ public class Indigo extends HttpServlet {
                                 case "\"NUEVO_FORMULARIO\"":
                                     Formulario formularioAux;
                                     System.out.println("Agregamos un nuevo formulario");
-                                    formularioAux = funcionesComponentes.agregarDatosFormulario(bloqueAux);
+                                    formularioAux = funcionesFormularios.agregarDatosFormulario(bloqueAux);
                                     listadoFormularios.add(formularioAux);//agregamos el formulario al listado
                                     listadoIdFormularios.add(formularioAux.getId());//agregamos el id del formulario auxiliar
                                     break;
@@ -138,10 +138,10 @@ public class Indigo extends HttpServlet {
                                     break;
                                 case "\"CREAR_USUARIO\"":
                                     System.out.println("Agregamos un nuevo usuario");
-                                    Usuario usuarioAux = new Usuario();
+                                    Usuario usuarioAux;
 
                                     //Agregamos los datos al usuario
-                                    usuarioAux = funcionesUsuarios.agregarDatosUsuario(bloqueAux, usuarioAux);
+                                    usuarioAux = funcionesUsuarios.agregarDatosUsuario(bloqueAux);
                                     
                                     //comprobamos que el nombre de usuario sea unico
                                     if(funcionesUsuarios.verificarNombreUsuario(listadoUsuarios, usuarioAux.getUsuario()) != true){//Si no existe

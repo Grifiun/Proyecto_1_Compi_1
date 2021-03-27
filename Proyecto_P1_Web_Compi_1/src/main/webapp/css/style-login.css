@@ -1,0 +1,39 @@
+body{
+    background: url(../img/fondo.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+.modal-content{
+    background-color: #3b4652;    
+    opacity: .85;
+    padding:0 50px;
+    box-shadow: 0px 0px 3px #848484; 
+}
+
+.caja2{
+    padding-bottom: 17px;
+}
+
+.cont{
+    width: 100%;    
+}
+
+.imagen{
+   margin-top: -50px;
+   margin-bottom: 35px;
+}
+
+.imagen img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.titulo{
+    color: white;
+    margin-top: -15px;
+}
+
+.mensaje-de-formulario{
+    color: white;    
+}

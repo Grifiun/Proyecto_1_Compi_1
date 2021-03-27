@@ -20,14 +20,14 @@ public class ComponenteCheckBox extends Componente{
     @Override
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
-        codigoHTML = codigoHTML + "<h5>"+getTextoVisible()+"</h5> \n"; 
+        codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n"; 
         
         for(String auxTexto:  getOpciones()){
             if(auxTexto != null){
                 if(getRequerido().equalsIgnoreCase("SI")){
-                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente()+"\" value=\""+auxTexto+"\" name=\""+getNombreCampo()+"\" required/> "+auxTexto+"\n";
+                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required/> "+auxTexto.replaceAll("\"", "").trim()+"\n";
                 }else{
-                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente()+"\" value=\""+auxTexto+"\" name=\""+getNombreCampo()+"\"/> "+auxTexto+" \n";
+                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"/> "+auxTexto.replaceAll("\"", "").trim()+" \n";
                 }
 
             }

@@ -18,7 +18,7 @@ public class ComponenteBoton extends Componente{
     @Override
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
-        codigoHTML = codigoHTML + "<input type=\"submit\" value=\""+getTextoVisible()+"\"/>";
+        codigoHTML = codigoHTML + "<input type=\"submit\" value=\""+getTextoVisible().replaceAll("\"", "").trim()+"\"/>";
         codigoHTML = codigoHTML + "</div>\n";
         return codigoHTML;
     }

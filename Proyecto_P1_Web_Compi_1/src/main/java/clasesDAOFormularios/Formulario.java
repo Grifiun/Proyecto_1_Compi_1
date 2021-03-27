@@ -18,7 +18,9 @@ public class Formulario {
     private String titulo;
     private String nombre;
     private String tema;    
-    
+    private String publico;
+    private String usuarioCreacion;
+    private String fechaCreacion;
     
     ArrayList<Componente> listadoComponentes = new ArrayList();    
     
@@ -26,7 +28,10 @@ public class Formulario {
         this.id = "";
         this.titulo = "";
         this.nombre = "";
-        this.tema = "";        
+        this.tema = ""; 
+        this.publico = "\"NO\"";
+        this.usuarioCreacion = "";//Hay que agregar el usuario logueado
+        this.fechaCreacion = "";//Fecha
     }
     
     public String generarCodigoAlmacenamiento(){
@@ -43,6 +48,15 @@ public class Formulario {
         }
         if(tema.equals("") == false){
             codigoAlmacenamiento += "\"TEMA\" : "+tema+",\n";
+        }
+        if(publico.equals("") == false){
+            codigoAlmacenamiento += "\"PUBLICO\" : "+publico+",\n";
+        }
+        if(fechaCreacion.equals("") == false){
+            codigoAlmacenamiento += "\"FECHA_CREACION\" : "+fechaCreacion+",\n";
+        }
+        if(usuarioCreacion.equals("") == false){
+            codigoAlmacenamiento += "\"USUARIO_CREACION\" : "+usuarioCreacion+",\n";
         }
         
         codigoAlmacenamiento += generarCodigoEstructura() + ",\n";
@@ -105,7 +119,7 @@ public class Formulario {
         
         return codigoHTMLFormulario;
     }
-    
+        
     public void agregarComponente(Componente componenteAux){
         listadoComponentes.add(componenteAux);
     }
@@ -149,6 +163,31 @@ public class Formulario {
     public void setListadoComponentes(ArrayList<Componente> listadoComponentes) {
         this.listadoComponentes = listadoComponentes;
     }
+
+    public String getPublico() {
+        return publico;
+    }
+
+    public void setPublico(String publico) {
+        this.publico = publico;
+    }
+
+    public String getUsuarioCreacion() {
+        return usuarioCreacion;
+    }
+
+    public void setUsuarioCreacion(String usuarioCreacion) {
+        this.usuarioCreacion = usuarioCreacion;
+    }
+
+    public String getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+    
     
     
 }

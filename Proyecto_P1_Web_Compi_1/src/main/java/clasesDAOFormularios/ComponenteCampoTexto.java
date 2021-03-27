@@ -18,12 +18,12 @@ public class ComponenteCampoTexto extends Componente{
     @Override
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
-        codigoHTML = codigoHTML + "<h5>"+getTextoVisible()+"</h5> \n";        
+        codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n";        
         
         if(getRequerido().equalsIgnoreCase("SI")){
-            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente()+"\" name=\""+getNombreCampo()+"\" required /> \n";
+            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required /> \n";
         }else{
-            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente()+"\" name=\""+getNombreCampo()+"\"  /> \n";
+            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"  /> \n";
         }        
         
         codigoHTML = codigoHTML + "</div>\n";

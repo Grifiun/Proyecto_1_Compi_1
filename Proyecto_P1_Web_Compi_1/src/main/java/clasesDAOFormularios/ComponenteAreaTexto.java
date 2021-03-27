@@ -20,12 +20,12 @@ public class ComponenteAreaTexto extends Componente{
     @Override
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
-        codigoHTML = codigoHTML + "<h5>"+getTextoVisible()+"</h5> \n";        
+        codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n";        
         
         if(getRequerido().equalsIgnoreCase("SI")){
-            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente()+"\" rows = \""+getFilas()+"\" cols = \""+getColumnas()+"\" name=\""+getNombreCampo()+"\" required ></textarea> \n";
+            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" rows = \""+getFilas().replaceAll("\"", "").trim()+"\" cols = \""+getColumnas().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required ></textarea> \n";
         }else{
-            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente()+"\" rows = \""+getFilas()+"\" cols = \""+getColumnas()+"\" name=\""+getNombreCampo()+"\"  ></textarea> \n";
+            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" rows = \""+getFilas().replaceAll("\"", "").trim()+"\" cols = \""+getColumnas().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"  ></textarea> \n";
         }
         
         
