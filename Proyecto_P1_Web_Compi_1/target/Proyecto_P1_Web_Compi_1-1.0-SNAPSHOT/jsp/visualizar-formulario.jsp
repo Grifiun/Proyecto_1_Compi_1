@@ -15,8 +15,6 @@
             String codigoHTMLFormulario = funcionesFormularios.obtenerFormularioPorId(idFormulario).generarCodigoHTMLFormulario();
             System.out.println("CODIGO HTML\n\n"+codigoHTMLFormulario);
             
-            //funcionesFormularios.editarCampoFormulario(idFormulario, "\"PUBLICO\"", "\"SI\"");
-            funcionesFormularios.editarCampoFormulario(idFormulario, "\"NOMBRE\"", "\"formulario_encuesta_modificado\"");
         %>
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

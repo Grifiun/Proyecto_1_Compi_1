@@ -47,36 +47,46 @@ public class CargarDatos {
                 LexerGuardadoDatos lexer = new LexerGuardadoDatos(reader);
                 
                 ParserGuardadoDatos parser = new ParserGuardadoDatos(lexer);
-                parser.parse();
                 
-                System.out.println("EL ARCHIVO DE GUARDADO SE PROCESO SIN ERROR \n");
+                try {
+                    parser.parse();
+                    System.out.println("EL ARCHIVO DE CARGADO SE PROCESO SIN ERROR \n");
                 
-                if(nombreArchivo.equals("formularios")){
-                    ArrayList<Formulario> listadoFormularios = parser.getListadoFormularioLeidos();
-                    System.out.println("FORMULARIOS:----------------------\n");
-                    
-                    if(listadoFormularios != null && listadoFormularios.size() > 0){
-                        this.listadoFormulariosCargados = listadoFormularios;
-                        /*
-                        for(Formulario formAux: listadoFormularios){
-                            System.out.println("\n\n");
-                            System.out.println(formAux.generarCodigoHTMLFormulario());
-                        }*/
-                    }                   
-                }else if(nombreArchivo.equals("usuarios")){
-                    ArrayList<Usuario> listadoUsuarios = parser.getListadoUsuario();
-                    System.out.println("USUARIOS:----------------------\n");
-                    
-                    if(listadoUsuarios != null && listadoUsuarios.size() > 0){
-                        this.listadoUsuariosCargados = listadoUsuarios;
-                    } 
+                    if(nombreArchivo.equals("formularios")){
+                        ArrayList<Formulario> listadoFormularios = parser.getListadoFormularioLeidos();
+                        System.out.println("FORMULARIOS:----------------------\n");
+
+                        if(listadoFormularios != null && listadoFormularios.size() > 0){
+                            this.listadoFormulariosCargados = listadoFormularios;
+                            
+                            for(Formulario formAux: listadoFormularios){
+                                System.out.println("LARGO     sddddddddddddddddddddddddd\n\n");
+                                System.out.println("comp: "+formAux.getListadoComponentes().size());
+                               // System.out.println(formAux.generarCodigoHTMLFormulario());
+                            }
+                            
+                            
+                        }                   
+                    }else if(nombreArchivo.equals("usuarios")){
+                        ArrayList<Usuario> listadoUsuarios = parser.getListadoUsuario();
+                        System.out.println("USUARIOS:----------------------\n");
+
+                        if(listadoUsuarios != null && listadoUsuarios.size() > 0){
+                            this.listadoUsuariosCargados = listadoUsuarios;
+                        } 
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Error en el parser/lexer: "+ex);
                 }
+                
+                
+                
                 
             }
             
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("No se pudo leer: "+e);
+            System.out.println("No se pudo leer el archivo requerido: ");
         }
     
     }

@@ -21,16 +21,17 @@ public class ComponenteCheckBox extends Componente{
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
         codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n"; 
-        
+        int index = 0;
         for(String auxTexto:  getOpciones()){
             if(auxTexto != null){
-                if(getRequerido().equalsIgnoreCase("SI")){
-                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required/> "+auxTexto.replaceAll("\"", "").trim()+"\n";
+                if(getRequerido().replaceAll("\"", "").trim().equalsIgnoreCase("SI")){
+                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"-"+index+"\" required/> "+auxTexto.replaceAll("\"", "").trim()+"\n";
                 }else{
-                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"/> "+auxTexto.replaceAll("\"", "").trim()+" \n";
+                    codigoHTML = codigoHTML + " <input type=\"checkbox\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"-"+index+"\"/> "+auxTexto.replaceAll("\"", "").trim()+" \n";
                 }
 
             }
+            index++;
         }
            
         codigoHTML = codigoHTML + "</div> \n";
@@ -80,7 +81,10 @@ public class ComponenteCheckBox extends Componente{
            }        
 
        codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
-
+        if(getListadoRegistros() != null && getListadoRegistros().size() > 0){//si hay registros
+             codigoAlmacenamiento += generarCodigoAlmacenamientoRegistros();
+        }
+       
        return codigoAlmacenamiento;
 
    }
