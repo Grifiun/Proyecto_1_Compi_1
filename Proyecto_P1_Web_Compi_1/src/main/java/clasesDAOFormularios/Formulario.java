@@ -98,12 +98,18 @@ public class Formulario {
      */
     public String generarCodigoHTMLFormulario(){
         String codigoHTMLFormulario = "";
-        String inicioFormulario = "<form class=\"col-12 caja2\" method=\"post\" action=\"../ControladorIngresoRegistro\"> \n";
-        String tituloFormulario = "<h1>"+this.titulo+"</h1> \n"; 
+        String inicioFormulario = "<form class=\"col-12 caja2\" method=\"post\" action=\"../ControladorRegistro\"> \n";
+        String tituloFormulario = "<h1>"+this.titulo+"</h1> \n";         
         String finFormulario = "</form> \n";
                 
         
         codigoHTMLFormulario = codigoHTMLFormulario + inicioFormulario + tituloFormulario;
+        codigoHTMLFormulario += "<div class=\"form-group\">\n" +
+                            "     <h5>ID Formulario: </h5> \n    "+
+                            "        <select class=\"cont\" name=\"ID_FORMULARIO\" id=\"ID_FORMULARIO\" required>\n" +
+                            "              <option value=\""+this.id.replaceAll("\"", "").trim()+"\"> "+this.id.replaceAll("\"", "").trim()+"  </option>\n" +                       
+                            "        </select>\n" +
+                            "    </div>";
         
         for(Componente componenteAux: listadoComponentes){
             codigoHTMLFormulario = codigoHTMLFormulario + componenteAux.generarCodigoHTMLCompoente();

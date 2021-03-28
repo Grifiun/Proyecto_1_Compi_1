@@ -9,6 +9,7 @@ gramatica_indigo/parser$CUP$parser$actions.class
 clasesDAOFormularios/Componente.class
 gramatica_guardado_datos/LexerGuardadoDatos.class
 clasesDAO/BloqueParametros.class
+controladores/ControladorRegistro.class
 funciones/FuncionesUsuario.class
 gramatica_guardado_datos/ParserGuardadoDatos.class
 clasesDAOFormularios/Formulario.class
@@ -28,5 +29,6 @@ archivos/CargarDatos.class
 clasesDAOFormularios/ComponenteRadio.class
 gramatica_indigo/LexerIndigo.class
 gramatica_guardado_datos/ParserGuardadoDatos$CUP$ParserGuardadoDatos$actions.class
+clasesDAOFormularios/Registro.class
 gramatica_indigo/sym.class
 funciones/FuncionesFormularios.class

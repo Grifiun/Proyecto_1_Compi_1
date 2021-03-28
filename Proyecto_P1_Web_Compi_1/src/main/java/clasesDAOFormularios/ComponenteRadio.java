@@ -22,10 +22,10 @@ public class ComponenteRadio extends Componente{
         
         for(String auxTexto:  getOpciones()){
             if(auxTexto != null){
-                if(getRequerido().equalsIgnoreCase("SI")){
-                    codigoHTML = codigoHTML +" <input type=\"radio\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required/> "+auxTexto.replaceAll("\"", "").trim()+"\n";
+                if(getRequerido().replaceAll("\"", "").trim().equalsIgnoreCase("SI")){
+                    codigoHTML = codigoHTML +" <input type=\"radio\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"\" required/> "+auxTexto.replaceAll("\"", "").trim()+"\n";
                 }else{
-                    codigoHTML = codigoHTML + " <input type=\"radio\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"/> "+auxTexto.replaceAll("\"", "").trim()+" \n";
+                    codigoHTML = codigoHTML + " <input type=\"radio\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" value=\""+auxTexto.replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"\"/> "+auxTexto.replaceAll("\"", "").trim()+" \n";
                 }
 
             }
@@ -77,7 +77,10 @@ public class ComponenteRadio extends Componente{
            }        
 
        codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
-
+        if(getListadoRegistros() != null && getListadoRegistros().size() > 0){//si hay registros
+             codigoAlmacenamiento += generarCodigoAlmacenamientoRegistros();
+        }
+       
        return codigoAlmacenamiento;
 
    }

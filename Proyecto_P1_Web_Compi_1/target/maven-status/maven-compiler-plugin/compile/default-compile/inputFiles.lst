@@ -5,6 +5,7 @@
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_indigo/parser.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/Formulario.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/ComponenteCombo.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/controladores/ControladorRegistro.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/controladores/ControladorLogin.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOUsuario/Usuario.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/funciones/FuncionesLogin.java
@@ -16,6 +17,7 @@
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_indigo/sym.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/funciones/FuncionesSolicitudes.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/ComponenteBoton.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/Registro.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_guardado_datos/LexerGuardadoDatos.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/ComponenteCampoTexto.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_indigo/LexerIndigo.java

@@ -10,6 +10,7 @@ import archivos.GuardarDatos;
 import clasesDAO.BloqueParametros;
 import clasesDAO.TokenParametro;
 import clasesDAOFormularios.Formulario;
+import clasesDAOUsuario.Usuario;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -119,6 +120,32 @@ public class FuncionesFormularios {
     }
     
     /**
+     * Se recibe un listado de formularios y un id, se retorna si ya existe ese formulario o no
+     * @param listadoFormularios
+     * @param idFormulario
+     * @return 
+     */
+    public boolean verificaraFormularioConId (ArrayList<Formulario> listadoFormularios, String idFormulario){
+        boolean existencia = false;
+        
+        if(listadoFormularios != null && listadoFormularios.size() > 0){
+            for(Formulario formularioAux: listadoFormularios){
+                //Id de formulario sin comillas ni espacios
+                String idFormularioCargado = formularioAux.getId().replaceAll("\"", "").trim();
+                String idFormularioEnviado = idFormulario.replaceAll("\"", "").trim();
+                
+                if(idFormularioCargado.equals(idFormularioEnviado)){                
+                    existencia = true;//Existe un nombre de usuario
+                    break;
+                }                
+            }
+        }
+        
+        return existencia;
+    }
+    
+    
+    /**
      * Ejecutamos el lector, para obtener el listado de usuarios registrados
      * @return 
      */
@@ -143,10 +170,7 @@ public class FuncionesFormularios {
                     }
                 }
             } 
-        }
-        
-            
-        
+        } 
         
         return listadoFormulariosUsuario;
     }
@@ -189,6 +213,31 @@ public class FuncionesFormularios {
         
         cargarDatos.leerDatos("formularios");//cargamos la data de los usuarios
         ArrayList<Formulario> listadoFormularioAux = cargarDatos.getListadoFormulariosCargados();        
+        
+        if(listadoFormularioAux != null && listadoFormularioAux.size() > 0){
+            for(Formulario formularioAux: listadoFormularioAux){
+                //Obtenemos su nombre dde usuario sin las etiquetas de las comillas y sin los espacios antes y despues
+                String idFormularioCargado = formularioAux.getId().replaceAll("\"", "").trim();
+                idFormulario = idFormulario.replaceAll("\"", "").trim();//tambien quitamos comillas y espacios en el id enviado
+                
+                if(idFormularioCargado.equals(idFormulario)){
+                    return formularioAux;
+                }
+                
+            }
+        }
+        
+        //Si no concuerda con ningun usuario se retorna nulo
+        return null;
+    }
+    
+    /**
+     * Se obtiene el objeto Formulario por el id
+     * @param listadoUsuarioAux
+     * @param nombreUsuarioEnviado
+     * @return 
+     */
+    public Formulario obtenerFormularioPorId(String idFormulario, ArrayList<Formulario> listadoFormularioAux){   
         
         if(listadoFormularioAux != null && listadoFormularioAux.size() > 0){
             for(Formulario formularioAux: listadoFormularioAux){

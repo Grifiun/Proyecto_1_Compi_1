@@ -19,10 +19,10 @@ public class ComponenteCombo extends Componente{
     public String generarCodigoHTMLCompoente() {  
         String codigoHTML = "<div class=\"form-group\">\n";
         codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n"; 
-        if(getRequerido().equalsIgnoreCase("SI")){
-            codigoHTML = codigoHTML + " <select name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" class=\"cont\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" required> \n";
+        if(getRequerido().replaceAll("\"", "").trim().equalsIgnoreCase("SI")){
+            codigoHTML = codigoHTML + " <select name=\""+getIdComponente().replaceAll("\"", "").trim()+"\" class=\"cont\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" required> \n";
         }else{
-            codigoHTML = codigoHTML + " <select name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" class=\"cont\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" > \n";
+            codigoHTML = codigoHTML + " <select name=\""+getIdComponente().replaceAll("\"", "").trim()+"\" class=\"cont\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" > \n";
         }
         
         for(String auxTexto:  getOpciones()){
@@ -88,7 +88,11 @@ public class ComponenteCombo extends Componente{
            }        
 
        codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
-
+        if(getListadoRegistros() != null && getListadoRegistros().size() > 0){//si hay registros
+             codigoAlmacenamiento += generarCodigoAlmacenamientoRegistros();
+        }
+       
+       
        return codigoAlmacenamiento;
 
    }

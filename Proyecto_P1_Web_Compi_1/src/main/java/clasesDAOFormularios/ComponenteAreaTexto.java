@@ -22,10 +22,10 @@ public class ComponenteAreaTexto extends Componente{
         String codigoHTML = "<div class=\"form-group\">\n";
         codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n";        
         
-        if(getRequerido().equalsIgnoreCase("SI")){
-            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" rows = \""+getFilas().replaceAll("\"", "").trim()+"\" cols = \""+getColumnas().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required ></textarea> \n";
+        if(getRequerido().replaceAll("\"", "").trim().equalsIgnoreCase("SI")){
+            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" rows = \""+getFilas().replaceAll("\"", "").trim()+"\" cols = \""+getColumnas().replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"\" required ></textarea> \n";
         }else{
-            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" rows = \""+getFilas().replaceAll("\"", "").trim()+"\" cols = \""+getColumnas().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"  ></textarea> \n";
+            codigoHTML = codigoHTML + " <textarea id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" rows = \""+getFilas().replaceAll("\"", "").trim()+"\" cols = \""+getColumnas().replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"\"  ></textarea> \n";
         }
         
         
@@ -77,6 +77,11 @@ public class ComponenteAreaTexto extends Componente{
         }        
         
         codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
+        
+        if(getListadoRegistros() != null && getListadoRegistros().size() > 0){//si hay registros
+             codigoAlmacenamiento += generarCodigoAlmacenamientoRegistros();
+        }
+       
         
         return codigoAlmacenamiento;
         

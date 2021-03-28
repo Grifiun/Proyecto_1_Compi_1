@@ -302,6 +302,13 @@ public class FuncionesSolicitudes {
         }
     }
     
+    public void imprimirListadoErrores(ArrayList<TokenError> listadoErrores){
+        
+        for(TokenError aux: listadoErrores){
+            System.out.println("TIPO: "+aux.getTipoToken()+" LINEA: "+aux.getLinea()+" COLUMNA: "+aux.getColumna()+" CAUSA: "+aux.getLexema()+" DESCRIPCION: "+aux.getMsgError());
+        }
+    }
+    
     
 
 }

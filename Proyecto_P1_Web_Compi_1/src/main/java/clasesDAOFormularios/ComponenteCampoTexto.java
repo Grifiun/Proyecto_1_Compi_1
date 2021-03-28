@@ -20,10 +20,10 @@ public class ComponenteCampoTexto extends Componente{
         String codigoHTML = "<div class=\"form-group\">\n";
         codigoHTML = codigoHTML + "<h5>"+getTextoVisible().replaceAll("\"", "").trim()+"</h5> \n";        
         
-        if(getRequerido().equalsIgnoreCase("SI")){
-            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\" required /> \n";
+        if(getRequerido().replaceAll("\"", "").trim().equalsIgnoreCase("SI")){
+            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"\" required /> \n";
         }else{
-            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" name=\""+getNombreCampo().replaceAll("\"", "").trim()+"\"  /> \n";
+            codigoHTML = codigoHTML + " <input type=\"text\" id=\""+getIdComponente().replaceAll("\"", "").trim()+"\" name=\""+getIdComponente().replaceAll("\"", "").trim()+"\"  /> \n";
         }        
         
         codigoHTML = codigoHTML + "</div>\n";
@@ -69,7 +69,10 @@ public class ComponenteCampoTexto extends Componente{
            }        
 
        codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
-
+        if(getListadoRegistros() != null && getListadoRegistros().size() > 0){//si hay registros
+             codigoAlmacenamiento += generarCodigoAlmacenamientoRegistros();
+        }
+       
        return codigoAlmacenamiento;
 
    }

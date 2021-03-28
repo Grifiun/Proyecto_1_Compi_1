@@ -39,6 +39,8 @@ public class FuncionesUsuario {
         return usuarioAux;
     }
     
+    
+    
     public Usuario editarCampo(Usuario usuarioAux, String tipoParametro, String nuevoValor){
         
         switch(tipoParametro){
@@ -178,6 +180,7 @@ public class FuncionesUsuario {
         gd.guardarDatos(generarCodigoAlmacenamientoUsuarios(listadoUsuarioAux),"usuarios");
         
     }
+        
     
     /**
      * Funcion dedicada a eliminar usuarios por el nombre de usuario
