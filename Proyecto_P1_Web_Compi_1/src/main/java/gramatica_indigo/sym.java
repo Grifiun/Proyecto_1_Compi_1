@@ -8,94 +8,84 @@ package gramatica_indigo;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int USUARIO_ANTIGUO = 26;
-  public static final int DARK = 40;
-  public static final int MODIFICAR_FORMULARIO = 32;
+  public static final int USUARIO_ANTIGUO = 22;
+  public static final int CONSULTAR_DATOS = 75;
+  public static final int DARK = 36;
+  public static final int MODIFICAR_FORMULARIO = 28;
   public static final int EXCLAMACION = 8;
-  public static final int CAMPO_TEXTO = 58;
-  public static final int TITULO = 35;
-  public static final int IZQUIERDA = 67;
+  public static final int CAMPO_TEXTO = 54;
+  public static final int TITULO = 31;
+  public static final int IZQUIERDA = 63;
   public static final int FIN_SOLICITUDES = 14;
   public static final int LLAVES_INICIO = 2;
-  public static final int VALOR_PASSWORD = 75;
-  public static final int CHECKBOX = 60;
+  public static final int VALOR_PASSWORD = 71;
+  public static final int CHECKBOX = 56;
   public static final int MAYOR = 7;
-  public static final int SI = 70;
-  public static final int USUARIO_NUEVO = 27;
-  public static final int FECHA_MODIFICACION = 29;
-  public static final int USUARIO_CREACION = 38;
-  public static final int BLUE = 41;
-  public static final int VALOR_TEXTO_VISIBLE_CON_ESPACIO = 72;
-  public static final int TEMA = 37;
-  public static final int ELIMINAR_COMPONENTE = 45;
-  public static final int CENTRO = 66;
-  public static final int WHITE = 42;
-  public static final int PASSWORD = 25;
-  public static final int OPCIONES = 54;
-  public static final int MODIFICAR_USUARIO = 20;
-  public static final int NOT = 83;
-  public static final int VALOR_ITEMS_CON_ESPACIO = 73;
-  public static final int ELIMINAR_USUARIO = 21;
-  public static final int FICHERO = 62;
-  public static final int TEXTO_VISIBLE = 51;
+  public static final int SI = 66;
+  public static final int USUARIO_NUEVO = 23;
+  public static final int FECHA_MODIFICACION = 25;
+  public static final int USUARIO_CREACION = 34;
+  public static final int BLUE = 37;
+  public static final int VALOR_TEXTO_VISIBLE_CON_ESPACIO = 68;
+  public static final int TEMA = 33;
+  public static final int ELIMINAR_COMPONENTE = 41;
+  public static final int CENTRO = 62;
+  public static final int WHITE = 38;
+  public static final int PASSWORD = 21;
+  public static final int OPCIONES = 50;
+  public static final int MODIFICAR_USUARIO = 16;
+  public static final int CONSULTA_N = 77;
+  public static final int VALOR_ITEMS_CON_ESPACIO = 69;
+  public static final int ELIMINAR_USUARIO = 17;
+  public static final int FICHERO = 58;
+  public static final int TEXTO_VISIBLE = 47;
   public static final int DOS_PUNTOS = 9;
-  public static final int CREAR_USUARIO = 19;
-  public static final int FILAS = 55;
-  public static final int NUEVO_PASSWORD = 28;
-  public static final int AREA_TEXTO = 59;
-  public static final int FORMULARIO = 48;
-  public static final int SELECT = 84;
-  public static final int ELIMINAR_FORMULARIO = 31;
+  public static final int CREAR_USUARIO = 15;
+  public static final int FILAS = 51;
+  public static final int NUEVO_PASSWORD = 24;
+  public static final int AREA_TEXTO = 55;
+  public static final int FORMULARIO = 44;
+  public static final int ELIMINAR_FORMULARIO = 27;
   public static final int COMA = 10;
-  public static final int DIGITO = 78;
-  public static final int VALOR_ITEMS_SIN_ESPACIO = 74;
+  public static final int DIGITO = 74;
+  public static final int VALOR_ITEMS_SIN_ESPACIO = 70;
   public static final int INICIO_SOLICITUD = 12;
-  public static final int IGUAL = 79;
-  public static final int VALOR_FECHA = 76;
-  public static final int CLASE = 49;
-  public static final int VALOR_ID = 77;
-  public static final int NOMBRE = 36;
-  public static final int NOMBRE_CAMPO = 47;
-  public static final int NUEVO_FORMULARIO = 30;
-  public static final int LOGIN_USUARIO = 22;
-  public static final int COLUMNAS = 56;
+  public static final int VALOR_FECHA = 72;
+  public static final int CLASE = 45;
+  public static final int VALOR_ID = 73;
+  public static final int NOMBRE = 32;
+  public static final int NOMBRE_CAMPO = 43;
+  public static final int NUEVO_FORMULARIO = 26;
+  public static final int LOGIN_USUARIO = 18;
+  public static final int COLUMNAS = 52;
   public static final int FIN_SOLICITUD = 13;
-  public static final int INICIO_RESPUESTAS = 15;
-  public static final int MENOS = 80;
   public static final int CORCHETES_FIN = 5;
   public static final int MENOR = 6;
-  public static final int USUARIO = 24;
-  public static final int URL = 57;
-  public static final int FORM = 86;
-  public static final int PARAMETROS_COMPONENTE = 46;
+  public static final int USUARIO = 20;
+  public static final int CONSULTAS = 76;
+  public static final int URL = 53;
+  public static final int PARAMETROS_COMPONENTE = 42;
   public static final int EOF = 0;
-  public static final int WHERE = 87;
   public static final int CORCHETES_INICIO = 4;
-  public static final int MODIFICAR_COMPONENTE = 44;
-  public static final int IMAGEN = 63;
-  public static final int OR = 82;
+  public static final int MODIFICAR_COMPONENTE = 40;
+  public static final int IMAGEN = 59;
   public static final int error = 1;
-  public static final int CREDENCIALES_USUARIO = 23;
-  public static final int BOTON = 65;
-  public static final int JUSTIFICAR = 69;
-  public static final int ID = 34;
-  public static final int DERECHA = 68;
-  public static final int INICIO_RESPUESTA = 16;
-  public static final int RADIO = 61;
-  public static final int FECHA_CREACION = 39;
-  public static final int REQUERIDO = 53;
-  public static final int PARAMETROS_FORMULARIO = 33;
+  public static final int CREDENCIALES_USUARIO = 19;
+  public static final int BOTON = 61;
+  public static final int JUSTIFICAR = 65;
+  public static final int ID = 30;
+  public static final int DERECHA = 64;
+  public static final int RADIO = 57;
+  public static final int FECHA_CREACION = 35;
+  public static final int REQUERIDO = 49;
+  public static final int PARAMETROS_FORMULARIO = 29;
   public static final int INICIO_SOLICITUDES = 11;
-  public static final int COMBO = 64;
-  public static final int INDICE = 50;
-  public static final int ALINEACION = 52;
-  public static final int NO = 71;
-  public static final int AND = 81;
-  public static final int FIN_RESPUESTA = 17;
-  public static final int TO = 85;
+  public static final int COMBO = 60;
+  public static final int INDICE = 46;
+  public static final int ALINEACION = 48;
+  public static final int NO = 67;
   public static final int LLAVES_FIN = 3;
-  public static final int FIN_RESPUESTAS = 18;
-  public static final int AGREGAR_COMPONENTE = 43;
+  public static final int AGREGAR_COMPONENTE = 39;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -112,10 +102,6 @@ public class sym {
   "INICIO_SOLICITUD",
   "FIN_SOLICITUD",
   "FIN_SOLICITUDES",
-  "INICIO_RESPUESTAS",
-  "INICIO_RESPUESTA",
-  "FIN_RESPUESTA",
-  "FIN_RESPUESTAS",
   "CREAR_USUARIO",
   "MODIFICAR_USUARIO",
   "ELIMINAR_USUARIO",
@@ -176,14 +162,8 @@ public class sym {
   "VALOR_FECHA",
   "VALOR_ID",
   "DIGITO",
-  "IGUAL",
-  "MENOS",
-  "AND",
-  "OR",
-  "NOT",
-  "SELECT",
-  "TO",
-  "FORM",
-  "WHERE"
+  "CONSULTAR_DATOS",
+  "CONSULTAS",
+  "CONSULTA_N"
   };
 }

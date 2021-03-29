@@ -28,7 +28,7 @@ public class Cliente {
         this.resource = "";
     }
             
-    public String POST(String url, String texto) throws Exception{
+    public String POST(String url, String texto) throws Exception{    
         //httpCliente = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
           .POST(HttpRequest.BodyPublishers.ofString(texto))

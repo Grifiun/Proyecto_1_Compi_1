@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -52,7 +53,9 @@ public class Indigo extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=ISO-8859-1");
+        //response.setContentType("text/html;charset=UTF-8");
+        //ISO-8859-1
         
         
         try ( PrintWriter out = response.getWriter()) {
@@ -88,8 +91,8 @@ public class Indigo extends HttpServlet {
                 System.out.println("ERROR AL LEER EL BF: "+e.getMessage());
             }
             
-            
-            
+            String palabraOriginal = new String(textoRecibido.getBytes("ISO-8859-1"), "UTF-8");
+            textoRecibido = palabraOriginal;
             try{
                 StringReader sr = new StringReader(textoRecibido);
                 LexerIndigo lexer = new LexerIndigo(sr);
@@ -115,11 +118,8 @@ public class Indigo extends HttpServlet {
             } catch (Exception ex) {
                 System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
             } 
-            
-            
-            
-            
-            
+            System.out.println("Texto con acentos:\n"+textoRecibido);            
+            //String convertido = java.net.URLDecoder.decode(textoRecibido, "ISO-8859-1");
             //System.out.println("LOG TOMCAT: "+textoRecibido);
             //out.print(textoRecibido);
             //out.print("Texto recibido");

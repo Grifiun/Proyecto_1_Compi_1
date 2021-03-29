@@ -1,6 +1,7 @@
 archivos/GuardarDatos.class
 controladores/ControladorLogin.class
 clasesDAOFormularios/ComponenteCheckBox.class
+gramatica_reporteria/ParserReporteria$CUP$ParserReporteria$actions.class
 clasesDAOFormularios/ComponenteAreaTexto.class
 clasesDAOFormularios/ComponenteFichero.class
 clasesDAO/Token.class
@@ -11,8 +12,10 @@ gramatica_guardado_datos/LexerGuardadoDatos.class
 clasesDAO/BloqueParametros.class
 controladores/ControladorRegistro.class
 funciones/FuncionesUsuario.class
+gramatica_reporteria/ParserReporteriaSym.class
 gramatica_guardado_datos/ParserGuardadoDatos.class
 clasesDAOFormularios/Formulario.class
+gramatica_reporteria/LexerReporteria.class
 clasesDAOUsuario/Usuario.class
 controladores/Indigo.class
 clasesDAOFormularios/ComponenteCombo.class
@@ -22,6 +25,7 @@ funciones/FuncionesComponentes.class
 clasesDAOFormularios/ComponenteImagen.class
 clasesDAOFormularios/ComponenteBoton.class
 gramatica_indigo/parser.class
+gramatica_reporteria/ParserReporteria.class
 clasesDAO/TokenError.class
 clasesDAOFormularios/ComponenteCampoTexto.class
 funciones/FuncionesSolicitudes.class
