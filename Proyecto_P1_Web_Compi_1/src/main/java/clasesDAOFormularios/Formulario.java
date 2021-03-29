@@ -58,8 +58,10 @@ public class Formulario {
         if(usuarioCreacion.equals("") == false){
             codigoAlmacenamiento += "\"USUARIO_CREACION\" : "+usuarioCreacion+",\n";
         }
-        
-        codigoAlmacenamiento += generarCodigoEstructura() + ",\n";
+        if(listadoComponentes != null && listadoComponentes.size() > 0){
+             codigoAlmacenamiento += generarCodigoEstructura() + ",\n";
+        }
+       
         
         if(codigoAlmacenamiento.equals("{\n") == false){//tiene datos
             int longitud = codigoAlmacenamiento.length() - 2;
