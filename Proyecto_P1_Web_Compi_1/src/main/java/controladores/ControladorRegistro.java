@@ -101,17 +101,26 @@ public class ControladorRegistro extends HttpServlet {
                     String idComponenteAux = componenteAux.getIdComponente();
                     if(claseComponente.equals("CHECKBOX")){
                         int index = 0;
+                        String datosCheckBox = "";
                         for(String opcion: componenteAux.getOpciones()){
-                            String datoRecibido = request.getParameter(idComponenteAux.replaceAll("\"", "").trim()+"-"+index);
-                            if(datoRecibido != null && datoRecibido.length() > 0){
-                                System.out.println("REGISTRO CHEBOX: "+index+" = "+datoRecibido);
-                                
-                                funcionesComponentes.agregarRegistroComponente(id_formulario, idComponenteAux, "\""+datoRecibido+"\"");
-                            }
+                            String datoRecibido = request.getParameter(idComponenteAux.replaceAll("\"", "").trim()+"-"+index);                           
+                            if(datoRecibido != null){
+                                datosCheckBox += (index + 1)+".: "+ datoRecibido+"  ";                                
+                                System.out.println("REGISTRO CHEBOX: "+index+" = "+datoRecibido);                                
+                            }                            
                             index++;
+                        }     
+                        if(datosCheckBox.equals("") == true || datosCheckBox == null){
+                            datosCheckBox = "---------";
                         }
+                        
+                        funcionesComponentes.agregarRegistroComponente(id_formulario, idComponenteAux, "\""+datosCheckBox+"\"");
                     }else{                        
-                        String datoRecibido = request.getParameter(idComponenteAux.replaceAll("\"", "").trim());
+                        String datoRecibido = request.getParameter(idComponenteAux.replaceAll("\"", "").trim());                        
+                        if(datoRecibido == null || datoRecibido.equals("") == true){
+                            datoRecibido = "---------";
+                        }
+                        
                         System.out.println(" REGISTRO  = "+datoRecibido);
                         funcionesComponentes.agregarRegistroComponente(id_formulario, idComponenteAux, "\""+datoRecibido+"\"");
                     }

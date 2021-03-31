@@ -251,6 +251,29 @@ public class FuncionesSolicitudes {
 		
         return a;
     }
+    
+    /**
+     * Funcion utilizada para retornar un bloque de parametros, si esta vacia se instancia uno nuevo y se añaden los parametros validos unicamente, ademas de llamar a las funciones de repeticion
+     * @param a
+     * @param b
+     * @param tipoBloque
+     * @param tipoParametros
+     * @return 
+     */
+    public BloqueParametros agregarConsultaABloque(BloqueParametros a, TokenParametro b, String tipoBloque, String tipoParametros){
+        if(a == null){//si aun no se inicializa el bloque lo hacemos
+            a = new BloqueParametros("\""+tipoBloque+"\"",  "\""+tipoParametros+"\"");
+        }
+
+        if(a != null && b != null){//si hay un parametro valido y ya esta inicializado el bloque
+            //Verificamos parámetros repetidos
+            a.insertarParametro(b);
+            a.insertarTipoParametros(b.getTipoParametro());				
+        }
+		
+        return a;
+    }
+    
     /**
      * Funcion que nos agrega en inicio y el fin de los bloques de parametros
      * @return 

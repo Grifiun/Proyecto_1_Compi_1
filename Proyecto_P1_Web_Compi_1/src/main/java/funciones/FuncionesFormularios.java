@@ -14,6 +14,7 @@ import clasesDAOUsuario.Usuario;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import sesionCliente.UsuarioLogueado;
 
 /**
  *
@@ -173,6 +174,66 @@ public class FuncionesFormularios {
         } 
         
         return listadoFormulariosUsuario;
+    }
+    
+    /**
+     * FUNCION PARA EL SQFORM
+     * Ejecutamos el lector, para obtener el listado de usuarios registrados
+     * @return 
+     */
+    public Formulario obtenerFormularioPorIdYPorUsuarioCreador(String idNombreFormulario, String usuario){
+        if(usuario == null){
+            usuario = UsuarioLogueado.usuarioLogueado;
+            usuario = usuario.replaceAll("\"", "").trim();
+        }
+        
+        CargarDatos cargarDatos = new CargarDatos();        
+        cargarDatos.leerDatos("formularios");//cargamos la data de los usuarios
+        ArrayList<Formulario> listadoFormularioAux = cargarDatos.getListadoFormulariosCargados();
+        
+        System.out.println("ID/N FORM: "+idNombreFormulario);
+        
+        //Hacemos las comparaciones para obtener los formularios que creo el usuario ingresado
+        
+        try{
+        
+            if(listadoFormularioAux != null && listadoFormularioAux.size() > 0){
+                for(Formulario formAux: listadoFormularioAux){
+                    if(formAux != null){
+                        //removemos comillas y espacios en blanco al inicio y fin de cadena    
+                        String nombreUsuarioFormulario = "";
+                        if(formAux.getUsuarioCreacion() != null && formAux.getUsuarioCreacion().length() > 0){
+                             nombreUsuarioFormulario = formAux.getUsuarioCreacion().replaceAll("\"", "").trim();
+                        }
+
+                        String nombreFormulario = formAux.getNombre().replaceAll("\"", "").trim();
+                        String idFormulario = formAux.getId().replaceAll("\"", "").trim();
+
+                        System.out.println("USUARIO CREADOR: "+nombreUsuarioFormulario+"\n");
+                        System.out.println("USUARIO ACTUAL: "+usuario+"\n");                   
+                        if(nombreUsuarioFormulario.equals(usuario.trim())){//Si los 2 nombres coinciden, y si tienen id o nombre de form correctos
+                            System.out.println("Es del usuario");                      
+                            if(nombreFormulario.equals(idNombreFormulario)){   
+                                System.out.println("RETORNAMOS 1");
+                                return formAux;
+                            }else if(idFormulario.equals(idNombreFormulario)){
+                                System.out.println("RETORNAMOS 2");
+                                return formAux;
+
+                            }   
+                        }
+
+
+                    }
+                } 
+            } 
+        } catch(Exception ex) {
+            System.out.println("Se produjo un error al intenar obtener el formulario por id y por usuario creador: "+ex.getMessage());
+        }
+        
+        System.out.println("RETORNAMOS NULL");
+        //si no se encuentra se retorna null
+        return null;
     }
     
     /**

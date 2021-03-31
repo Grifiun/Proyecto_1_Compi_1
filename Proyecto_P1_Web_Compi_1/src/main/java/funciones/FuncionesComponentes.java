@@ -19,7 +19,9 @@ import clasesDAOFormularios.ComponenteFichero;
 import clasesDAOFormularios.ComponenteImagen;
 import clasesDAOFormularios.ComponenteRadio;
 import clasesDAOFormularios.Formulario;
+import clasesDAOFormularios.Registro;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -153,7 +155,24 @@ public class FuncionesComponentes {
                 String idFormularioCargado = formularioAux.getId().replaceAll("\"", "").trim();
                 idFormulario = idFormulario.replaceAll("\"", "").trim();
                 
-                if(idFormularioCargado.equals(idFormulario)){//ENCONTRAMOS EL FORMULARIO DESEADO   
+                if(idFormularioCargado.equals(idFormulario)){//ENCONTRAMOS EL FORMULARIO DESEADO  
+                    int cantidadRegistros = 0;
+                    //MIRAMOS CUANTOS REGISTROS TIENE
+                    if(formularioAux.getListadoComponentes() != null && formularioAux.getListadoComponentes().size() > 0){//tiene mas de algun componente, entonces
+                        for(Componente compo: formularioAux.getListadoComponentes()){//recorremos todos los componentes
+                            int cantidadRegistrosAux = compo.getListadoRegistros().size();
+                            if(cantidadRegistrosAux > cantidadRegistros){
+                                cantidadRegistros = cantidadRegistrosAux;
+                            }
+                        }
+                    }
+                    
+                    for(int i = 0; i < cantidadRegistros; i++){//agregamos los registros
+                        componente.agregarRegistro("\"---------\"");
+                    }
+                    
+                    System.out.println("CANTIDAD DE REGISSTROS: "+cantidadRegistros);
+                    
                     int index = listadoFormularios.indexOf(formularioAux);
                     //Agregamos el componente al listado de componentes del formulario
                     formularioAux.agregarComponente(componente);
@@ -164,7 +183,31 @@ public class FuncionesComponentes {
         }
         return listadoFormularios;
     }
-    
+    /**
+     * FUNCION PARA EL SQFORM
+     * Se obtiene el objeto Componente por el id, usando metodos de la funcion de fomularios
+     * @param listadoUsuarioAux
+     * @param nombreUsuarioEnviado
+     * @return 
+     */
+    public Componente obtenerComponentePorIdNombre(Formulario formularioAux, String idNombre){     
+        
+        if(formularioAux != null){            
+            //Obtenemos su nombre dde usuario sin las etiquetas de las comillas y sin los espacios antes y despues            
+            idNombre = idNombre.replaceAll("\"", "").trim();//tambien quitamos comillas y espacios en el id enviado
+            for(Componente componenteAux: formularioAux.getListadoComponentes()){//buscamos el compnente deseado
+                String idComponenteCargado = componenteAux.getIdComponente().replaceAll("\"", "").trim();
+                String nombreCampo = componenteAux.getNombreCampo().replaceAll("\"", "").trim();
+
+                if(idComponenteCargado.equals(idNombre) || idComponenteCargado.equals(nombreCampo)){//se encontro el componente deseado
+                    return componenteAux;
+                }
+            }  
+        }
+        
+        //Si no concuerda con ningun usuario se retorna nulo
+        return null;
+    }
     
     /**
      * Se obtiene el objeto Componente por el id, usando metodos de la funcion de fomularios
@@ -201,7 +244,7 @@ public class FuncionesComponentes {
         //Si no concuerda con ningun usuario se retorna nulo
         return null;
     }
-    
+        
     /**
      * Se obtiene el objeto Componente por el id, usando metodos de la funcion de fomularios
      * @param listadoUsuarioAux
@@ -412,4 +455,61 @@ public class FuncionesComponentes {
         System.out.println("CODIGO GENERADO//////////////////////////////////////////////////\n"+ff.generarCodigoAlmacenamientoFormularios(listadoFormularioAux));
         gd.guardarDatos(ff.generarCodigoAlmacenamientoFormularios(listadoFormularioAux),"formularios");
     }
+    
+    public List<ArrayList<String>> valoresTabla(ArrayList<Componente> listadoComponentes){
+        List<ArrayList<String>> tablaDatos = new ArrayList();
+        try{        
+            if(listadoComponentes != null){					
+                for(Componente componenteAux: listadoComponentes){
+                    int i = 0;
+                    ArrayList<String> filaAux = new ArrayList();
+                    
+                    if(componenteAux.getListadoRegistros().size() > 0){
+                        for(Registro registroAux: componenteAux.getListadoRegistros()){														
+                                if (i == 0){
+                                        //agregamos el titulo
+                                        filaAux.add(componenteAux.getNombreCampo().replaceAll("\"", "").trim());
+                                        i++;								
+                                }
+                                filaAux.add(registroAux.getRegistroDato().replaceAll("\"", "").trim());
+                        }	
+                        tablaDatos.add(filaAux);	
+                    }
+                    				
+                }
+            }
+        }catch(Exception ex){
+            System.out.println("Se produjo un error al intentar agregar los datos a la tabla: "+ex.getMessage());
+        }
+        
+        return invertirValoresTabla(tablaDatos);
+    }
+    
+    public List<ArrayList<String>> invertirValoresTabla(List<ArrayList<String>> informacion){
+        List<ArrayList<String>> tablaDatos = new ArrayList();        
+        
+        try{
+            if(informacion != null && informacion.size() > 0){					
+                int cantidadRegistros = informacion.get(0).size();
+                int cantidadComponentes = informacion.size();
+                for(int y = 0; y < cantidadRegistros; y++){
+                    ArrayList<String> datosFila = new ArrayList();
+                    //Agregamos los componentes
+                    for(int x = 0; x < cantidadComponentes; x++){
+                        //agregamos cada registro
+                        datosFila.add(informacion.get(x).get(y));
+                    }
+                    //agregamos la fila a la tabla
+                    tablaDatos.add(datosFila);
+                }
+            }        
+        }catch(Exception ex){
+            System.out.println("Se produjo un error al intentar invertir la tabla: "+ex.getMessage());
+        }
+        
+        
+        
+        return tablaDatos;
+    }
+    
 }
