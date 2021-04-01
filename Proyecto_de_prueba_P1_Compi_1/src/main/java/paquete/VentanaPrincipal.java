@@ -8,9 +8,17 @@ package paquete;
 import gramatica_respuestas.LexerIndigoRespuestas;
 import gramatica_respuestas.ParserRespuestas;
 import http.Cliente;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.Panel;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import tablas.InformacionTabla;
+import tablas.Tabla;
 
 /**
  *
@@ -34,25 +42,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnAnalizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         salida = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         entrada = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        Salida = new javax.swing.JLabel();
         btnConectar = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        contenedorPaneles = new javax.swing.JTabbedPane();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnAnalizar.setText("Analizar");
-        btnAnalizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnalizarActionPerformed(evt);
-            }
-        });
 
         salida.setColumns(20);
         salida.setRows(5);
@@ -64,7 +64,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jLabel1.setText("Entrada");
 
-        jLabel2.setText("Resultado");
+        Salida.setText("Salida");
 
         btnConectar.setText("Conectar");
         btnConectar.addActionListener(new java.awt.event.ActionListener() {
@@ -73,67 +73,56 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable1);
+        jLabel3.setText("Resultado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(210, 210, 210)
-                        .addComponent(btnAnalizar))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel3)
+                                .addGap(180, 180, 180)
+                                .addComponent(btnConectar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(contenedorPaneles, javax.swing.GroupLayout.PREFERRED_SIZE, 1242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(304, 304, 304)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnConectar)
-                        .addGap(282, 282, 282))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(279, 279, 279))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Salida)
+                        .addGap(274, 274, 274)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(Salida))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAnalizar)
-                    .addComponent(btnConectar))
-                .addGap(49, 49, 49))
+                    .addComponent(btnConectar)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(contenedorPaneles, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -141,18 +130,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
         try {
+            //panelTablas.removeAll();
+            //panelTablas.setLayout(null);
             String entradaTxt = entrada.getText();
             Cliente peticion = new Cliente();
             
             String respuesta = peticion.POST("http://localhost:8080/Proyecto_P1_Web_Compi_1/Indigo", entradaTxt);
             
             salida.setText(respuesta);
-            
+            contenedorPaneles.removeAll();
             try{
                 StringReader sr = new StringReader(respuesta);
                 LexerIndigoRespuestas lexer = new LexerIndigoRespuestas(sr);
                 ParserRespuestas parser = new ParserRespuestas(lexer);
-                parser.parse();
+                parser.parse();                                               
+                        
+                try{              
+                    ArrayList<InformacionTabla> listadoInformacionTabla = parser.obtenerListadoInformacionTablas();
+                    
+                    for(int i = 0; i < listadoInformacionTabla.size(); i++){
+                        Tabla tabla = new Tabla(listadoInformacionTabla.get(i));
+                        //Panel panelAux;
+                        //Panel panelAux = tabla.generarTabla(600*i + 10);
+                       
+                        Panel panelAux = tabla.generarTabla(400*i + 10); 
+                        //panelTablas = tabla.generarTabla(100*i + 10, panelTablas); 
+                        //panelTablas.add(panelAux);    
+                        contenedorPaneles.add(panelAux);                        
+                    }   
+                    contenedorPaneles.updateUI();
+                    //panelTablas.setSize(630, 400 * listadoInformacionTabla.size() );
+                    //panelTablas.updateUI();//refrescamos
+                    //jScrollPane3.updateUI();
+
+                }catch(Exception ex){
+                    System.out.println("Error al agregar las tablas al table: "+ex.getMessage());
+                }
                 
             }catch(Exception ex){
                 System.out.println("Error en la ejecucion de la gramatica de respuestas: "+ex.getMessage());
@@ -162,25 +175,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnConectarActionPerformed
-
-    private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
-        /*
-        String entradaTxt = entrada.getText();
-
-        try{
-            StringReader sr = new StringReader(entradaTxt);
-            LexerIndigo lexer = new LexerIndigo(sr);
-            System.out.println(" Lexer Ejecutado");
-            parser pars = new parser(lexer);
-            pars.parse();
-
-            System.out.println(" Parser Ejecutado");
-            System.out.println("_____________________________________________");
-        } catch (Exception ex) {
-            System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
-        } */
-
-    }//GEN-LAST:event_btnAnalizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,15 +212,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAnalizar;
+    private javax.swing.JLabel Salida;
     private javax.swing.JButton btnConectar;
+    private javax.swing.JTabbedPane contenedorPaneles;
     private javax.swing.JTextArea entrada;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea salida;
     // End of variables declaration//GEN-END:variables
 }

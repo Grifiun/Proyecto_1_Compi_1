@@ -13,6 +13,7 @@ import clasesDAO.BloqueParametros;
 import clasesDAO.Token;
 import clasesDAO.TokenError;
 import clasesDAO.TokenParametro;
+import tablas.InformacionTabla;
 import java.util.ArrayList;
 import java.util.List;
 import java_cup.runtime.XMLElement;
@@ -237,6 +238,7 @@ public class ParserRespuestas extends java_cup.runtime.lr_parser {
     //Listado de errores	
 	//private ArrayList<BloqueParametros> listadoSolicitudes = new ArrayList();
 	private ArrayList<TokenError> listadoErroresRespuesta = new ArrayList();
+	private ArrayList<InformacionTabla> listadoInformacionTablas = new ArrayList();
 	//Controlador de error sintactico
 	
 	@Override
@@ -268,8 +270,8 @@ public class ParserRespuestas extends java_cup.runtime.lr_parser {
 		return listadoErroresRespuesta;
 	}
 
-	public void imprimirErrores(){
-		
+	public ArrayList<InformacionTabla> obtenerListadoInformacionTablas(){
+		return listadoInformacionTablas;
 	}
 
     public ParserRespuestas(LexerIndigoRespuestas lex){
@@ -355,7 +357,15 @@ class CUP$ParserRespuestas$actions {
           case 5: // respuesta ::= respuesta_solicitud 
             {
               Object RESULT =null;
-		 System.out.println("Se detecto una respuesta para solicitud"); 
+		int informacionTablaleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int informacionTablaright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		InformacionTabla informacionTabla = (InformacionTabla)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+				
+			System.out.println("Se detecto una respuesta para solicitud"); 
+			if(informacionTabla != null){
+				listadoInformacionTablas.add(informacionTabla);
+			}
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("respuesta",3, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -364,7 +374,15 @@ class CUP$ParserRespuestas$actions {
           case 6: // respuesta ::= respuesta_tabla_consulta 
             {
               Object RESULT =null;
-		 System.out.println("Se detecto una entrada para tablas"); 
+		int informacionTablaleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int informacionTablaright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		InformacionTabla informacionTabla = (InformacionTabla)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 
+			System.out.println("Se detecto una entrada para tablas");
+			if(informacionTabla != null){
+				listadoInformacionTablas.add(informacionTabla);
+			} 
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("respuesta",3, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -381,8 +399,19 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 8: // respuesta_solicitud ::= MENOR EXCLAMACION INICIO_RESPUESTA DOS_PUNTOS parametro_tipo_respuesta MAYOR LLAVES_INICIO parametro_tipo_bloque_respuesta DOS_PUNTOS CORCHETES_INICIO LLAVES_INICIO bloque_parametros LLAVES_FIN CORCHETES_FIN LLAVES_FIN MENOR EXCLAMACION FIN_RESPUESTA MAYOR 
             {
-              Object RESULT =null;
-
+              InformacionTabla RESULT =null;
+		int tituloTablaleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-14)).left;
+		int tituloTablaright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-14)).right;
+		String tituloTabla = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-14)).value;
+		int valoresTablaAuxleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-7)).left;
+		int valoresTablaAuxright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-7)).right;
+		List<ArrayList<String>> valoresTablaAux = (List<ArrayList<String>>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-7)).value;
+		
+		InformacionTabla informacionTabla = new InformacionTabla();
+		informacionTabla.setInformacionTabla(valoresTablaAux);
+		informacionTabla.setTituloGeneral(tituloTabla);
+		RESULT = informacionTabla;
+	
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("respuesta_solicitud",4, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-18)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -390,8 +419,24 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 9: // bloque_parametros ::= bloque_parametros COMA parametro_general 
             {
-              Object RESULT =null;
-
+              List<ArrayList<String>> RESULT =null;
+		int valoresTablaAuxleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)).left;
+		int valoresTablaAuxright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)).right;
+		List<ArrayList<String>> valoresTablaAux = (List<ArrayList<String>>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)).value;
+		int filaDatosleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int filaDatosright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		ArrayList<String> filaDatos = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			if(valoresTablaAux == null){
+				valoresTablaAux = new ArrayList();
+				ArrayList<String> titulos = new ArrayList();
+				titulos.add("PARAMETRO");
+				titulos.add("VALOR");
+				valoresTablaAux.add(titulos);
+			}
+			valoresTablaAux.add(filaDatos);
+			RESULT = valoresTablaAux;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("bloque_parametros",6, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -399,8 +444,20 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 10: // bloque_parametros ::= parametro_general 
             {
-              Object RESULT =null;
+              List<ArrayList<String>> RESULT =null;
+		int filaDatosleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int filaDatosright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		ArrayList<String> filaDatos = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			ArrayList<String> titulos = new ArrayList();
+			titulos.add("PARAMETRO");
+			titulos.add("VALOR");
 
+			List<ArrayList<String>> valoresTablaAux = new ArrayList();
+			valoresTablaAux.add(titulos);
+			valoresTablaAux.add(filaDatos);
+			RESULT = valoresTablaAux;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("bloque_parametros",6, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -408,8 +465,17 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 11: // respuesta_tabla_consulta ::= MENOR EXCLAMACION INICIO_RESPUESTA DOS_PUNTOS TABLA_CONSULTA MAYOR LLAVES_INICIO CONSULTAS DOS_PUNTOS CORCHETES_INICIO LLAVES_INICIO bloque_parametros_consultas LLAVES_FIN CORCHETES_FIN LLAVES_FIN MENOR EXCLAMACION FIN_RESPUESTA MAYOR 
             {
-              Object RESULT =null;
-
+              InformacionTabla RESULT =null;
+		int valoresTablaAuxleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-7)).left;
+		int valoresTablaAuxright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-7)).right;
+		List<ArrayList<String>> valoresTablaAux = (List<ArrayList<String>>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-7)).value;
+		
+			//Creamos el objeto que contendra toda la informacion
+			InformacionTabla informacionTabla = new InformacionTabla();
+			informacionTabla.setInformacionTabla(valoresTablaAux);
+			informacionTabla.setTituloGeneral("RESULTADO DE CONSULTA DE DATOS");
+			RESULT = informacionTabla;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("respuesta_tabla_consulta",5, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-18)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -417,8 +483,20 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 12: // bloque_parametros_consultas ::= bloque_parametros_consultas COMA parametros_fila 
             {
-              Object RESULT =null;
-
+              List<ArrayList<String>> RESULT =null;
+		int valoresTablaAuxleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)).left;
+		int valoresTablaAuxright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)).right;
+		List<ArrayList<String>> valoresTablaAux = (List<ArrayList<String>>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)).value;
+		int filasleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int filasright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		ArrayList<String> filas = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			if(valoresTablaAux == null){
+				valoresTablaAux = new ArrayList();
+			}
+			valoresTablaAux.add(filas);
+			RESULT = valoresTablaAux;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("bloque_parametros_consultas",2, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -426,8 +504,15 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 13: // bloque_parametros_consultas ::= parametros_titulos 
             {
-              Object RESULT =null;
-
+              List<ArrayList<String>> RESULT =null;
+		int titulosleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int titulosright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		ArrayList<String> titulos = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			List<ArrayList<String>> valoresTablaAux = new ArrayList();
+		    valoresTablaAux.add(titulos);
+			RESULT = valoresTablaAux;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("bloque_parametros_consultas",2, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -435,8 +520,15 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 14: // bloque_parametros_consultas ::= parametros_fila 
             {
-              Object RESULT =null;
-
+              List<ArrayList<String>> RESULT =null;
+		int filasleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int filasright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		ArrayList<String> filas = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			List<ArrayList<String>> valoresTablaAux = new ArrayList();
+		    valoresTablaAux.add(filas);
+			RESULT = valoresTablaAux;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("bloque_parametros_consultas",2, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -445,7 +537,20 @@ class CUP$ParserRespuestas$actions {
           case 15: // parametros_titulos ::= parametros_titulos PARAMETRO DOS_PUNTOS valor_parametro_general 
             {
               ArrayList<String> RESULT =null;
+		int listadoTitulosleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).left;
+		int listadoTitulosright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).right;
+		ArrayList<String> listadoTitulos = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).value;
+		int tituloAuxleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int tituloAuxright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		String tituloAux = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			if(listadoTitulos == null){
+				listadoTitulos = new ArrayList();
+			}
 
+			listadoTitulos.add(tituloAux);	
+			RESULT = listadoTitulos;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametros_titulos",11, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -454,7 +559,14 @@ class CUP$ParserRespuestas$actions {
           case 16: // parametros_titulos ::= PARAMETRO DOS_PUNTOS valor_parametro_general 
             {
               ArrayList<String> RESULT =null;
-
+		int tituloAuxleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int tituloAuxright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		String tituloAux = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			ArrayList<String> listadoTitulos = new ArrayList();
+			listadoTitulos.add(tituloAux);
+			RESULT = listadoTitulos;		
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametros_titulos",11, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -463,7 +575,20 @@ class CUP$ParserRespuestas$actions {
           case 17: // parametros_fila ::= parametros_fila VALOR DOS_PUNTOS valor_parametro_general 
             {
               ArrayList<String> RESULT =null;
+		int listadoFilaleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).left;
+		int listadoFilaright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).right;
+		ArrayList<String> listadoFila = (ArrayList<String>)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).value;
+		int datoFilaleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int datoFilaright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		String datoFila = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			if(listadoFila == null){
+				listadoFila = new ArrayList();
+			}
 
+			listadoFila.add(datoFila);	
+			RESULT = listadoFila;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametros_fila",12, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -472,7 +597,14 @@ class CUP$ParserRespuestas$actions {
           case 18: // parametros_fila ::= VALOR DOS_PUNTOS valor_parametro_general 
             {
               ArrayList<String> RESULT =null;
-
+		int datoFilaleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int datoFilaright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		String datoFila = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			ArrayList<String> listadoFila = new ArrayList();
+			listadoFila.add(datoFila);
+			RESULT = listadoFila;		
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametros_fila",12, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -480,8 +612,19 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 19: // parametro_general ::= PARAMETRO DOS_PUNTOS valor_parametro_general VALOR DOS_PUNTOS valor_parametro_general 
             {
-              Object RESULT =null;
-
+              ArrayList<String> RESULT =null;
+		int valorParametroleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).left;
+		int valorParametroright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).right;
+		String valorParametro = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-3)).value;
+		int valorVerdaderoleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int valorVerdaderoright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		String valorVerdadero = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			ArrayList<String> fila = new ArrayList();
+			fila.add(valorParametro);
+			fila.add(valorVerdadero);
+			RESULT = fila;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_general",7, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-5)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -489,8 +632,16 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 20: // parametro_general ::= RESPUESTA DOS_PUNTOS valor_parametro_general 
             {
-              Object RESULT =null;
-
+              ArrayList<String> RESULT =null;
+		int descripcionleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int descripcionright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		String descripcion = (String)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		
+			ArrayList<String> filaError = new ArrayList();
+			filaError.add("ERROR:");
+			filaError.add(descripcion);
+			RESULT = filaError;
+		
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_general",7, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.elementAt(CUP$ParserRespuestas$top-2)), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -498,8 +649,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 21: // valor_parametro_general ::= VALOR_TEXTO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -507,8 +661,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 22: // valor_parametro_general ::= CREAR_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -516,8 +673,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 23: // valor_parametro_general ::= MODIFICAR_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -525,8 +685,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 24: // valor_parametro_general ::= ELIMINAR_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -534,8 +697,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 25: // valor_parametro_general ::= LOGIN_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -543,8 +709,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 26: // valor_parametro_general ::= CREDENCIALES_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -552,8 +721,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 27: // valor_parametro_general ::= NUEVO_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -561,8 +733,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 28: // valor_parametro_general ::= ELIMINAR_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -570,8 +745,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 29: // valor_parametro_general ::= MODIFICAR_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -579,8 +757,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 30: // valor_parametro_general ::= PARAMETROS_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -588,8 +769,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 31: // valor_parametro_general ::= AGREGAR_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -597,8 +781,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 32: // valor_parametro_general ::= MODIFICAR_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -606,8 +793,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 33: // valor_parametro_general ::= ELIMINAR_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -615,8 +805,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 34: // valor_parametro_general ::= PARAMETROS_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -624,8 +817,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 35: // valor_parametro_general ::= CONSULTAR_DATOS 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -633,8 +829,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 36: // valor_parametro_general ::= CONSULTAS 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -642,8 +841,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 37: // valor_parametro_general ::= TABLA_CONSULTA 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("valor_parametro_general",8, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -651,8 +853,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 38: // parametro_tipo_respuesta ::= CREAR_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -660,8 +865,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 39: // parametro_tipo_respuesta ::= MODIFICAR_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -669,8 +877,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 40: // parametro_tipo_respuesta ::= ELIMINAR_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -678,8 +889,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 41: // parametro_tipo_respuesta ::= LOGIN_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -687,8 +901,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 42: // parametro_tipo_respuesta ::= NUEVO_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -696,8 +913,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 43: // parametro_tipo_respuesta ::= ELIMINAR_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -705,8 +925,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 44: // parametro_tipo_respuesta ::= MODIFICAR_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -714,8 +937,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 45: // parametro_tipo_respuesta ::= AGREGAR_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -723,8 +949,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 46: // parametro_tipo_respuesta ::= MODIFICAR_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -732,8 +961,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 47: // parametro_tipo_respuesta ::= ELIMINAR_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -741,8 +973,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 48: // parametro_tipo_respuesta ::= CONSULTAR_DATOS 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_respuesta",9, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -750,8 +985,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 49: // parametro_tipo_bloque_respuesta ::= CREDENCIALES_USUARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_bloque_respuesta",10, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -759,8 +997,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 50: // parametro_tipo_bloque_respuesta ::= PARAMETROS_FORMULARIO 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_bloque_respuesta",10, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -768,8 +1009,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 51: // parametro_tipo_bloque_respuesta ::= PARAMETROS_COMPONENTE 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_bloque_respuesta",10, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
@@ -777,8 +1021,11 @@ class CUP$ParserRespuestas$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 52: // parametro_tipo_bloque_respuesta ::= CONSULTAS 
             {
-              Object RESULT =null;
-
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()).right;
+		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserRespuestas$stack.peek()).value;
+		 RESULT = a.getLexema().replaceAll("\"","").trim(); 
               CUP$ParserRespuestas$result = parser.getSymbolFactory().newSymbol("parametro_tipo_bloque_respuesta",10, ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserRespuestas$stack.peek()), RESULT);
             }
           return CUP$ParserRespuestas$result;
