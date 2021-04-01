@@ -1968,7 +1968,12 @@ class CUP$parser$actions {
           case 92: // solicitud_sqform ::= apertura_solicitud_i CONSULTAR_DATOS apertura_solicitud_ii CONSULTAS apertura_bloque_parametros bloque_parametros_sqform finalizacion_solicitud 
             {
               Object RESULT =null;
-
+		int paramleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int paramright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		BloqueParametros param = (BloqueParametros)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+								
+		agregarSolicitud(param);
+	
               CUP$parser$result = parser.getSymbolFactory().newSymbol("solicitud_sqform",29, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1976,8 +1981,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 93: // bloque_parametros_sqform ::= bloque_parametros_sqform COMA parametros_sqform 
             {
-              Object RESULT =null;
-
+              BloqueParametros RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		BloqueParametros a = (BloqueParametros)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		TokenParametro b = (TokenParametro)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 
+			RESULT = funcionesSolicitudes.agregarConsultaABloque(a, b, "CONSULTAR_DATOS", "CONSULTAS");
+		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bloque_parametros_sqform",30, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1985,8 +1998,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 94: // bloque_parametros_sqform ::= parametros_sqform 
             {
-              Object RESULT =null;
-
+              BloqueParametros RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		TokenParametro a = (TokenParametro)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 
+			RESULT = funcionesSolicitudes.agregarConsultaABloque(null, a, "CONSULTAR_DATOS", "CONSULTAS");	
+		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bloque_parametros_sqform",30, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1994,11 +2012,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 95: // parametros_sqform ::= CONSULTA_N DOS_PUNTOS VALOR_TEXTO_VISIBLE_CON_ESPACIO 
             {
-              Object RESULT =null;
+              TokenParametro RESULT =null;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Token b = (Token)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 					
+			RESULT = new TokenParametro("\""+b.getTipoToken()+"\"", a.getLexema() ,b.getLinea(), b.getColumna());
+			/*
 			String cadenaSQForm;
 			if(a != null){
 				cadenaSQForm = a.getLexema();
@@ -2022,7 +2045,7 @@ class CUP$parser$actions {
 
 			}else{
 				cadenaSQForm = "";
-			}
+			}*/
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("parametros_sqform",31, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2031,11 +2054,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 96: // parametros_sqform ::= CONSULTA_N DOS_PUNTOS VALOR_ITEMS_CON_ESPACIO 
             {
-              Object RESULT =null;
+              TokenParametro RESULT =null;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Token b = (Token)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 					
+			RESULT = new TokenParametro("\""+b.getTipoToken()+"\"", a.getLexema() ,b.getLinea(), b.getColumna());
+			/*
 			String cadenaSQForm;
 			if(a != null){
 				cadenaSQForm = a.getLexema();
@@ -2059,7 +2087,7 @@ class CUP$parser$actions {
 
 			}else{
 				cadenaSQForm = "";
-			}
+			}*/
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("parametros_sqform",31, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

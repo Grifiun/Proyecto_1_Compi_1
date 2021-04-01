@@ -9,6 +9,7 @@ gramatica_guardado_datos/ParserGuardadoDatosSym.class
 gramatica_indigo/parser$CUP$parser$actions.class
 clasesDAOFormularios/Componente.class
 gramatica_guardado_datos/LexerGuardadoDatos.class
+funciones/FuncionesOperadoresLogicos.class
 clasesDAO/BloqueParametros.class
 controladores/ControladorRegistro.class
 funciones/FuncionesUsuario.class
@@ -26,13 +27,16 @@ clasesDAOFormularios/ComponenteImagen.class
 clasesDAOFormularios/ComponenteBoton.class
 gramatica_indigo/parser.class
 gramatica_reporteria/ParserReporteria.class
+sesionCliente/UsuarioLogueado.class
 clasesDAO/TokenError.class
 clasesDAOFormularios/ComponenteCampoTexto.class
 funciones/FuncionesSolicitudes.class
+funciones/FuncionesGenerarCodigoRespuesta.class
 archivos/CargarDatos.class
 clasesDAOFormularios/ComponenteRadio.class
 gramatica_indigo/LexerIndigo.class
 gramatica_guardado_datos/ParserGuardadoDatos$CUP$ParserGuardadoDatos$actions.class
+funciones/FuncionesReporteria.class
 clasesDAOFormularios/Registro.class
 gramatica_indigo/sym.class
 funciones/FuncionesFormularios.class

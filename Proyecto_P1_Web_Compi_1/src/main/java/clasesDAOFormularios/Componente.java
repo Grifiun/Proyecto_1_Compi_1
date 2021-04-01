@@ -47,19 +47,20 @@ public abstract class Componente {
     public abstract String generarCodigoAlmacenamiento();
     
     public String generarCodigoAlmacenamientoRegistros(){  
-        
         String codigoAlmacenamientoRegistros = "\"DATOS_RECOPILADOS\" : (\n{\n\n";
         
         if(listadoRegistros != null && listadoRegistros.size() > 0){  
+            int i = 1;
             for(Registro registroAux: listadoRegistros){
-                 codigoAlmacenamientoRegistros += "\"REGISTRO\" :  "+registroAux.getRegistroDato()+",\n";
+                 codigoAlmacenamientoRegistros += "     \"REGISTRO-"+i+"\" :  "+registroAux.getRegistroDato()+",\n";
+                 i++;
             }                         
         }
         
-        if(codigoAlmacenamientoRegistros.equals("\"DATOS_RECOPILADOS\" : (\n{\n") == false){//tiene datos
+        if(codigoAlmacenamientoRegistros.equals("\"DATOS_RECOPILADOS\" : (\n{\n\n") == false){//tiene datos
             int longitud = codigoAlmacenamientoRegistros.length() - 2;
             codigoAlmacenamientoRegistros = codigoAlmacenamientoRegistros.substring(0, longitud); //removemos la ultima coma y el salto de linea
-            codigoAlmacenamientoRegistros += "\n}\n)\n";
+            codigoAlmacenamientoRegistros += "      \n}\n)\n";
             
             //retornamos
             return codigoAlmacenamientoRegistros;
