@@ -6,12 +6,15 @@
 package tablas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Label;
 import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
@@ -41,14 +44,17 @@ public class Tabla {
         //Generamos datos
         agregarTitulosTabla();
         agregarInfoTabla();
-        this.anchoPanel = 600 - 30;
+        this.anchoPanel = 1600 - 30;
     }
     
-    public Panel generarTabla(int posicionY){
+    public JPanel generarTabla(){
         JTable tablaAux;
-        Panel panelParaTabla = new Panel();
+        //scroll.setLayout(null);
+        //scroll.setVisible(true);
+        //scroll.setBounds(0, 0, anchoPanel, 30*infoTabla.length+50);
+        JPanel panelParaTabla = new JPanel();
         panelParaTabla.setLayout(null);
-        panelParaTabla.setBounds(10, 5, anchoPanel, 400);
+        panelParaTabla.setBounds(10, 5, anchoPanel, 30*infoTabla.length+50);
         ///Agregamoos los titulos
         Label lblTitulo = new Label(tituloGeneral);
         lblTitulo.setBounds(10, 5,anchoPanel,15);             
@@ -63,7 +69,7 @@ public class Tabla {
             
         tablaAux = new JTable(model);  
         tablaAux.setLayout(null);
-        tablaAux.setBounds(10 , 5 + 20+60, anchoPanel, 300);
+        tablaAux.setBounds(10 , 5 + 20+60, anchoPanel, 30*infoTabla.length);
         
         tablaAux.setAutoCreateRowSorter(true); //Agregamos el ordenamiento por columnas
         /*
@@ -91,6 +97,7 @@ public class Tabla {
         panelParaTabla.add(tablaAux.getTableHeader(), BorderLayout.BEFORE_FIRST_LINE);//Generamos los titulos de las columnas
         panelParaTabla.add(tablaAux, BorderLayout.CENTER);  
         
+        //scroll.setViewportView(panelParaTabla);
         //return panelParaTabla;
         return panelParaTabla;
     }
@@ -138,5 +145,11 @@ public class Tabla {
     public void agregarTituloGeneral(String tituloGeneral){
         this.tituloGeneral = tituloGeneral;
     };
+
+    public String getTituloGeneral() {
+        return tituloGeneral;
+    }
+    
+    
     
 }

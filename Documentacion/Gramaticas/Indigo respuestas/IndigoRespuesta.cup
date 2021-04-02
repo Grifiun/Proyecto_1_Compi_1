@@ -1,0 +1,350 @@
+package gramatica_respuestas;
+
+import java_cup.runtime.*;
+import gramatica_respuestas.ParserRespuestasSym;
+import gramatica_respuestas.LexerIndigoRespuestas;
+import java_cup.runtime.XMLElement;
+import clasesDAO.BloqueParametros;
+import clasesDAO.Token;
+import clasesDAO.TokenError;
+import clasesDAO.TokenParametro;
+import tablas.InformacionTabla;
+import java.util.ArrayList;
+import java.util.List;
+
+class ParserRespuestas;
+
+parser code{:
+    //Listado de errores	
+	//private ArrayList<BloqueParametros> listadoSolicitudes = new ArrayList();
+	private ArrayList<TokenError> listadoErroresRespuesta = new ArrayList();
+	private ArrayList<InformacionTabla> listadoInformacionTablas = new ArrayList();
+	//Controlador de error sintactico
+	
+	@Override
+	public void syntax_error(Symbol a){
+		Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna		
+		String msgError = "Se esperaba: ";	
+		System.out.println("error de sintaxis: linea: "+tokenError.getLexema()+" "+tokenError.getLinea()+" columna: "+tokenError.getColumna());
+		
+		int linea = tokenError.getLinea();
+		int columna = tokenError.getColumna();
+
+		for(int i = 0; i < expected_token_ids().size(); i++){
+			//msgError = msgError + mensajes[expected_token_ids().get(i)];
+			msgError = msgError + symbl_name_from_id(expected_token_ids().get(i)) + " ";
+
+			if(i < expected_token_ids().size() - 1)
+				msgError = msgError + ", ";			
+		}
+		tokenError = null;
+
+		//listadoErroresRespuesta.add("ERROR SINTACTICO", "Faltan tokens", msgError, linea, columna);
+		//System.out.println(msgError);
+		//recibe tipo error, lexema error, mensaje, linea, columna
+		TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		listadoErroresRespuesta.add(tokenErrorAux);
+	}
+
+	public ArrayList<TokenError> getListadoErroresRespuestas(){
+		return listadoErroresRespuesta;
+	}
+
+	public ArrayList<InformacionTabla> obtenerListadoInformacionTablas(){
+		return listadoInformacionTablas;
+	}
+
+    public ParserRespuestas(LexerIndigoRespuestas lex){
+        super(lex);
+    }
+:}
+
+//PALABRAS RESERVADAS TERMINALES
+//SIMBOLOS RESERVADAS
+terminal Token LLAVES_INICIO;
+terminal Token LLAVES_FIN;
+terminal Token CORCHETES_INICIO;
+terminal Token CORCHETES_FIN;
+terminal Token MENOR;
+terminal Token MAYOR;
+terminal Token EXCLAMACION;
+terminal Token DOS_PUNTOS;
+terminal Token COMA;
+
+//PALABRAS RESERVADAS
+terminal Token INICIO_RESPUESTAS;
+terminal Token INICIO_RESPUESTA;
+terminal Token FIN_RESPUESTA;
+terminal Token FIN_RESPUESTAS;
+
+//RESPUESTAS
+terminal Token CREAR_USUARIO;
+terminal Token MODIFICAR_USUARIO;
+terminal Token ELIMINAR_USUARIO;
+terminal Token LOGIN_USUARIO;
+terminal Token CREDENCIALES_USUARIO;
+
+//FORMULARIOS
+terminal Token NUEVO_FORMULARIO;
+terminal Token ELIMINAR_FORMULARIO;
+terminal Token MODIFICAR_FORMULARIO;
+terminal Token PARAMETROS_FORMULARIO;
+
+//RESPUESTAS PARA COMPONENTES
+terminal Token AGREGAR_COMPONENTE;
+terminal Token MODIFICAR_COMPONENTE;
+terminal Token ELIMINAR_COMPONENTE;
+terminal Token PARAMETROS_COMPONENTE;
+
+//REPORTERIA
+terminal Token CONSULTAR_DATOS;
+terminal Token TABLA_CONSULTA;
+terminal Token CONSULTAS;
+
+//VALORES
+terminal Token VALOR_TEXTO;
+
+//Palabras reservadas generales
+terminal Token VALOR;
+terminal Token PARAMETRO;
+terminal Token RESPUESTA;
+terminal Token IMPORTAR_FORMULARIO;
+
+//NO TERMINALES
+non terminal s;
+non terminal bloque_respuestas;
+non terminal List<ArrayList<String>> bloque_parametros_consultas;
+non terminal respuesta;
+non terminal InformacionTabla respuesta_solicitud;
+non terminal InformacionTabla respuesta_tabla_consulta;
+
+non terminal List<ArrayList<String>> bloque_parametros;
+non terminal ArrayList<String>  parametro_general;
+non terminal String valor_parametro_general;
+non terminal String parametro_tipo_respuesta;
+non terminal String parametro_tipo_bloque_respuesta;
+non terminal ArrayList<String> parametros_titulos;
+non terminal ArrayList<String> parametros_fila;
+
+
+start with s;
+s ::= MENOR EXCLAMACION INICIO_RESPUESTAS MAYOR bloque_respuestas MENOR EXCLAMACION FIN_RESPUESTAS MAYOR//multiples respuestas
+		{: 	:}		
+	| respuesta
+		{: 	:}
+	//| error EXCLAMACION {: System.out.println("Error: falta MENOR "); :}
+	//| error EXCLAMACION {: System.out.println("Error: falta MENOR "); :}
+	//| MENOR error INICIO_RESPUESTAS{: System.out.println("Error: falta EXCLAMACION "); :}
+	//| error {: funcionesRespuestas.imprimirListadoErrores();	:}
+	;//una sola solicitud
+bloque_respuestas ::= bloque_respuestas respuesta  
+    | respuesta
+	//| error respuesta
+	//| respuesta error ;
+	;
+
+respuesta ::= respuesta_solicitud:informacionTabla
+		{:		
+			System.out.println("Se detecto una respuesta para solicitud"); 
+			if(informacionTabla != null){
+				listadoInformacionTablas.add(informacionTabla);
+			}
+		:}
+	| respuesta_tabla_consulta:informacionTabla
+		{: 
+			System.out.println("Se detecto una entrada para tablas");
+			if(informacionTabla != null){
+				listadoInformacionTablas.add(informacionTabla);
+			} 
+		:}
+	//| sqform_respuesta
+	| error;
+
+respuesta_solicitud ::= MENOR EXCLAMACION INICIO_RESPUESTA DOS_PUNTOS parametro_tipo_respuesta:tituloTabla MAYOR 
+	LLAVES_INICIO
+		parametro_tipo_bloque_respuesta
+		DOS_PUNTOS
+		CORCHETES_INICIO 
+		LLAVES_INICIO
+		bloque_parametros:valoresTablaAux
+		LLAVES_FIN
+		CORCHETES_FIN
+	LLAVES_FIN
+	MENOR EXCLAMACION FIN_RESPUESTA  MAYOR
+	{:
+		InformacionTabla informacionTabla = new InformacionTabla();
+		informacionTabla.setInformacionTabla(valoresTablaAux);
+		informacionTabla.setTituloGeneral(tituloTabla);
+		RESULT = informacionTabla;
+	:}
+	
+	;
+
+bloque_parametros ::= bloque_parametros:valoresTablaAux COMA parametro_general:filaDatos
+		{:
+			if(valoresTablaAux == null){
+				valoresTablaAux = new ArrayList();
+				ArrayList<String> titulos = new ArrayList();
+				titulos.add("PARAMETRO");
+				titulos.add("VALOR");
+				valoresTablaAux.add(titulos);
+			}
+			valoresTablaAux.add(filaDatos);
+			RESULT = valoresTablaAux;
+		:}
+	| parametro_general:filaDatos
+		{:
+			ArrayList<String> titulos = new ArrayList();
+			titulos.add("PARAMETRO");
+			titulos.add("VALOR");
+
+			List<ArrayList<String>> valoresTablaAux = new ArrayList();
+			valoresTablaAux.add(titulos);
+			valoresTablaAux.add(filaDatos);
+			RESULT = valoresTablaAux;
+		:}
+		;
+
+respuesta_tabla_consulta ::= MENOR EXCLAMACION INICIO_RESPUESTA DOS_PUNTOS TABLA_CONSULTA MAYOR 
+	LLAVES_INICIO
+		CONSULTAS
+		DOS_PUNTOS
+		CORCHETES_INICIO 
+		LLAVES_INICIO
+		bloque_parametros_consultas:valoresTablaAux
+		LLAVES_FIN
+		CORCHETES_FIN
+	LLAVES_FIN
+	MENOR EXCLAMACION FIN_RESPUESTA  MAYOR
+		{:
+			//Creamos el objeto que contendra toda la informacion
+			InformacionTabla informacionTabla = new InformacionTabla();
+			informacionTabla.setInformacionTabla(valoresTablaAux);
+			informacionTabla.setTituloGeneral("RESULTADO DE CONSULTA DE DATOS");
+			RESULT = informacionTabla;
+		:}
+	;
+
+bloque_parametros_consultas ::= bloque_parametros_consultas:valoresTablaAux COMA parametros_fila:filas
+		{:
+			if(valoresTablaAux == null){
+				valoresTablaAux = new ArrayList();
+			}
+			valoresTablaAux.add(filas);
+			RESULT = valoresTablaAux;
+		:}
+	| parametros_titulos:titulos
+		{:
+			List<ArrayList<String>> valoresTablaAux = new ArrayList();
+		    valoresTablaAux.add(titulos);
+			RESULT = valoresTablaAux;
+		:}
+	| parametros_fila:filas
+		{:
+			List<ArrayList<String>> valoresTablaAux = new ArrayList();
+		    valoresTablaAux.add(filas);
+			RESULT = valoresTablaAux;
+		:}
+	;
+
+parametros_titulos ::= parametros_titulos:listadoTitulos PARAMETRO DOS_PUNTOS valor_parametro_general:tituloAux
+		{:
+			if(listadoTitulos == null){
+				listadoTitulos = new ArrayList();
+			}
+
+			listadoTitulos.add(tituloAux);	
+			RESULT = listadoTitulos;
+		:}
+	| PARAMETRO DOS_PUNTOS valor_parametro_general:tituloAux
+		{:
+			ArrayList<String> listadoTitulos = new ArrayList();
+			listadoTitulos.add(tituloAux);
+			RESULT = listadoTitulos;		
+		:}
+	;
+
+parametros_fila ::= parametros_fila:listadoFila VALOR DOS_PUNTOS valor_parametro_general:datoFila
+		{:
+			if(listadoFila == null){
+				listadoFila = new ArrayList();
+			}
+
+			listadoFila.add(datoFila);	
+			RESULT = listadoFila;
+		:}
+	| VALOR DOS_PUNTOS valor_parametro_general:datoFila
+		{:
+			ArrayList<String> listadoFila = new ArrayList();
+			listadoFila.add(datoFila);
+			RESULT = listadoFila;		
+		:}	
+	;
+ 
+
+parametro_general ::= PARAMETRO DOS_PUNTOS valor_parametro_general:valorParametro VALOR DOS_PUNTOS valor_parametro_general:valorVerdadero
+		{:
+			ArrayList<String> fila = new ArrayList();
+			fila.add(valorParametro);
+			fila.add(valorVerdadero);
+			RESULT = fila;
+		:}
+	| RESPUESTA DOS_PUNTOS valor_parametro_general:descripcion
+		{:
+			ArrayList<String> filaError = new ArrayList();
+			filaError.add("RESPUESTA:");
+			filaError.add(descripcion);
+			RESULT = filaError;
+		:}
+	;
+
+valor_parametro_general ::= VALOR_TEXTO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//SOLICITUDES
+	| CREAR_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| MODIFICAR_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| ELIMINAR_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| LOGIN_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| CREDENCIALES_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//FORMULARIOS
+	| NUEVO_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| ELIMINAR_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| MODIFICAR_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| PARAMETROS_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//SOLICITUDES PARA COMPONENTES
+	| AGREGAR_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| MODIFICAR_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| ELIMINAR_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| PARAMETROS_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//REPORTERIA
+	| CONSULTAR_DATOS:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| CONSULTAS:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| TABLA_CONSULTA:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| IMPORTAR_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	;
+
+///////////////////////
+parametro_tipo_respuesta ::= 
+	//SOLICITUDES
+	  CREAR_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| MODIFICAR_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| ELIMINAR_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| LOGIN_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//FORMULARIOS
+	| NUEVO_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| ELIMINAR_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| MODIFICAR_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//SOLICITUDES PARA COMPONENTES
+	| AGREGAR_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| MODIFICAR_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| ELIMINAR_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	//REPORTERIA
+	| CONSULTAR_DATOS:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| IMPORTAR_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	;
+
+parametro_tipo_bloque_respuesta ::= 
+	  CREDENCIALES_USUARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| PARAMETROS_FORMULARIO:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| PARAMETROS_COMPONENTE:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	| CONSULTAS:a {: RESULT = a.getLexema().replaceAll("\"","").trim(); :}
+	;

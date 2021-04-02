@@ -11,12 +11,19 @@ import http.Cliente;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Panel;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import tablas.InformacionTabla;
 import tablas.Tabla;
 
@@ -51,6 +58,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnConectar = new javax.swing.JButton();
         contenedorPaneles = new javax.swing.JTabbedPane();
         jLabel3 = new javax.swing.JLabel();
+        btnSeleccionar = new javax.swing.JButton();
+        txtNombreArchivo = new javax.swing.JTextField();
+        btnImportar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,7 +84,37 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        contenedorPaneles.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        contenedorPaneles.setToolTipText("");
+        contenedorPaneles.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        contenedorPaneles.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                contenedorPanelesStateChanged(evt);
+            }
+        });
+
         jLabel3.setText("Resultado");
+
+        btnSeleccionar.setText("...");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
+
+        btnImportar.setText("Importar");
+        btnImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarActionPerformed(evt);
+            }
+        });
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -82,6 +123,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(304, 304, 304)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Salida)
+                        .addGap(274, 274, 274))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -89,20 +136,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jLabel3)
-                                .addGap(180, 180, 180)
+                                .addGap(80, 80, 80)
+                                .addComponent(btnLimpiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnConectar)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(contenedorPaneles, javax.swing.GroupLayout.PREFERRED_SIZE, 1242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(304, 304, 304)
-                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Salida)
-                        .addGap(274, 274, 274)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnImportar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSeleccionar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNombreArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(contenedorPaneles, javax.swing.GroupLayout.DEFAULT_SIZE, 1253, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -119,7 +168,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConectar)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(btnSeleccionar)
+                    .addComponent(txtNombreArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImportar)
+                    .addComponent(btnLimpiar))
                 .addGap(18, 18, 18)
                 .addComponent(contenedorPaneles, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                 .addGap(30, 30, 30))
@@ -129,6 +182,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
+        salida.setText("");
         try {
             //panelTablas.removeAll();
             //panelTablas.setLayout(null);
@@ -137,45 +191,186 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             
             String respuesta = peticion.POST("http://localhost:8080/Proyecto_P1_Web_Compi_1/Indigo", entradaTxt);
             
-            salida.setText(respuesta);
-            contenedorPaneles.removeAll();
-            try{
-                StringReader sr = new StringReader(respuesta);
-                LexerIndigoRespuestas lexer = new LexerIndigoRespuestas(sr);
-                ParserRespuestas parser = new ParserRespuestas(lexer);
-                parser.parse();                                               
-                        
-                try{              
-                    ArrayList<InformacionTabla> listadoInformacionTabla = parser.obtenerListadoInformacionTablas();
+            if(contenedorPaneles.getComponentCount() > 0){                
+                contenedorPaneles.removeAll();
+            }
+            
+            if(respuesta.contains("ini_respuestas")){//analizamos
+                try{
+                    StringReader sr = new StringReader(respuesta);
+                    LexerIndigoRespuestas lexer = new LexerIndigoRespuestas(sr);
+                    ParserRespuestas parser = new ParserRespuestas(lexer);
                     
-                    for(int i = 0; i < listadoInformacionTabla.size(); i++){
-                        Tabla tabla = new Tabla(listadoInformacionTabla.get(i));
-                        //Panel panelAux;
-                        //Panel panelAux = tabla.generarTabla(600*i + 10);
-                       
-                        Panel panelAux = tabla.generarTabla(400*i + 10); 
-                        //panelTablas = tabla.generarTabla(100*i + 10, panelTablas); 
-                        //panelTablas.add(panelAux);    
-                        contenedorPaneles.add(panelAux);                        
-                    }   
-                    contenedorPaneles.updateUI();
-                    //panelTablas.setSize(630, 400 * listadoInformacionTabla.size() );
-                    //panelTablas.updateUI();//refrescamos
-                    //jScrollPane3.updateUI();
+                    try{                        
+                        parser.parse();     
+                    }catch(Exception ex){
+                        System.out.println("Error en el respuestas indigo");
+                    }                                     
+
+                    try{              
+                        ArrayList<InformacionTabla> listadoInformacionTabla = parser.obtenerListadoInformacionTablas();
+
+                        for(int i = 0; i < listadoInformacionTabla.size(); i++){
+                            Tabla tabla = new Tabla(listadoInformacionTabla.get(i));
+                            //Panel panelAux;
+                            //Panel panelAux = tabla.generarTabla(600*i + 10);
+
+                            //Panel panelAux = tabla.generarTabla(); 
+                            JPanel panelAux = tabla.generarTabla();
+
+                            //panelTablas = tabla.generarTabla(100*i + 10, panelTablas); 
+                            //panelTablas.add(panelAux);    
+                            contenedorPaneles.add(new JScrollPane(panelAux), tabla.getTituloGeneral());      
+                        }   
+                        contenedorPaneles.updateUI();
+                        contenedorPaneles.setAutoscrolls(true);
+                        //panelTablas.setSize(630, 400 * listadoInformacionTabla.size() );
+                        //panelTablas.updateUI();//refrescamos
+                        //jScrollPane3.updateUI();
+
+                    }catch(Exception ex){
+                        System.out.println("Error al agregar las tablas al table: "+ex.getMessage());
+                    }
 
                 }catch(Exception ex){
-                    System.out.println("Error al agregar las tablas al table: "+ex.getMessage());
+                    System.out.println("Error en la ejecucion de la gramatica de respuestas: "+ex.getMessage());
                 }
-                
-            }catch(Exception ex){
-                System.out.println("Error en la ejecucion de la gramatica de respuestas: "+ex.getMessage());
+            }else{                
+                salida.setText(respuesta);
             }
         } catch (Exception ex) {
-            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         
     }//GEN-LAST:event_btnConectarActionPerformed
 
+    private void btnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarActionPerformed
+        String texto = txtNombreArchivo.getText();
+        salida.setText("");
+        entrada.setText("");
+        if(texto.equals("")){
+            JOptionPane.showMessageDialog(null, "seleccione un archivo primero");
+        }else{
+            //obtenemos el texto del archivo
+            String contenidoArchivo = leerArchivo(texto);
+            if(contenedorPaneles.getComponentCount() > 0){                
+                contenedorPaneles.removeAll();
+            }
+            
+            try{
+                Cliente peticion = new Cliente();    
+                entrada.setText(contenidoArchivo);
+                String respuesta = peticion.POST("http://localhost:8080/Proyecto_P1_Web_Compi_1/ControladorImportarFormulario", contenidoArchivo);
+                          
+                contenedorPaneles.removeAll();
+                
+                if(respuesta.contains("ini_respuestas")){
+                    try{
+                        StringReader sr = new StringReader(respuesta);
+                        LexerIndigoRespuestas lexer = new LexerIndigoRespuestas(sr);
+                        ParserRespuestas parser = new ParserRespuestas(lexer);                                            
+
+                        try{                        
+                            parser.parse();     
+                        }catch(Exception ex){
+                            System.out.println("Error en el respuestas indigo");
+                        }
+                        
+                        try{              
+                            ArrayList<InformacionTabla> listadoInformacionTabla = parser.obtenerListadoInformacionTablas();
+
+                            for(int i = 0; i < listadoInformacionTabla.size(); i++){
+                                Tabla tabla = new Tabla(listadoInformacionTabla.get(i));
+                                //Panel panelAux;
+                                //Panel panelAux = tabla.generarTabla(600*i + 10);
+
+                                //Panel panelAux = tabla.generarTabla(); 
+                                JPanel panelAux = tabla.generarTabla();
+
+                                //panelTablas = tabla.generarTabla(100*i + 10, panelTablas); 
+                                //panelTablas.add(panelAux);    
+                                contenedorPaneles.add(new JScrollPane(panelAux), tabla.getTituloGeneral());                       
+                            }   
+                            contenedorPaneles.updateUI();
+                            //panelTablas.setSize(630, 400 * listadoInformacionTabla.size() );
+                            //panelTablas.updateUI();//refrescamos
+                            //jScrollPane3.updateUI();
+
+                        }catch(Exception ex){
+                            System.out.println("Error al agregar las tablas al table: "+ex.getMessage());
+                        }
+
+                    }catch(Exception ex){
+                        System.out.println("Error en la ejecucion de la gramatica de respuestas: "+ex.getMessage());
+                    }
+                }else{
+                    salida.setText(respuesta);      
+                }               
+            
+
+            }catch(Exception ex){
+                System.out.println("Al intentar enviar la entrada de importacion al server: "+ex.getMessage());
+            }
+            
+        }
+    }//GEN-LAST:event_btnImportarActionPerformed
+
+    public String leerArchivo(String direccion){
+        String aux = "";
+        String contenidoArchivo = "";
+        
+        try{///se lee el archivo
+            FileReader fr = new FileReader(direccion);
+            BufferedReader br = new BufferedReader(fr);
+
+            //Leemos y analizamos todaas las lineas de texto del archivo (linea por linea)
+            while(aux != null){//cuando el auxiliar no sea nulo el while sigue, sera nulo cuando se termine de leer el archivo
+                contenidoArchivo += aux + "\n";//agregamos la linea a una var
+                aux = br.readLine();//con el ReadLine procedemos a leer la siguiente linea            
+                                
+            }
+            //substring(0, auxMat.length() - 1) hace que se remueva el ultimo caracter agregado, que seria un "*"
+           
+            
+        }catch(Exception e){            
+            JOptionPane.showMessageDialog(null, "Archivo inexistente");
+            
+        } 
+    
+        return contenidoArchivo;
+    }
+    
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+       txtNombreArchivo.setText(elegirArchivo());
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void contenedorPanelesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_contenedorPanelesStateChanged
+        // TODO add your handling code here:
+        contenedorPaneles.updateUI();
+    }//GEN-LAST:event_contenedorPanelesStateChanged
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        entrada.setText("");
+        salida.setText("");
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private String elegirArchivo(){
+        JFileChooser buscador = new JFileChooser();    
+        //Agregamos un filtro al file Choser
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("TEXT FILES", "form");
+        buscador.setFileFilter(filtro);
+        buscador.showOpenDialog(this);
+        File file;
+        String archivo;
+        file = buscador.getSelectedFile();
+        if(file == null){
+            archivo="";        
+        }else{
+            archivo = buscador.getSelectedFile().getAbsolutePath();  
+        }
+        return archivo;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -214,6 +409,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Salida;
     private javax.swing.JButton btnConectar;
+    private javax.swing.JButton btnImportar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JTabbedPane contenedorPaneles;
     private javax.swing.JTextArea entrada;
     private javax.swing.JLabel jLabel1;
@@ -221,5 +419,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea salida;
+    private javax.swing.JTextField txtNombreArchivo;
     // End of variables declaration//GEN-END:variables
 }

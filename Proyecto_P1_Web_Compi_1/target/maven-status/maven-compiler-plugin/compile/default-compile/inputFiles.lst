@@ -1,8 +1,11 @@
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/archivos/CargarDatos.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/controladores/ControladorImportarFormulario.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/funciones/FuncionesReporteria.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAO/BloqueParametros.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_importacion_formularios/LexerImportacionDatos.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/controladores/Indigo.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_guardado_datos/ParserGuardadoDatos.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_importacion_formularios/ParserImportacionDatos.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_indigo/parser.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_reporteria/LexerReporteria.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/Formulario.java
@@ -12,9 +15,11 @@
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOUsuario/Usuario.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/funciones/FuncionesLogin.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/funciones/FuncionesGenerarCodigoRespuesta.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_importacion_formularios/ParserImportacionDatosSym.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/ComponenteFichero.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/archivos/GuardarDatos.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/clasesDAOFormularios/Componente.java
+/home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/controladores/ControladorExportarFormulario.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/funciones/FuncionesComponentes.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_guardado_datos/ParserGuardadoDatosSym.java
 /home/grifiun/proyectos/Proyecto_1_Compi_1/Proyecto_P1_Web_Compi_1/src/main/java/gramatica_indigo/sym.java

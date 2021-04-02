@@ -45,22 +45,23 @@ public abstract class Componente {
         listadoRegistros = new ArrayList();
     }
     public abstract String generarCodigoAlmacenamiento();
+    public abstract String generarCodigoExportado();
     
     public String generarCodigoAlmacenamientoRegistros(){  
-        String codigoAlmacenamientoRegistros = "\"DATOS_RECOPILADOS\" : (\n{\n\n";
+        String codigoAlmacenamientoRegistros = "\t\t\"DATOS_RECOPILADOS\" : (\n\t\t{\n\n";
         
         if(listadoRegistros != null && listadoRegistros.size() > 0){  
             int i = 1;
             for(Registro registroAux: listadoRegistros){
-                 codigoAlmacenamientoRegistros += "     \"REGISTRO-"+i+"\" :  "+registroAux.getRegistroDato()+",\n";
+                 codigoAlmacenamientoRegistros += "\t\t\t\"REGISTRO-"+i+"\" :  "+registroAux.getRegistroDato()+",\n";
                  i++;
             }                         
         }
         
-        if(codigoAlmacenamientoRegistros.equals("\"DATOS_RECOPILADOS\" : (\n{\n\n") == false){//tiene datos
+        if(codigoAlmacenamientoRegistros.equals("\t\t\"DATOS_RECOPILADOS\" : (\n\t\t{\n\n") == false){//tiene datos
             int longitud = codigoAlmacenamientoRegistros.length() - 2;
             codigoAlmacenamientoRegistros = codigoAlmacenamientoRegistros.substring(0, longitud); //removemos la ultima coma y el salto de linea
-            codigoAlmacenamientoRegistros += "      \n}\n)\n";
+            codigoAlmacenamientoRegistros += "      \n\t\t}\n\t\t)\n";
             
             //retornamos
             return codigoAlmacenamientoRegistros;

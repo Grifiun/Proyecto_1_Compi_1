@@ -4,7 +4,9 @@ clasesDAOFormularios/ComponenteCheckBox.class
 gramatica_reporteria/ParserReporteria$CUP$ParserReporteria$actions.class
 clasesDAOFormularios/ComponenteAreaTexto.class
 clasesDAOFormularios/ComponenteFichero.class
+gramatica_importacion_formularios/LexerImportacionDatos.class
 clasesDAO/Token.class
+gramatica_importacion_formularios/ParserImportacionDatos.class
 gramatica_guardado_datos/ParserGuardadoDatosSym.class
 gramatica_indigo/parser$CUP$parser$actions.class
 clasesDAOFormularios/Componente.class
@@ -16,6 +18,7 @@ funciones/FuncionesUsuario.class
 gramatica_reporteria/ParserReporteriaSym.class
 gramatica_guardado_datos/ParserGuardadoDatos.class
 clasesDAOFormularios/Formulario.class
+gramatica_importacion_formularios/ParserImportacionDatos$CUP$ParserImportacionDatos$actions.class
 gramatica_reporteria/LexerReporteria.class
 clasesDAOUsuario/Usuario.class
 controladores/Indigo.class
@@ -23,6 +26,7 @@ clasesDAOFormularios/ComponenteCombo.class
 funciones/FuncionesLogin.class
 clasesDAO/TokenParametro.class
 funciones/FuncionesComponentes.class
+controladores/ControladorImportarFormulario.class
 clasesDAOFormularios/ComponenteImagen.class
 clasesDAOFormularios/ComponenteBoton.class
 gramatica_indigo/parser.class
@@ -30,6 +34,7 @@ gramatica_reporteria/ParserReporteria.class
 sesionCliente/UsuarioLogueado.class
 clasesDAO/TokenError.class
 clasesDAOFormularios/ComponenteCampoTexto.class
+gramatica_importacion_formularios/ParserImportacionDatosSym.class
 funciones/FuncionesSolicitudes.class
 funciones/FuncionesGenerarCodigoRespuesta.class
 archivos/CargarDatos.class
@@ -37,6 +42,7 @@ clasesDAOFormularios/ComponenteRadio.class
 gramatica_indigo/LexerIndigo.class
 gramatica_guardado_datos/ParserGuardadoDatos$CUP$ParserGuardadoDatos$actions.class
 funciones/FuncionesReporteria.class
+controladores/ControladorExportarFormulario.class
 clasesDAOFormularios/Registro.class
 gramatica_indigo/sym.class
 funciones/FuncionesFormularios.class

@@ -5,6 +5,8 @@ package gramatica_reporteria;
 import java_cup.runtime.*;
 import clasesDAO.Token;
 import static gramatica_reporteria.ParserReporteriaSym.*;
+import clasesDAO.TokenError;
+import java.util.ArrayList;
 
 /*Segunda seccion, config*/
 
@@ -265,24 +267,25 @@ public class LexerReporteria implements java_cup.runtime.Scanner {
   /* user code: */
     //Creamos un listado de los operadores invocados
     //ArrayList<Token> listadoOperadoresInvocados = new ArrayList();
-    //ArrayList<TokenError> listadoErroresLexicos = new ArrayList();
+    ArrayList<TokenError> listadoErroresLexicos = new ArrayList();
+    private int filaInicio = 0;
+    private int columnaInicio = 0;
 
      //retorna un simbolo despues de crear un nuevo token y agregarlo al listado
      private Symbol retornarSimbolo(int tipo, String tipoToken, String lexema, int fila, int columna){
           //creamos un  token auxiliar
           Token tokenAux = new Token(tipoToken, lexema, fila, columna);
-          System.out.println("\nFila : "+fila+" Columna: "+columna+" Token de tipo: "+tipoToken+" Lexema: "+lexema);
+          System.out.println("\nFila : "+fila + filaInicio +" Columna: "+columna + columnaInicio +" Token de tipo: "+tipoToken+" Lexema: "+lexema);
           //Agregamos al listado
           //listadoOperadoresInvocados.add(tokenAux);
           //retornamos el token aux como simbolo
           return new Symbol(tipo, tokenAux);
      }
 
-     //Agregamos un token al array list de errores lexicos
-     /*
+     //Agregamos un token al array list de errores lexicos     
      private void addErrorLexico(String tipoToken, String lexema, String msgError, int fila, int columna){
           //creamos un  token auxiliar
-          TokenError tokenErrorAux = new TokenError(tipoToken, lexema, msgError, fila, columna);
+          TokenError tokenErrorAux = new TokenError(tipoToken, lexema, msgError, fila + filaInicio, columna + columnaInicio);
           //Agregamos al listado
           listadoErroresLexicos.add(tokenErrorAux);
      }
@@ -292,10 +295,12 @@ public class LexerReporteria implements java_cup.runtime.Scanner {
           return listadoErroresLexicos;
      }
 
-     //Obtenemos el lstado de los tokens
-     public ArrayList<Token> obtenerListadoTokens(){
-          return listadoOperadoresInvocados;
-     }*/
+    public void setFilaInicio(int fila){
+        filaInicio = fila;
+    }
+    public void setColumna(int columna){
+        columnaInicio = columna;
+    }
 
 
   /**
@@ -682,7 +687,7 @@ public class LexerReporteria implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { System.out.println("Error lexico: "+yytext());
+            { addErrorLexico ("LEXICO", yytext(), "Token no valido",yyline + 1, yycolumn + 1);
             } 
             // fall through
           case 23: break;

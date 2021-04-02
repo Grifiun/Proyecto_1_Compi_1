@@ -127,7 +127,10 @@ public class ControladorRegistro extends HttpServlet {
                     
                     
                 }
-                
+                request.getSession().setAttribute("mensaje", "Informacion guardada");
+        
+                String direccion = "jsp/home-usuario.jsp";
+                response.sendRedirect(direccion);
                
             }
         } catch (Exception e) {

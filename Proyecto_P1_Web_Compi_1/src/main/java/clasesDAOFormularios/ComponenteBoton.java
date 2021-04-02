@@ -25,36 +25,40 @@ public class ComponenteBoton extends Componente{
     
     @Override
     public String generarCodigoAlmacenamiento() {
-        String codigoAlmacenamiento = "{\n";
+        String codigoAlmacenamiento = "\t\t{\n";
         
         if(getIdComponente().equals("") == false){//no esta vacio
-            codigoAlmacenamiento += "\"ID_COMPONENTE\" : "+getIdComponente()+",\n";
+            codigoAlmacenamiento += "\t\t\"ID_COMPONENTE\" : "+getIdComponente()+",\n";
         }
         if(getClase().equals("") == false){//no esta vacio
-            codigoAlmacenamiento += "\"CLASE\" : "+getClase()+",\n";
+            codigoAlmacenamiento += "\t\t\"CLASE\" : "+getClase()+",\n";
         }
         if(getIndice().equals("") == false){//no esta vacio
-            codigoAlmacenamiento += "\"INDICE\" : "+getIndice()+",\n";
+            codigoAlmacenamiento += "\t\t\"INDICE\" : "+getIndice()+",\n";
         }
         if(getTextoVisible().equals("") == false){//no esta vacio
-            codigoAlmacenamiento += "\"TEXTO_VISIBLE\" : "+getTextoVisible()+",\n";
+            codigoAlmacenamiento += "\t\t\"TEXTO_VISIBLE\" : "+getTextoVisible()+",\n";
         }
         if(getAlineacion().equals("") == false){//no esta vacio
-            codigoAlmacenamiento += "\"ALINEACION\" : "+getAlineacion()+",\n";
+            codigoAlmacenamiento += "\t\t\"ALINEACION\" : "+getAlineacion()+",\n";
         }
         
-        if(codigoAlmacenamiento.equals("{\n") == false){//tiene datos
+        if(codigoAlmacenamiento.equals("\t\t{\n") == false){//tiene datos
             int longitud = codigoAlmacenamiento.length() - 2;
             codigoAlmacenamiento = codigoAlmacenamiento.substring(0, longitud); //removemos la ultima coma y el salto de linea
         }        
         
-        codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
+        codigoAlmacenamiento = codigoAlmacenamiento + "\n\t\t}\n";
         
         return codigoAlmacenamiento;
         
     }
     
-    
+    @Override
+    public String generarCodigoExportado() {        
+        return generarCodigoAlmacenamiento();
+        
+    }
     
     
 }

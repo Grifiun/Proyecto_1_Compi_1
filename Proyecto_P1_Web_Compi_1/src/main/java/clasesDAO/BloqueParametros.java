@@ -41,6 +41,11 @@ public class BloqueParametros extends Token{
     public void insertarParametro(TokenParametro parametro) {
         this.listadoParametros.add(parametro);
     }
+    
+    public void insertarParametro(String tipoParam, String lexema) {
+        TokenParametro param = new TokenParametro(tipoParam, lexema, 0, 0);
+        this.listadoParametros.add(param);
+    }
 
     public ArrayList<String> getListadoTipoParametros() {
         return listadoTipoParametros;
