@@ -5,6 +5,9 @@ package gramatica_indigo;
 import java_cup.runtime.*;
 import clasesDAO.Token;
 import static gramatica_indigo.sym.*;
+import clasesDAO.TokenError;
+import java.util.ArrayList;
+
 
 /*Segunda seccion, config*/
 
@@ -1088,7 +1091,7 @@ public class LexerIndigo implements java_cup.runtime.Scanner {
   /* user code: */
     //Creamos un listado de los operadores invocados
     //ArrayList<Token> listadoOperadoresInvocados = new ArrayList();
-    //ArrayList<TokenError> listadoErroresLexicos = new ArrayList();
+    ArrayList<TokenError> listadoErroresLexicos = new ArrayList();
 
      //retorna un simbolo despues de crear un nuevo token y agregarlo al listado
      private Symbol retornarSimbolo(int tipo, String tipoToken, String lexema, int fila, int columna){
@@ -1102,7 +1105,7 @@ public class LexerIndigo implements java_cup.runtime.Scanner {
      }
 
      //Agregamos un token al array list de errores lexicos
-     /*
+     
      private void addErrorLexico(String tipoToken, String lexema, String msgError, int fila, int columna){
           //creamos un  token auxiliar
           TokenError tokenErrorAux = new TokenError(tipoToken, lexema, msgError, fila, columna);
@@ -1115,10 +1118,6 @@ public class LexerIndigo implements java_cup.runtime.Scanner {
           return listadoErroresLexicos;
      }
 
-     //Obtenemos el lstado de los tokens
-     public ArrayList<Token> obtenerListadoTokens(){
-          return listadoOperadoresInvocados;
-     }*/
 
 
   /**
@@ -1505,7 +1504,7 @@ public class LexerIndigo implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { System.out.println("Error lexico: "+yytext());
+            { addErrorLexico ("LEXICO", yytext(), "Token no valido",yyline + 1, yycolumn + 1);
             } 
             // fall through
           case 77: break;

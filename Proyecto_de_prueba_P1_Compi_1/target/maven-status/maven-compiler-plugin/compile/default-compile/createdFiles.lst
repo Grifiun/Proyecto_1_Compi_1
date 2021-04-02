@@ -1,7 +1,10 @@
+paquete/VentanaPrincipal$4.class
 gramatica_respuestas/LexerIndigoRespuestas.class
 tablas/Tabla$1.class
 http/Cliente.class
+paquete/VentanaPrincipal$5.class
 clasesDAO/Token.class
+paquete/VentanaPrincipal$3.class
 clasesDAO/BloqueParametros.class
 clasesDAO/TokenError.class
 paquete/Main.class
@@ -13,4 +16,5 @@ clasesDAO/TokenParametro.class
 gramatica_respuestas/ParserRespuestasSym.class
 tablas/Tabla.class
 gramatica_respuestas/ParserRespuestas$CUP$ParserRespuestas$actions.class
+paquete/VentanaPrincipal$6.class
 paquete/VentanaPrincipal$2.class

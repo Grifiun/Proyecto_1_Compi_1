@@ -27,11 +27,12 @@
             <%
                 }                
             %>
-                <td>
+                <td>                    
                     <% 
-                        session.setAttribute("id_formulario", lista.get(i).get(0));
+                        session.setAttribute("id_formulario"+i, lista.get(i).get(0));
                     %>
-                    <a href="visualizar-formulario.jsp" class="btn btn-success">Compartir</a>
+                    <a href="visualizar-formulario.jsp?index=<%=i%>" class="btn btn-success">Visualizar</a>
+                    <a href="../ControladorExportarFormulario?index=<%=i%>" class="btn btn-success">Exportar</a>
                 </td>
         </tr>
       <%

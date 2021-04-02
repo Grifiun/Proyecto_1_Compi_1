@@ -1,0 +1,833 @@
+package gramatica_indigo;
+
+import java_cup.runtime.*;
+import gramatica_indigo.sym;
+import gramatica_indigo.LexerIndigo;
+import gramatica_reporteria.LexerReporteria;
+import gramatica_reporteria.ParserReporteria;
+import java_cup.runtime.XMLElement;
+import clasesDAO.BloqueParametros;
+import funciones.FuncionesSolicitudes;
+import clasesDAO.Token;
+import clasesDAO.TokenError;
+import clasesDAO.TokenParametro;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.StringReader;
+
+parser code{:
+    //Listado de errores	
+	private FuncionesSolicitudes funcionesSolicitudes = new FuncionesSolicitudes();
+	private ArrayList<BloqueParametros> listadoSolicitudes = new ArrayList();
+	//Controlador de error sintactico
+	
+	@Override
+	public void syntax_error(Symbol a){
+		Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna		
+		String msgError = "Se esperaba: ";	
+		System.out.println("error de sintaxis: linea: "+tokenError.getLexema()+" "+tokenError.getLinea()+" columna: "+tokenError.getColumna());
+		
+		int linea = tokenError.getLinea();
+		int columna = tokenError.getColumna();
+
+		for(int i = 0; i < expected_token_ids().size(); i++){
+			//msgError = msgError + mensajes[expected_token_ids().get(i)];
+			msgError = msgError + symbl_name_from_id(expected_token_ids().get(i)) + " ";
+
+			if(i < expected_token_ids().size() - 1)
+				msgError = msgError + ", ";			
+		}
+		tokenError = null;
+
+		funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", tokenError.getLexema(), msgError, linea, columna);
+		//System.out.println(msgError);
+		//recibe tipo error, lexema error, mensaje, linea, columna
+		//TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		//listadoErroresSintacticos.add(tokenErrorAux);
+	}
+
+	public ArrayList<TokenError> getListadoErroresParser(){
+		return funcionesSolicitudes.getListadoErroresParser();
+	}
+
+	public void agregarSolicitud(BloqueParametros bloqueAux){
+		this.listadoSolicitudes.add(bloqueAux);
+	}
+
+	public ArrayList<BloqueParametros> getListadoSolicitudes(){
+		return this.listadoSolicitudes;
+	}
+
+	public void imprimirErrores(){
+		funcionesSolicitudes.imprimirListadoErrores();
+	}
+
+    public parser(LexerIndigo lex){
+        super(lex);
+    }
+:}
+
+//PALABRAS RESERVADAS TERMINALES
+//SIMBOLOS RESERVADAS
+terminal Token LLAVES_INICIO;
+terminal Token LLAVES_FIN;
+terminal Token CORCHETES_INICIO;
+terminal Token CORCHETES_FIN;
+terminal Token MENOR;
+terminal Token MAYOR;
+terminal Token EXCLAMACION;
+terminal Token DOS_PUNTOS;
+terminal Token COMA;
+
+//PALABRAS RESERVADAS
+terminal Token INICIO_SOLICITUDES;
+terminal Token INICIO_SOLICITUD;
+terminal Token FIN_SOLICITUD;
+terminal Token FIN_SOLICITUDES;
+
+//SOLICITUDES
+terminal Token CREAR_USUARIO;
+terminal Token MODIFICAR_USUARIO;
+terminal Token ELIMINAR_USUARIO;
+terminal Token LOGIN_USUARIO;
+terminal Token CREDENCIALES_USUARIO;
+
+//PARAMETROS
+terminal Token USUARIO;
+terminal Token PASSWORD;
+terminal Token USUARIO_ANTIGUO;
+terminal Token USUARIO_NUEVO;
+terminal Token NUEVO_PASSWORD;
+terminal Token FECHA_MODIFICACION;
+
+//FORMULARIOS
+terminal Token NUEVO_FORMULARIO;
+terminal Token ELIMINAR_FORMULARIO;
+terminal Token MODIFICAR_FORMULARIO;
+terminal Token PARAMETROS_FORMULARIO;
+
+//PARAMETROS FORMULARIOS
+terminal Token ID;
+terminal Token TITULO;
+terminal Token NOMBRE;
+terminal Token TEMA;
+terminal Token USUARIO_CREACION;
+terminal Token FECHA_CREACION;
+
+//PARAMETROS TEMA
+terminal Token DARK;
+terminal Token BLUE;
+terminal Token WHITE;
+
+//SOLICITUDES PARA COMPONENTES
+terminal Token AGREGAR_COMPONENTE;
+terminal Token MODIFICAR_COMPONENTE;
+terminal Token ELIMINAR_COMPONENTE;
+terminal Token PARAMETROS_COMPONENTE;
+
+//PARAMETROS COMPONENTES
+terminal Token NOMBRE_CAMPO;
+terminal Token FORMULARIO;
+terminal Token CLASE;
+terminal Token INDICE;
+terminal Token TEXTO_VISIBLE;
+terminal Token ALINEACION;
+terminal Token REQUERIDO;
+terminal Token OPCIONES;
+terminal Token FILAS;
+terminal Token COLUMNAS;
+terminal Token URL;
+
+//CLASE PARAMETROS
+terminal Token CAMPO_TEXTO;
+terminal Token AREA_TEXTO;
+terminal Token CHECKBOX;
+terminal Token RADIO;
+terminal Token FICHERO;
+terminal Token IMAGEN;
+terminal Token COMBO;
+terminal Token BOTON;
+
+//ALINEACION PARAMETROS
+terminal Token CENTRO;
+terminal Token IZQUIERDA;
+terminal Token DERECHA;
+terminal Token JUSTIFICAR;
+
+//REQUERIDO PARAMETROS
+terminal Token SI;
+terminal Token NO;
+
+//VALORES
+terminal Token VALOR_TEXTO_VISIBLE_CON_ESPACIO;
+terminal Token VALOR_ITEMS_CON_ESPACIO;
+terminal Token VALOR_ITEMS_SIN_ESPACIO;
+terminal Token VALOR_PASSWORD;
+terminal Token VALOR_FECHA;
+terminal Token VALOR_ID;
+terminal Token DIGITO;
+
+//SQFORM
+terminal Token CONSULTAR_DATOS;
+terminal Token CONSULTAS;
+terminal Token CONSULTA_N;
+
+//NO TERMINALES
+non terminal s;
+non terminal bloque_solicitudes;
+non terminal solicitud;
+non terminal solicitud_crear_usuario;
+non terminal BloqueParametros bloque_parametros_crear_usuario;
+non terminal TokenParametro parametros_crear_usuario;
+non terminal solicitud_modificar_usuario;
+non terminal BloqueParametros bloque_parametros_modificar_usuario;
+non terminal TokenParametro parametros_modificar_usuario;
+non terminal solicitud_eliminar_usuario;
+non terminal BloqueParametros bloque_parametros_eliminar_usuario;
+non terminal solicitud_login_usuario;
+non terminal BloqueParametros bloque_parametros_login_usuario;
+non terminal solicitud_nuevo_formulario;
+non terminal BloqueParametros bloque_parametros_nuevo_formulario;
+non terminal TokenParametro parametros_nuevo_formulario;
+non terminal solicitud_eliminar_formulario;
+non terminal BloqueParametros bloque_parametros_eliminar_formulario;
+non terminal solicitud_modificar_formulario;
+non terminal BloqueParametros bloque_parametros_modificar_formulario;
+non terminal TokenParametro parametros_modificar_formulario;
+non terminal solicitud_agregar_componente;
+non terminal BloqueParametros bloque_parametros_agregar_componente;
+non terminal TokenParametro parametros_agregar_componente;
+non terminal solicitud_eliminar_componente;
+non terminal BloqueParametros bloque_parametros_eliminar_componente;
+non terminal solicitud_modificar_componente;
+non terminal BloqueParametros bloque_parametros_modificar_componente;
+non terminal TokenParametro parametros_modificar_componente;
+//SQFORM
+non terminal solicitud_sqform;
+non terminal BloqueParametros bloque_parametros_sqform;
+non terminal TokenParametro parametros_sqform;
+//parametros de usuarios
+non terminal TokenParametro parametro_usuario;
+non terminal TokenParametro parametro_password;
+non terminal TokenParametro parametro_fecha_creacion;
+non terminal TokenParametro parametro_usuario_antiguo;
+non terminal TokenParametro parametro_usuario_nuevo;
+non terminal TokenParametro parametro_nuevo_password;
+non terminal TokenParametro parametro_fecha_modificacion;
+//parametros de formularios
+non terminal TokenParametro parametro_id;
+non terminal TokenParametro parametro_titulo;
+non terminal TokenParametro parametro_nombre;
+non terminal TokenParametro parametro_tema;
+non terminal TokenParametro parametro_usuario_creacion;
+//parametros de componentes
+non terminal TokenParametro parametro_formulario_id;
+non terminal TokenParametro parametro_nombre_campo;
+non terminal TokenParametro parametro_clase;
+non terminal TokenParametro parametro_indice;
+non terminal TokenParametro parametro_texto_visible;
+non terminal TokenParametro parametro_alineacion;
+non terminal TokenParametro parametro_requerido;
+non terminal TokenParametro parametro_opciones;
+non terminal TokenParametro parametro_filas;
+non terminal TokenParametro parametro_columnas;
+non terminal TokenParametro parametro_URL;
+//codigos de inicio y finalizacion solicitud
+non terminal apertura_solicitud_i;
+non terminal apertura_solicitud_ii;
+non terminal Token apertura_bloque_parametros;
+non terminal Token finalizacion_solicitud;
+//valores
+//CLASE PARAMETROS VALORES
+non terminal Token valores_clase;
+non terminal Token valores_alineacion;
+non terminal Token valores_requerido;
+non terminal Token valores_opciones;
+non terminal Token valores_tema;
+non terminal Token valores_password;
+non terminal Token valores_usuario_id;
+non terminal Token valores_texto_visible;
+non terminal Token valores_id;
+non terminal Token valores_fecha;
+non terminal Token valores_digito;
+non terminal Token valores_reservados;
+
+///precedencia
+//precedence left SUMA, RESTA;
+
+start with s;
+s ::= MENOR EXCLAMACION INICIO_SOLICITUDES MAYOR bloque_solicitudes MENOR EXCLAMACION FIN_SOLICITUDES MAYOR//multiples solicitudes
+		{: funcionesSolicitudes.imprimirListadoErrores();	:}		
+	| solicitud
+		{: funcionesSolicitudes.imprimirListadoErrores();	:}
+	//| error EXCLAMACION {: System.out.println("Error: falta MENOR "); :}
+	//| error EXCLAMACION {: System.out.println("Error: falta MENOR "); :}
+	//| MENOR error INICIO_SOLICITUDES{: System.out.println("Error: falta EXCLAMACION "); :}
+	//| error {: funcionesSolicitudes.imprimirListadoErrores();	:}
+	;//una sola solicitud
+bloque_solicitudes ::= bloque_solicitudes solicitud  
+    | solicitud
+	//| error solicitud
+	//| solicitud error ;
+	;
+
+solicitud ::= solicitud_crear_usuario {: System.out.println("se detecto una solicitud para crear usuarios\n "); :}
+    | solicitud_modificar_usuario {: System.out.println("se detecto una solicitud para modificar usuarios\n "); :}
+    | solicitud_eliminar_usuario {: System.out.println("se detecto una solicitud para eliminar usuarios\n "); :}
+    | solicitud_login_usuario {: System.out.println("se detecto una solicitud para lgin de usuarios\n "); :}
+    | solicitud_nuevo_formulario {: System.out.println("se detecto una solicitud de nuevo formulario\n "); :}
+    | solicitud_eliminar_formulario {: System.out.println("se detecto una solicitud para eliminar un formulario\n "); :}
+    | solicitud_modificar_formulario {: System.out.println("se detecto una solicitud para modificar formulario\n "); :}
+	| solicitud_agregar_componente {: System.out.println("se detecto una solicitud para agregar un componente\n "); :}
+	| solicitud_modificar_componente {: System.out.println("se detecto una solicitud para modificar un componente\n "); :}
+	| solicitud_eliminar_componente {: System.out.println("se detecto una solicitud para eliminar un componente\n "); :}
+	| solicitud_sqform {: System.out.println("se detecto una solicitud para reporteria\n "); :}
+	| error;
+	//| error {: funcionesSolicitudes.imprimirListadoErrores();	:};
+	//| ;//epsilon, para dar fin a las solicitudes
+	
+//solicitud para crear usuarios
+solicitud_crear_usuario ::=  apertura_solicitud_i CREAR_USUARIO apertura_solicitud_ii CREDENCIALES_USUARIO apertura_bloque_parametros:inicio bloque_parametros_crear_usuario:param finalizacion_solicitud:fin
+		{:						
+			funcionesSolicitudes.analizarSolicitud(inicio, fin, param, "CREAR_USUARIO");
+			agregarSolicitud(param);
+		:}
+	//|  apertura_solicitud_i CREAR_USUARIO apertura_solicitud_ii CREDENCIALES_USUARIO apertura_bloque_parametros:inicio error finalizacion_solicitud:fin {: System.out.println("Error solicitud de crear usuario"); :}
+	;
+bloque_parametros_crear_usuario ::= bloque_parametros_crear_usuario:a COMA parametros_crear_usuario:b 
+		{: 	
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "CREAR_USUARIO", "CREDENCIALES_USUARIO");
+		:} 
+	| parametros_crear_usuario:a
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "CREAR_USUARIO", "CREDENCIALES_USUARIO");		
+		:}
+	//| error {: RESULT = null; :}
+	;
+	//parametros crear usuarios
+parametros_crear_usuario ::= parametro_usuario:a {: RESULT = a; :}
+	| parametro_password:a {: RESULT = a; :}
+	| parametro_fecha_creacion:a {: RESULT = a; :}
+	| error {: RESULT = null; :}
+	;
+	//| ;//epsilon
+
+//solicitud para modificar usuarios
+solicitud_modificar_usuario ::=  apertura_solicitud_i MODIFICAR_USUARIO apertura_solicitud_ii CREDENCIALES_USUARIO apertura_bloque_parametros:inicio bloque_parametros_modificar_usuario:param finalizacion_solicitud:fin
+		{:						
+			funcionesSolicitudes.analizarSolicitud(inicio, fin, param, "MODIFICAR_USUARIO");
+			agregarSolicitud(param);
+		:}
+	;
+bloque_parametros_modificar_usuario ::=  bloque_parametros_modificar_usuario:a COMA parametros_modificar_usuario:b 
+		{: 	
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "MODIFICAR_USUARIO", "CREDENCIALES_USUARIO");
+		:} 
+	| parametros_modificar_usuario:a 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "MODIFICAR_USUARIO", "CREDENCIALES_USUARIO");
+		:}
+	;
+	//parametros modificar usuario
+parametros_modificar_usuario ::= parametro_usuario_antiguo:a {: RESULT = a; :}
+	| parametro_usuario_nuevo:a {: RESULT = a; :}
+	| parametro_nuevo_password:a {: RESULT = a; :}
+	| parametro_fecha_modificacion:a {: RESULT = a; :}
+	| error {: RESULT = null; :}
+	;
+	//| ;//epsilon
+
+//solicitud para eliminar un usuario
+solicitud_eliminar_usuario ::=  apertura_solicitud_i ELIMINAR_USUARIO apertura_solicitud_ii CREDENCIALES_USUARIO apertura_bloque_parametros bloque_parametros_eliminar_usuario:param finalizacion_solicitud
+	{:						
+		agregarSolicitud(param);
+	:}
+	;
+bloque_parametros_eliminar_usuario ::= parametro_usuario:a
+	{: 
+		BloqueParametros bloque = null;
+		bloque = funcionesSolicitudes.agregarParametroABloque(bloque, a, "ELIMINAR_USUARIO", "CREDENCIALES_USUARIO");
+		RESULT = bloque;
+	:};
+
+//solicitud para login de usuario
+solicitud_login_usuario ::=  apertura_solicitud_i LOGIN_USUARIO apertura_solicitud_ii CREDENCIALES_USUARIO apertura_bloque_parametros bloque_parametros_login_usuario:param finalizacion_solicitud
+	{:						
+		agregarSolicitud(param);
+	:};
+bloque_parametros_login_usuario ::=  parametro_usuario:a COMA parametro_password:b
+		{: 
+			BloqueParametros bloque = null;
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, a, "LOGIN_USUARIO", "CREDENCIALES_USUARIO"); 
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, b, "LOGIN_USUARIO", "CREDENCIALES_USUARIO"); 
+			RESULT = bloque;
+		:}
+	| parametro_password:a COMA parametro_usuario:b
+		{: 
+			BloqueParametros bloque = null;
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, a, "LOGIN_USUARIO", "CREDENCIALES_USUARIO"); 
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, b, "LOGIN_USUARIO", "CREDENCIALES_USUARIO"); 
+			RESULT = bloque;
+		:}
+	;
+
+//solicitud para nuevo formulario
+solicitud_nuevo_formulario ::= apertura_solicitud_i NUEVO_FORMULARIO apertura_solicitud_ii PARAMETROS_FORMULARIO apertura_bloque_parametros:inicio bloque_parametros_nuevo_formulario:param finalizacion_solicitud:fin
+		{:						
+			funcionesSolicitudes.analizarSolicitud(inicio, fin, param, "NUEVO_FORMULARIO");
+			agregarSolicitud(param);
+		:}
+	;
+bloque_parametros_nuevo_formulario ::= bloque_parametros_nuevo_formulario:a COMA parametros_nuevo_formulario:b 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "NUEVO_FORMULARIO", "PARAMETROS_FORMULARIO");
+		:} 
+	| parametros_nuevo_formulario:a 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "NUEVO_FORMULARIO", "PARAMETROS_FORMULARIO");	
+		:}
+	;
+	//parametros nuevo formulario
+parametros_nuevo_formulario ::= parametro_id:a {: RESULT = a; :}
+	| parametro_titulo:a {: RESULT = a; :}
+	| parametro_nombre:a {: RESULT = a; :}
+	| parametro_tema:a {: RESULT = a; :}
+	| parametro_usuario_creacion:a {: RESULT = a; :}
+	| parametro_fecha_creacion:a {: RESULT = a; :}
+	| error {: RESULT = null; :}
+	;
+	//| ;//epsilon
+
+//solicitud para eliminar formulario
+solicitud_eliminar_formulario ::= apertura_solicitud_i ELIMINAR_FORMULARIO apertura_solicitud_ii PARAMETROS_FORMULARIO apertura_bloque_parametros bloque_parametros_eliminar_formulario:param finalizacion_solicitud
+	{:						
+		agregarSolicitud(param);
+	:};
+bloque_parametros_eliminar_formulario ::= parametro_id:a
+	{: 
+		BloqueParametros bloque = null;
+		bloque = funcionesSolicitudes.agregarParametroABloque(bloque, a, "ELIMINAR_FORMULARIO", "PARAMETROS_FORMULARIO"); 
+		RESULT = bloque;
+	:};
+
+//solicitud para modificar formulario
+solicitud_modificar_formulario ::= apertura_solicitud_i MODIFICAR_FORMULARIO apertura_solicitud_ii PARAMETROS_FORMULARIO apertura_bloque_parametros:inicio bloque_parametros_modificar_formulario:param finalizacion_solicitud:fin
+		{:						
+			funcionesSolicitudes.analizarSolicitud(inicio, fin, param, "MODIFICAR_FORMULARIO");
+			agregarSolicitud(param);
+		:}
+	;
+bloque_parametros_modificar_formulario ::= bloque_parametros_modificar_formulario:a COMA parametros_modificar_formulario:b 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "MODIFICAR_FORMULARIO", "PARAMETROS_FORMULARIO");
+		:} 
+	| parametros_modificar_formulario:a 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "MODIFICAR_FORMULARIO", "PARAMETROS_FORMULARIO");		
+		:}
+	;
+	//parametros para modificar un formulario
+parametros_modificar_formulario ::= parametro_id:a {: RESULT = a; :}
+	| parametro_titulo:a {: RESULT = a; :}
+	| parametro_nombre:a {: RESULT = a; :}
+	| parametro_tema:a {: RESULT = a; :}
+	| error {: RESULT = null; :}
+	;
+	//| ;//epsilon
+
+//solicitud agregar componente
+solicitud_agregar_componente ::= apertura_solicitud_i AGREGAR_COMPONENTE apertura_solicitud_ii PARAMETROS_COMPONENTE apertura_bloque_parametros:inicio bloque_parametros_agregar_componente:param finalizacion_solicitud:fin
+		{:						
+			funcionesSolicitudes.analizarSolicitud(inicio, fin, param, "AGREGAR_COMPONENTE");
+			agregarSolicitud(param);
+		:}
+	;
+bloque_parametros_agregar_componente ::=  bloque_parametros_agregar_componente:a COMA parametros_agregar_componente:b 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "AGREGAR_COMPONENTE", "PARAMETROS_COMPONENTE");
+		:} 
+	| parametros_agregar_componente:a
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "AGREGAR_COMPONENTE", "PARAMETROS_COMPONENTE");	
+		:}
+	;
+	//parametros para agregar un componente
+parametros_agregar_componente ::= parametro_id:a {: RESULT = a; :}
+	| parametro_nombre_campo:a {: RESULT = a; :}
+	| parametro_formulario_id:a {: RESULT = a; :}
+	| parametro_clase:a {: RESULT = a; :}
+	| parametro_indice:a {: RESULT = a; :}
+	| parametro_texto_visible:a {: RESULT = a; :}
+	| parametro_alineacion:a {: RESULT = a; :}
+	| parametro_requerido:a {: RESULT = a; :}
+	| parametro_opciones:a {: RESULT = a; :}
+	| parametro_filas:a {: RESULT = a; :}
+	| parametro_columnas:a {: RESULT = a; :}
+	| parametro_URL:a {: RESULT = a; :}
+	| error {: RESULT = null; :}
+	;
+	//| ;//epsilon
+
+//solicitud modificar componente
+solicitud_modificar_componente ::= apertura_solicitud_i MODIFICAR_COMPONENTE apertura_solicitud_ii PARAMETROS_COMPONENTE apertura_bloque_parametros:inicio bloque_parametros_modificar_componente:param finalizacion_solicitud:fin
+		{:						
+			funcionesSolicitudes.analizarSolicitud(inicio, fin, param, "MODIFICAR_COMPONENTE");
+			agregarSolicitud(param);
+		:}
+	;
+bloque_parametros_modificar_componente ::= bloque_parametros_modificar_componente:a COMA parametros_modificar_componente:b 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "MODIFICAR_COMPONENTE", "PARAMETROS_COMPONENTE");
+		:} 
+	| parametros_modificar_componente:a 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "MODIFICAR_COMPONENTE", "PARAMETROS_COMPONENTE");			
+		:}
+	;
+	//parametros para modificar un componente	
+parametros_modificar_componente ::= parametro_id :a {: RESULT = a; :}
+	| parametro_nombre_campo:a {: RESULT = a; :}
+	| parametro_formulario_id:a {: RESULT = a; :}
+	| parametro_clase:a {: RESULT = a; :}
+	| parametro_indice:a {: RESULT = a; :}
+	| parametro_texto_visible:a {: RESULT = a; :}
+	| parametro_alineacion:a {: RESULT = a; :}
+	| parametro_requerido:a {: RESULT = a; :}
+	| parametro_opciones:a {: RESULT = a; :}
+	| parametro_filas:a {: RESULT = a; :}
+	| parametro_columnas:a {: RESULT = a; :}
+	| parametro_URL:a {: RESULT = a; :}
+	| error {: RESULT = null; :}
+	;
+	//| ;//epsilon
+
+//solicitud eliminar componente de formulario
+solicitud_eliminar_componente ::= apertura_solicitud_i ELIMINAR_COMPONENTE apertura_solicitud_ii PARAMETROS_COMPONENTE apertura_bloque_parametros bloque_parametros_eliminar_componente:param finalizacion_solicitud
+		{:						
+			agregarSolicitud(param);
+		:}
+	;
+bloque_parametros_eliminar_componente ::= parametro_id:a COMA parametro_formulario_id:b	
+		{: 
+			BloqueParametros bloque = null;
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, a, "ELIMINAR_COMPONENTE", "PARAMETROS_COMPONENTE"); 
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, b, "ELIMINAR_COMPONENTE", "PARAMETROS_COMPONENTE"); 
+			RESULT = bloque;
+		:}
+	| parametro_formulario_id:a COMA parametro_id:b
+		{: 
+			BloqueParametros bloque = null;
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, a, "ELIMINAR_COMPONENTE", "PARAMETROS_COMPONENTE"); 
+			bloque = funcionesSolicitudes.agregarParametroABloque(bloque, b, "ELIMINAR_COMPONENTE", "PARAMETROS_COMPONENTE"); 
+			RESULT = bloque;
+		:}
+	;
+//Solicitud para SQForm
+solicitud_sqform ::= apertura_solicitud_i CONSULTAR_DATOS apertura_solicitud_ii CONSULTAS apertura_bloque_parametros bloque_parametros_sqform:param finalizacion_solicitud
+	{:						
+		agregarSolicitud(param);
+	:};
+bloque_parametros_sqform ::= bloque_parametros_sqform:a COMA parametros_sqform:b
+		{: 
+			RESULT = funcionesSolicitudes.agregarConsultaABloque(a, b, "CONSULTAR_DATOS", "CONSULTAS");
+		:} 
+	| parametros_sqform:a
+		{: 
+			RESULT = funcionesSolicitudes.agregarConsultaABloque(null, a, "CONSULTAR_DATOS", "CONSULTAS");	
+		:}
+	;
+parametros_sqform ::= CONSULTA_N:b DOS_PUNTOS VALOR_TEXTO_VISIBLE_CON_ESPACIO:a 
+		{:			
+			RESULT = new TokenParametro("\""+b.getTipoToken()+"\"", a.getLexema() ,b.getLinea(), b.getColumna());
+		:}
+	| CONSULTA_N:b DOS_PUNTOS VALOR_ITEMS_CON_ESPACIO:a 
+		{:			
+			RESULT = new TokenParametro("\""+b.getTipoToken()+"\"", a.getLexema() ,b.getLinea(), b.getColumna());
+		:}
+	;
+
+//parametros usuarios
+parametro_usuario ::= USUARIO:a DOS_PUNTOS valores_usuario_id:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_password ::= PASSWORD:a DOS_PUNTOS valores_password:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_fecha_creacion ::= FECHA_CREACION:a DOS_PUNTOS valores_fecha:b 		  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_usuario_antiguo ::= USUARIO_ANTIGUO:a DOS_PUNTOS valores_usuario_id:b   {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_usuario_nuevo ::= USUARIO_NUEVO:a DOS_PUNTOS valores_usuario_id:b 	  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_nuevo_password ::= NUEVO_PASSWORD:a DOS_PUNTOS valores_password:b 	  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_fecha_modificacion ::= FECHA_MODIFICACION:a DOS_PUNTOS valores_fecha:b  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+//parametros formularios
+parametro_id ::= ID:a DOS_PUNTOS valores_id:b 									  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_titulo ::= TITULO:a DOS_PUNTOS valores_texto_visible:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_nombre ::= NOMBRE:a DOS_PUNTOS valores_texto_visible:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_tema ::=  TEMA:a DOS_PUNTOS valores_tema:b 					          {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_usuario_creacion ::= USUARIO_CREACION:a DOS_PUNTOS valores_usuario_id:b {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_formulario_id ::= FORMULARIO:a DOS_PUNTOS valores_id:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_nombre_campo ::= NOMBRE_CAMPO:a DOS_PUNTOS valores_password:b 	      {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_clase ::= CLASE:a DOS_PUNTOS valores_clase:b 							  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_indice ::= INDICE:a DOS_PUNTOS valores_digito:b 						  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_texto_visible ::= TEXTO_VISIBLE:a DOS_PUNTOS valores_texto_visible:b 	  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_alineacion ::= ALINEACION:a DOS_PUNTOS valores_alineacion:b 			  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_requerido ::= REQUERIDO:a DOS_PUNTOS valores_requerido:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_opciones ::= OPCIONES:a DOS_PUNTOS valores_opciones:b 			      {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_filas ::= FILAS:a DOS_PUNTOS valores_digito:b 						  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_columnas ::= COLUMNAS:a DOS_PUNTOS valores_digito:b 					  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_URL ::= URL:a DOS_PUNTOS valores_texto_visible:b                        {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+//VALORES PARAMETROS
+valores_id ::= VALOR_ID:a 		{: RESULT = a; :};
+valores_fecha ::= VALOR_FECHA:a {: RESULT = a; :};
+valores_digito ::= DIGITO:a 	{: RESULT = a; :};
+valores_tema ::= DARK:a 		{: RESULT = a; :}
+	| BLUE:a 					{: RESULT = a; :}
+	| WHITE:a 					{: RESULT = a; :};
+valores_clase ::= CAMPO_TEXTO:a {: RESULT = a; :}
+	| AREA_TEXTO:a 				{: RESULT = a; :}
+	| CHECKBOX:a 				{: RESULT = a; :}
+	| RADIO:a 					{: RESULT = a; :}
+	| FICHERO:a 				{: RESULT = a; :}
+	| IMAGEN:a 					{: RESULT = a; :}
+	| COMBO:a 					{: RESULT = a; :}
+	| BOTON:a 					{: RESULT = a; :};
+valores_alineacion ::= CENTRO:a {: RESULT = a; :}
+	| DERECHA:a 				{: RESULT = a; :}
+	| IZQUIERDA:a 				{: RESULT = a; :}
+	| JUSTIFICAR:a 				{: RESULT = a; :};
+valores_requerido ::= SI:a 		{: RESULT = a; :}
+	| NO:a 						{: RESULT = a; :};
+
+/*
+	Usuario Id: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos		
+		5. Items sin espacio
+		6. Cadenas pertenecientes a palabras reservadas
+*/
+valores_usuario_id ::= VALOR_PASSWORD:a {: RESULT = a; :}
+	| DIGITO:a 							{: RESULT = a; :}
+	| VALOR_FECHA:a 					{: RESULT = a; :}
+	| VALOR_ID:a 						{: RESULT = a; :}
+	| VALOR_ITEMS_SIN_ESPACIO:a 		{: RESULT = a; :}
+	| valores_reservados:a 				{: RESULT = a; :};
+/*
+	Password: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos		
+		5. Items sin espacio
+		6. Cadenas pertenecientes a palabras reservadas
+*/
+valores_password ::= VALOR_PASSWORD:a   {: RESULT = a; :}
+	| DIGITO:a 						    {: RESULT = a; :}
+	| VALOR_FECHA:a 					{: RESULT = a; :}
+	| VALOR_ID:a 						{: RESULT = a; :}
+	| VALOR_ITEMS_SIN_ESPACIO:a 		{: RESULT = a; :}
+	| valores_reservados:a 				{: RESULT = a; :};
+/*
+	Item: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos
+		5. Numeros, letrasa, simbolos, espacios
+		6. Cadenas pertenecientes a palabras reservadas
+*/
+valores_opciones ::= VALOR_ITEMS_CON_ESPACIO:a  {: RESULT = a; :} 
+	| VALOR_ITEMS_SIN_ESPACIO:a 				{: RESULT = a; :}
+	| DIGITO:a 									{: RESULT = a; :}
+	| VALOR_FECHA:a 							{: RESULT = a; :}
+	| VALOR_ID:a 								{: RESULT = a; :}
+	| valores_reservados:a 						{: RESULT = a; :};
+	//acepta todos los valores reservados
+/*
+	Texto visible: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos
+		5. Numeros, letrasa, simbolos, espacios y el signo or (|)
+		6. Puede terminar en el signo or (|)
+*/
+valores_texto_visible ::= VALOR_TEXTO_VISIBLE_CON_ESPACIO:a {: RESULT = a; :}
+	| VALOR_ITEMS_CON_ESPACIO:a 							{: RESULT = a; :}
+	| valores_password:a 									{: RESULT = a; :};
+	//acepta todos los valores posibles para un item, quien a su vez acepta los valores posibles para passwords
+
+/*
+	Valores de palabras reservadas
+*/
+	//SOLICITUDES
+valores_reservados ::= CREAR_USUARIO:a  {: RESULT = a; :}
+	| MODIFICAR_USUARIO:a 				{: RESULT = a; :}
+	| ELIMINAR_USUARIO:a 				{: RESULT = a; :}
+	| LOGIN_USUARIO:a 					{: RESULT = a; :}
+	| CREDENCIALES_USUARIO:a 			{: RESULT = a; :}
+	//PARAMETROS
+	| USUARIO:a 						{: RESULT = a; :}
+	| PASSWORD:a 						{: RESULT = a; :}
+	| USUARIO_ANTIGUO:a 				{: RESULT = a; :}
+	| USUARIO_NUEVO:a 					{: RESULT = a; :}
+	| NUEVO_PASSWORD:a 					{: RESULT = a; :}
+	| FECHA_MODIFICACION:a 				{: RESULT = a; :}
+	//FORMULARIOS
+	| NUEVO_FORMULARIO:a 				{: RESULT = a; :}
+	| ELIMINAR_FORMULARIO:a 			{: RESULT = a; :}
+	| MODIFICAR_FORMULARIO:a 			{: RESULT = a; :}
+	| PARAMETROS_FORMULARIO:a 			{: RESULT = a; :}
+	//PARAMETROS FORMULARIOS
+	| ID:a 								{: RESULT = a; :}
+	| TITULO:a 							{: RESULT = a; :}
+	| NOMBRE:a 							{: RESULT = a; :}
+	| TEMA:a 							{: RESULT = a; :}
+	| USUARIO_CREACION:a 				{: RESULT = a; :}
+	| FECHA_CREACION:a 					{: RESULT = a; :}
+	//PARAMETROS TEMA
+	| DARK:a 							{: RESULT = a; :}
+	| BLUE:a 							{: RESULT = a; :}
+	| WHITE:a 							{: RESULT = a; :}
+	//SOLICITUDES PARA COMPONENTES
+	| AGREGAR_COMPONENTE:a 				{: RESULT = a; :}
+	| MODIFICAR_COMPONENTE:a 			{: RESULT = a; :}
+	| ELIMINAR_COMPONENTE:a 			{: RESULT = a; :}
+	| PARAMETROS_COMPONENTE:a 			{: RESULT = a; :}
+	//PARAMETROS COMPONENTES
+	| NOMBRE_CAMPO:a 					{: RESULT = a; :}
+	| FORMULARIO:a 						{: RESULT = a; :}
+	| CLASE:a 							{: RESULT = a; :}
+	| INDICE:a 							{: RESULT = a; :}
+	| TEXTO_VISIBLE:a 					{: RESULT = a; :}
+	| ALINEACION:a 						{: RESULT = a; :}
+	| REQUERIDO:a 						{: RESULT = a; :}
+	| OPCIONES:a 						{: RESULT = a; :}
+	| FILAS:a 							{: RESULT = a; :}
+	| COLUMNAS:a 						{: RESULT = a; :}
+	| URL:a 							{: RESULT = a; :}
+	//CLASE PARAMETROS
+	| CAMPO_TEXTO:a 					{: RESULT = a; :}
+	| AREA_TEXTO:a 						{: RESULT = a; :}
+	| CHECKBOX:a 						{: RESULT = a; :}
+	| RADIO:a 							{: RESULT = a; :}
+	| FICHERO:a 						{: RESULT = a; :}
+	| IMAGEN:a 							{: RESULT = a; :}
+	| COMBO:a 							{: RESULT = a; :}
+	| BOTON:a 							{: RESULT = a; :}
+	//ALINEACION PARAMETROS
+	| CENTRO:a 							{: RESULT = a; :}
+	| IZQUIERDA:a 						{: RESULT = a; :}
+	| DERECHA:a							{: RESULT = a; :}
+	| JUSTIFICAR:a 						{: RESULT = a; :}
+	//REQUERIDO PARAMETROS
+	| SI:a 								{: RESULT = a; :}
+	| NO:a 								{: RESULT = a; :}
+	//SQFORM
+	| CONSULTAR_DATOS:a 				{: RESULT = a; :}
+	| CONSULTAS:a						{: RESULT = a; :}
+	| CONSULTA_N:a						{: RESULT = a; :}
+	;
+
+apertura_solicitud_i ::= MENOR EXCLAMACION INICIO_SOLICITUD DOS_PUNTOS
+	| MENOR EXCLAMACION INICIO_SOLICITUD error 
+		{: 
+			String mensaje = "Se esperaba el token \"DOS_PUNTOS\" = ':'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| MENOR EXCLAMACION error DOS_PUNTOS
+		{: 
+			String mensaje = "Se esperaba el token \"INICIO_SOLICITUD\" = 'ini_solicitud'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| MENOR error INICIO_SOLICITUD
+		{: 
+			String mensaje = "Se esperaba el token \"EXCLAMACION\" = '!'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:};
+	/*| error EXCLAMACION
+		{: 
+			String mensaje = "Se esperaba el token \"MENOR\" = '<'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:};
+	| error 
+		{: 
+			String mensaje = "Se esperaba el token \"{ ! ini_solicitud :\", revise la entrada, tiene mas de un token invalido";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:};*/
+apertura_solicitud_ii ::= MAYOR LLAVES_INICIO/*
+	| error LLAVES_INICIO 
+		{: 
+			String mensaje = "Se esperaba el token \"MAYOR\" = '>'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| MAYOR error 
+		{: 
+			String mensaje = "Se esperaba el token \"LLAVES_INICIO\" = '{'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}*/
+	| error 
+		{: 
+			String mensaje = "Se esperaba el token \"> {\", revise la entrada, tiene mas de un token invalido";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:};
+apertura_bloque_parametros ::= DOS_PUNTOS CORCHETES_INICIO LLAVES_INICIO:a {: RESULT = a; :}/*
+	| error CORCHETES_INICIO 
+		{: 
+			String mensaje = "Se esperaba el token \"DOS_PUNTOS\" = ':'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| DOS_PUNTOS error LLAVES_INICIO 
+		{: 
+			String mensaje = "Se esperaba el token \"CORCHETES_INICIO\" = '['";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| DOS_PUNTOS CORCHETES_INICIO error 
+		{: 
+			String mensaje = "Se esperaba el token \"LLAVES_INICIO\" = '{'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}*/
+	| error 
+		{: 
+			String mensaje = "Se esperaba el token \": [ {\", revise la entrada, tiene mas de un token invalido";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:};
+finalizacion_solicitud ::= LLAVES_FIN:a CORCHETES_FIN LLAVES_FIN MENOR FIN_SOLICITUD EXCLAMACION MAYOR {: RESULT = a; :}/*
+	|error CORCHETES_FIN 
+		{: 
+			String mensaje = "Se esperaba el token \"LLAVES_FIN\" = '}'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| LLAVES_FIN error LLAVES_FIN
+		{: 
+			String mensaje = "Se esperaba el token \"CORCHETES_FIN\" = ']'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| LLAVES_FIN:a CORCHETES_FIN error MENOR 
+		{: 
+			String mensaje = "Se esperaba el token \"LLAVES_FIN\" = '}'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| LLAVES_FIN:a CORCHETES_FIN LLAVES_FIN error FIN_SOLICITUD 
+		{: 
+			String mensaje = "Se esperaba el token \"MENOR\" = '<'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| LLAVES_FIN:a CORCHETES_FIN LLAVES_FIN MENOR error EXCLAMACION 
+		{: 
+			String mensaje = "Se esperaba el token \"FIN_SOLICITUD\" = 'fin_solicitud'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| LLAVES_FIN:a CORCHETES_FIN LLAVES_FIN MENOR FIN_SOLICITUD error MAYOR
+		{: 
+			String mensaje = "Se esperaba el token \"EXCLAMACION\" = '!'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}
+	| LLAVES_FIN:a CORCHETES_FIN LLAVES_FIN MENOR FIN_SOLICITUD EXCLAMACION error 
+		{: 
+			String mensaje = "Se esperaba el token \"MAYOR\" = '>'";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:}*/
+	| error 
+		{: 
+			String mensaje = "Se esperaba el token \"} ] } < fin_solicitud ! >\", revise la entrada, tiene mas de un token invalido";			
+			funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Se esperaba otro token", mensaje, 0, 0); 	
+		:};
+
+

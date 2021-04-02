@@ -400,9 +400,39 @@ public class FuncionesComponentes {
                     
                 }                
             }
+        }        
+        return existencia;
+    }
+    
+    public ArrayList<String> verificarRepitenciaIdsComponentes(Formulario formularioAux){
+        ArrayList<String> idComponentes = new ArrayList();
+        ArrayList<String> idRepetidos = new ArrayList();
+        
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nREPITENCIAS: ");
+        try{
+            if(formularioAux != null && formularioAux.getListadoComponentes().size() > 0){
+                System.out.println("componentes: "+formularioAux.getListadoComponentes().size());
+                for(Componente componenteAuxiliar: formularioAux.getListadoComponentes()){
+                    String idComponenteAux = componenteAuxiliar.getIdComponente().replaceAll("\"", "").trim();
+                     System.out.println(""
+                             + "Compo: "+idComponenteAux);
+                    if(idComponentes.contains(idComponenteAux)){//si ya lo contiene significa que esta repeteido
+                        if(idRepetidos.contains(idComponenteAux) == false){//si aun no esta agregado al listado de ids repetidos lo agregamos
+                            idRepetidos.add(idComponenteAux);
+                            System.out.println("\n"+idComponenteAux);
+                            System.out.println("Se agrega al listado con repitencia");
+                        }
+                    }else{
+                        System.out.println("Se agrega al listado sin errores");
+                        idComponentes.add(idComponenteAux);
+                    }                 
+                }
+            }
+        }catch(Exception ex){
+            System.out.println("Error, no se pudo comparar los elementos de los componentes");
         }
         
-        return existencia;
+        return idRepetidos;
     }
     
     /**

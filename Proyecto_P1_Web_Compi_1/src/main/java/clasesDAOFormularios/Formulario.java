@@ -6,6 +6,7 @@
 package clasesDAOFormularios;
 
 import clasesDAO.BloqueParametros;
+import clasesDAO.TokenParametro;
 import java.util.ArrayList;
 
 /**
@@ -38,25 +39,25 @@ public class Formulario {
         String codigoAlmacenamiento = "{\n";
         
         if(id.equals("") == false){
-            codigoAlmacenamiento += "\"ID_FORMULARIO\" : "+id+",\n";
+            codigoAlmacenamiento += "\t\"ID_FORMULARIO\" : "+id+",\n";
         }
         if(titulo.equals("") == false){
-            codigoAlmacenamiento += "\"TITULO\" : "+titulo+",\n";
+            codigoAlmacenamiento += "\t\"TITULO\" : "+titulo+",\n";
         }
         if(nombre.equals("") == false){
-            codigoAlmacenamiento += "\"NOMBRE\" : "+nombre+",\n";
+            codigoAlmacenamiento += "\t\"NOMBRE\" : "+nombre+",\n";
         }
         if(tema.equals("") == false){
-            codigoAlmacenamiento += "\"TEMA\" : "+tema+",\n";
+            codigoAlmacenamiento += "\t\"TEMA\" : "+tema+",\n";
         }
         if(publico.equals("") == false){
-            codigoAlmacenamiento += "\"PUBLICO\" : "+publico+",\n";
+            codigoAlmacenamiento += "\t\"PUBLICO\" : "+publico+",\n";
         }
         if(fechaCreacion.equals("") == false){
-            codigoAlmacenamiento += "\"FECHA_CREACION\" : "+fechaCreacion+",\n";
+            codigoAlmacenamiento += "\t\"FECHA_CREACION\" : "+fechaCreacion+",\n";
         }
         if(usuarioCreacion.equals("") == false){
-            codigoAlmacenamiento += "\"USUARIO_CREACION\" : "+usuarioCreacion+",\n";
+            codigoAlmacenamiento += "\t\"USUARIO_CREACION\" : "+usuarioCreacion+",\n";
         }
         if(listadoComponentes != null && listadoComponentes.size() > 0){
              codigoAlmacenamiento += generarCodigoEstructura() + ",\n";
@@ -73,11 +74,66 @@ public class Formulario {
         return codigoAlmacenamiento;
     }
     
+    public String generarCodigoExportado(){        
+        String codigoAlmacenamiento = "{\n";
+        
+        if(id.equals("") == false){
+            codigoAlmacenamiento += "\t\"ID_FORMULARIO\" : "+id+",\n";
+        }
+        if(titulo.equals("") == false){
+            codigoAlmacenamiento += "\t\"TITULO\" : "+titulo+",\n";
+        }
+        if(nombre.equals("") == false){
+            codigoAlmacenamiento += "\t\"NOMBRE\" : "+nombre+",\n";
+        }
+        if(tema.equals("") == false){
+            codigoAlmacenamiento += "\t\"TEMA\" : "+tema+",\n";
+        }
+        if(listadoComponentes != null && listadoComponentes.size() > 0){
+             codigoAlmacenamiento += generarCodigoEstructuraExportado() + ",\n";
+        }       
+        
+        if(codigoAlmacenamiento.equals("{\n") == false){//tiene datos
+            int longitud = codigoAlmacenamiento.length() - 2;
+            codigoAlmacenamiento = codigoAlmacenamiento.substring(0, longitud); //removemos la ultima coma y el salto de linea
+        }        
+
+       codigoAlmacenamiento = codigoAlmacenamiento + "\n}\n";
+        
+        return "new.formulario(\n"+codigoAlmacenamiento+")";
+    }
+    
+    public BloqueParametros generarBloqueParametros(){
+        BloqueParametros bloqueParam = new BloqueParametros("\"IMPORTAR_FORMULARIO\"", "\"PARAMETROS_FORMULARIO\"");
+        
+        
+        if(id.equals("") == false){
+            bloqueParam.insertarParametro("\"ID_FORMULARIO\"", id); 
+        }
+        if(titulo.equals("") == false){
+            bloqueParam.insertarParametro("\"TITULO\"", titulo); 
+        }
+        if(nombre.equals("") == false){
+            bloqueParam.insertarParametro("\"NOMBRE\"", nombre); 
+        }
+        if(tema.equals("") == false){
+            bloqueParam.insertarParametro("\"TEMA\"", tema); 
+        }
+        if(publico.equals("") == false){
+            bloqueParam.insertarParametro("\"PUBLICO\"", publico); 
+        }
+        if(listadoComponentes != null && listadoComponentes.size() > 0){
+             agregarParametrosEstructura(bloqueParam);
+        }
+        
+        return bloqueParam;
+    }
+    
     public String generarCodigoEstructura(){
         String codigoEstructura = "";
         
         if(listadoComponentes != null && listadoComponentes.size() > 0){
-            codigoEstructura +=  "\"ESTRUCTURA\" : (\n";
+            codigoEstructura +=  "\t\"ESTRUCTURA\" : (\n";
             
             for(Componente componenteAux: listadoComponentes){
                 codigoEstructura += componenteAux.generarCodigoAlmacenamiento() + ",\n";
@@ -88,10 +144,42 @@ public class Formulario {
                 codigoEstructura = codigoEstructura.substring(0, longitud); //removemos la ultima coma y el salto de linea
             }  
             
-            codigoEstructura +=  "\n)\n";
+            codigoEstructura +=  "\t\n\t)\n";
         } 
        
         return codigoEstructura;
+    }
+    
+    public String generarCodigoEstructuraExportado(){
+        String codigoEstructura = "";
+        
+        if(listadoComponentes != null && listadoComponentes.size() > 0){
+            codigoEstructura +=  "\t\"ESTRUCTURA\" : (\n";
+            
+            for(Componente componenteAux: listadoComponentes){
+                codigoEstructura += componenteAux.generarCodigoExportado() + ",\n";
+                
+            }
+            if(codigoEstructura.equals("") == false){//tiene datos
+                int longitud = codigoEstructura.length() - 2;
+                codigoEstructura = codigoEstructura.substring(0, longitud); //removemos la ultima coma y el salto de linea
+            }  
+            
+            codigoEstructura +=  "\t\n\t)\n";
+        } 
+       
+        return codigoEstructura;
+    }
+    
+    public BloqueParametros agregarParametrosEstructura(BloqueParametros bloqueParam){
+        
+        if(listadoComponentes != null && listadoComponentes.size() > 0){
+            for(Componente componenteAux: listadoComponentes){
+                bloqueParam.insertarParametro("\"ID_COMPONENTE\"", componenteAux.getIdComponente());                
+            }
+        } 
+       
+        return bloqueParam;
     }
     
     /**

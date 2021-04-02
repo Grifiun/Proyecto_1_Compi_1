@@ -42,20 +42,20 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\052\000\002\002\004\000\002\002\003\000\002\003" +
+    "\000\054\000\002\002\004\000\002\002\003\000\002\003" +
     "\011\000\002\003\012\000\002\003\003\000\002\004\004" +
     "\000\002\004\005\000\002\004\003\000\002\005\005\000" +
     "\002\005\003\000\002\005\003\000\002\006\003\000\002" +
     "\006\003\000\002\006\003\000\002\006\003\000\002\006" +
     "\003\000\002\006\003\000\002\006\003\000\002\006\003" +
-    "\000\002\007\006\000\002\010\005\000\002\010\005\000" +
-    "\002\010\004\000\002\010\003\000\002\014\005\000\002" +
-    "\014\005\000\002\014\005\000\002\014\005\000\002\014" +
-    "\005\000\002\014\005\000\002\014\003\000\002\014\003" +
-    "\000\002\012\003\000\002\012\003\000\002\012\003\000" +
-    "\002\012\003\000\002\012\003\000\002\012\003\000\002" +
-    "\012\003\000\002\012\003\000\002\012\003\000\002\012" +
-    "\003" });
+    "\000\002\006\003\000\002\007\006\000\002\007\003\000" +
+    "\002\010\005\000\002\010\005\000\002\010\004\000\002" +
+    "\010\003\000\002\012\005\000\002\012\005\000\002\012" +
+    "\005\000\002\012\005\000\002\012\005\000\002\012\005" +
+    "\000\002\012\003\000\002\012\003\000\002\011\003\000" +
+    "\002\011\003\000\002\011\003\000\002\011\003\000\002" +
+    "\011\003\000\002\011\003\000\002\011\003\000\002\011" +
+    "\003\000\002\011\003\000\002\011\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -63,77 +63,79 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\101\000\006\003\004\022\007\001\002\000\004\002" +
-    "\ufffd\001\002\000\004\002\103\001\002\000\004\002\000" +
+    "\000\103\000\006\003\004\022\007\001\002\000\004\002" +
+    "\ufffd\001\002\000\004\002\105\001\002\000\004\002\000" +
     "\001\002\000\004\023\010\001\002\000\004\024\011\001" +
     "\002\000\004\012\012\001\002\000\004\007\013\001\002" +
-    "\000\022\017\014\020\024\021\023\022\022\023\020\024" +
-    "\016\025\017\030\015\001\002\000\006\003\ufff5\004\ufff5" +
-    "\001\002\000\006\003\ufff6\004\ufff6\001\002\000\006\003" +
-    "\ufff0\004\ufff0\001\002\000\006\003\uffef\004\uffef\001\002" +
-    "\000\006\003\ufff1\004\ufff1\001\002\000\006\003\025\004" +
-    "\027\001\002\000\006\003\ufff2\004\ufff2\001\002\000\006" +
-    "\003\ufff3\004\ufff3\001\002\000\006\003\ufff4\004\ufff4\001" +
-    "\002\000\006\002\ufffa\025\ufffa\001\002\000\006\002\uffff" +
-    "\025\051\001\002\000\032\003\037\005\035\017\032\020" +
-    "\045\021\041\022\040\023\034\024\031\025\033\026\042" +
-    "\027\044\030\030\001\002\000\026\005\uffe1\006\uffe1\007" +
-    "\uffe1\010\uffe1\011\uffe1\013\uffe1\014\uffe1\015\uffe1\017\uffe1" +
-    "\020\uffe1\001\002\000\026\005\uffdb\006\uffdb\007\uffdb\010" +
-    "\uffdb\011\uffdb\013\uffdb\014\uffdb\015\uffdb\017\uffdb\020\uffdb" +
-    "\001\002\000\026\005\uffe0\006\uffe0\007\uffe0\010\uffe0\011" +
-    "\uffe0\013\uffe0\014\uffe0\015\uffe0\017\uffe0\020\uffe0\001\002" +
-    "\000\026\005\uffda\006\uffda\007\uffda\010\uffda\011\uffda\013" +
-    "\uffda\014\uffda\015\uffda\017\uffda\020\uffda\001\002\000\026" +
-    "\005\uffdc\006\uffdc\007\uffdc\010\uffdc\011\uffdc\013\uffdc\014" +
-    "\uffdc\015\uffdc\017\uffdc\020\uffdc\001\002\000\006\002\ufffc" +
-    "\025\ufffc\001\002\000\006\005\ufff8\010\ufff8\001\002\000" +
-    "\006\005\ufff7\010\ufff7\001\002\000\026\005\uffdd\006\uffdd" +
-    "\007\uffdd\010\uffdd\011\uffdd\013\uffdd\014\uffdd\015\uffdd\017" +
-    "\uffdd\020\uffdd\001\002\000\012\005\uffde\010\uffde\017\uffde" +
-    "\020\uffde\001\002\000\026\005\uffd9\006\uffd9\007\uffd9\010" +
-    "\uffd9\011\uffd9\013\uffd9\014\uffd9\015\uffd9\017\uffd9\020\uffd9" +
-    "\001\002\000\006\005\047\010\046\001\002\000\026\005" +
-    "\uffd8\006\uffd8\007\uffd8\010\uffd8\011\uffd8\013\uffd8\014\uffd8" +
-    "\015\uffd8\017\uffd8\020\uffd8\001\002\000\026\005\uffdf\006" +
-    "\uffdf\007\uffdf\010\uffdf\011\uffdf\013\uffdf\014\uffdf\015\uffdf" +
-    "\017\uffdf\020\uffdf\001\002\000\026\017\032\020\045\021" +
-    "\041\022\040\023\034\024\031\025\033\026\042\027\044" +
-    "\030\030\001\002\000\006\002\ufffb\025\ufffb\001\002\000" +
-    "\006\005\ufff9\010\ufff9\001\002\000\004\004\053\001\002" +
-    "\000\004\002\ufffe\001\002\000\030\003\056\017\032\020" +
-    "\045\021\057\022\040\023\034\024\031\025\033\026\042" +
-    "\027\044\030\030\001\002\000\010\005\102\017\062\020" +
-    "\063\001\002\000\024\005\uffe3\006\070\007\071\011\067" +
-    "\013\066\014\072\015\073\017\uffe3\020\uffe3\001\002\000" +
-    "\010\005\uffe2\017\uffe2\020\uffe2\001\002\000\046\003\056" +
-    "\005\uffde\006\uffde\007\uffde\011\uffde\013\uffde\014\uffde\015" +
-    "\uffde\017\032\020\045\021\057\022\040\023\034\024\031" +
-    "\025\033\026\042\027\044\030\030\001\002\000\010\005" +
-    "\uffea\017\uffea\020\uffea\001\002\000\010\005\uffeb\017\062" +
-    "\020\063\001\002\000\030\003\056\017\032\020\045\021" +
-    "\057\022\040\023\034\024\031\025\033\026\042\027\044" +
-    "\030\030\001\002\000\030\003\056\017\032\020\045\021" +
-    "\057\022\040\023\034\024\031\025\033\026\042\027\044" +
-    "\030\030\001\002\000\010\005\uffec\017\uffec\020\uffec\001" +
-    "\002\000\010\005\uffed\017\uffed\020\063\001\002\000\026" +
-    "\017\032\020\045\021\041\022\040\023\034\024\031\025" +
-    "\033\026\042\027\044\030\030\001\002\000\026\017\032" +
-    "\020\045\021\041\022\040\023\034\024\031\025\033\026" +
-    "\042\027\044\030\030\001\002\000\026\017\032\020\045" +
-    "\021\041\022\040\023\034\024\031\025\033\026\042\027" +
-    "\044\030\030\001\002\000\026\017\032\020\045\021\041" +
-    "\022\040\023\034\024\031\025\033\026\042\027\044\030" +
-    "\030\001\002\000\026\017\032\020\045\021\041\022\040" +
-    "\023\034\024\031\025\033\026\042\027\044\030\030\001" +
-    "\002\000\026\017\032\020\045\021\041\022\040\023\034" +
-    "\024\031\025\033\026\042\027\044\030\030\001\002\000" +
-    "\010\005\uffe7\017\uffe7\020\uffe7\001\002\000\010\005\uffe6" +
-    "\017\uffe6\020\uffe6\001\002\000\010\005\uffe9\017\uffe9\020" +
-    "\uffe9\001\002\000\010\005\uffe8\017\uffe8\020\uffe8\001\002" +
-    "\000\010\005\uffe4\017\uffe4\020\uffe4\001\002\000\010\005" +
-    "\uffe5\017\uffe5\020\uffe5\001\002\000\004\002\uffee\001\002" +
-    "\000\004\002\001\001\002" });
+    "\000\024\003\022\017\014\020\025\021\024\022\023\023" +
+    "\020\024\016\025\017\030\015\001\002\000\006\003\ufff5" +
+    "\004\ufff5\001\002\000\006\003\ufff6\004\ufff6\001\002\000" +
+    "\006\003\ufff0\004\ufff0\001\002\000\006\003\uffef\004\uffef" +
+    "\001\002\000\006\003\ufff1\004\ufff1\001\002\000\006\003" +
+    "\026\004\030\001\002\000\006\003\uffee\004\uffee\001\002" +
+    "\000\006\003\ufff2\004\ufff2\001\002\000\006\003\ufff3\004" +
+    "\ufff3\001\002\000\006\003\ufff4\004\ufff4\001\002\000\010" +
+    "\002\ufffa\003\ufffa\025\ufffa\001\002\000\010\002\uffff\003" +
+    "\053\025\052\001\002\000\032\003\040\005\036\017\031" +
+    "\020\046\021\044\022\041\023\035\024\033\025\034\026" +
+    "\042\027\045\030\032\001\002\000\026\005\uffde\006\uffde" +
+    "\007\uffde\010\uffde\011\uffde\013\uffde\014\uffde\015\uffde\017" +
+    "\uffde\020\uffde\001\002\000\026\005\uffdf\006\uffdf\007\uffdf" +
+    "\010\uffdf\011\uffdf\013\uffdf\014\uffdf\015\uffdf\017\uffdf\020" +
+    "\uffdf\001\002\000\026\005\uffd9\006\uffd9\007\uffd9\010\uffd9" +
+    "\011\uffd9\013\uffd9\014\uffd9\015\uffd9\017\uffd9\020\uffd9\001" +
+    "\002\000\026\005\uffd8\006\uffd8\007\uffd8\010\uffd8\011\uffd8" +
+    "\013\uffd8\014\uffd8\015\uffd8\017\uffd8\020\uffd8\001\002\000" +
+    "\026\005\uffda\006\uffda\007\uffda\010\uffda\011\uffda\013\uffda" +
+    "\014\uffda\015\uffda\017\uffda\020\uffda\001\002\000\010\002" +
+    "\ufffc\003\ufffc\025\ufffc\001\002\000\006\005\ufff8\010\ufff8" +
+    "\001\002\000\006\005\ufff7\010\ufff7\001\002\000\026\005" +
+    "\uffdb\006\uffdb\007\uffdb\010\uffdb\011\uffdb\013\uffdb\014\uffdb" +
+    "\015\uffdb\017\uffdb\020\uffdb\001\002\000\026\005\uffd7\006" +
+    "\uffd7\007\uffd7\010\uffd7\011\uffd7\013\uffd7\014\uffd7\015\uffd7" +
+    "\017\uffd7\020\uffd7\001\002\000\006\005\050\010\047\001" +
+    "\002\000\012\005\uffdc\010\uffdc\017\uffdc\020\uffdc\001\002" +
+    "\000\026\005\uffd6\006\uffd6\007\uffd6\010\uffd6\011\uffd6\013" +
+    "\uffd6\014\uffd6\015\uffd6\017\uffd6\020\uffd6\001\002\000\026" +
+    "\005\uffdd\006\uffdd\007\uffdd\010\uffdd\011\uffdd\013\uffdd\014" +
+    "\uffdd\015\uffdd\017\uffdd\020\uffdd\001\002\000\026\017\031" +
+    "\020\046\021\044\022\041\023\035\024\033\025\034\026" +
+    "\042\027\045\030\032\001\002\000\010\002\ufffb\003\ufffb" +
+    "\025\ufffb\001\002\000\006\005\ufff9\010\ufff9\001\002\000" +
+    "\004\004\055\001\002\000\004\002\uffec\001\002\000\004" +
+    "\002\ufffe\001\002\000\030\003\060\017\031\020\046\021" +
+    "\061\022\041\023\035\024\033\025\034\026\042\027\045" +
+    "\030\032\001\002\000\010\005\104\017\064\020\065\001" +
+    "\002\000\024\005\uffe1\006\072\007\073\011\071\013\070" +
+    "\014\074\015\075\017\uffe1\020\uffe1\001\002\000\010\005" +
+    "\uffe0\017\uffe0\020\uffe0\001\002\000\046\003\060\005\uffdc" +
+    "\006\uffdc\007\uffdc\011\uffdc\013\uffdc\014\uffdc\015\uffdc\017" +
+    "\031\020\046\021\061\022\041\023\035\024\033\025\034" +
+    "\026\042\027\045\030\032\001\002\000\010\005\uffe8\017" +
+    "\uffe8\020\uffe8\001\002\000\010\005\uffe9\017\064\020\065" +
+    "\001\002\000\030\003\060\017\031\020\046\021\061\022" +
+    "\041\023\035\024\033\025\034\026\042\027\045\030\032" +
+    "\001\002\000\030\003\060\017\031\020\046\021\061\022" +
+    "\041\023\035\024\033\025\034\026\042\027\045\030\032" +
+    "\001\002\000\010\005\uffea\017\uffea\020\uffea\001\002\000" +
+    "\010\005\uffeb\017\uffeb\020\065\001\002\000\026\017\031" +
+    "\020\046\021\044\022\041\023\035\024\033\025\034\026" +
+    "\042\027\045\030\032\001\002\000\026\017\031\020\046" +
+    "\021\044\022\041\023\035\024\033\025\034\026\042\027" +
+    "\045\030\032\001\002\000\026\017\031\020\046\021\044" +
+    "\022\041\023\035\024\033\025\034\026\042\027\045\030" +
+    "\032\001\002\000\026\017\031\020\046\021\044\022\041" +
+    "\023\035\024\033\025\034\026\042\027\045\030\032\001" +
+    "\002\000\026\017\031\020\046\021\044\022\041\023\035" +
+    "\024\033\025\034\026\042\027\045\030\032\001\002\000" +
+    "\026\017\031\020\046\021\044\022\041\023\035\024\033" +
+    "\025\034\026\042\027\045\030\032\001\002\000\010\005" +
+    "\uffe5\017\uffe5\020\uffe5\001\002\000\010\005\uffe4\017\uffe4" +
+    "\020\uffe4\001\002\000\010\005\uffe7\017\uffe7\020\uffe7\001" +
+    "\002\000\010\005\uffe6\017\uffe6\020\uffe6\001\002\000\010" +
+    "\005\uffe2\017\uffe2\020\uffe2\001\002\000\010\005\uffe3\017" +
+    "\uffe3\020\uffe3\001\002\000\004\002\uffed\001\002\000\004" +
+    "\002\001\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -141,31 +143,31 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\101\000\006\002\004\003\005\001\001\000\002\001" +
+    "\000\103\000\006\002\004\003\005\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\004\006\020\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\004\004\025\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\004\007\051\001" +
-    "\001\000\006\005\042\012\035\001\001\000\002\001\001" +
+    "\004\004\026\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\004\007\053\001\001\000\006\005\042\011\036\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\004\012\047\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\010\010\053" +
-    "\012\054\014\057\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\010\010\060\012\054\014\057" +
-    "\001\001\000\002\001\001\000\002\001\001\000\010\010" +
-    "\064\012\054\014\057\001\001\000\010\010\063\012\054" +
-    "\014\057\001\001\000\002\001\001\000\002\001\001\000" +
-    "\004\012\100\001\001\000\004\012\077\001\001\000\004" +
-    "\012\076\001\001\000\004\012\075\001\001\000\004\012" +
-    "\074\001\001\000\004\012\073\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\000\002\001\001\000\004\011\050\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\010\010\055\011\056\012\061\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\010\010\062\011\056\012\061\001\001\000\002\001" +
+    "\001\000\002\001\001\000\010\010\066\011\056\012\061" +
+    "\001\001\000\010\010\065\011\056\012\061\001\001\000" +
+    "\002\001\001\000\002\001\001\000\004\011\102\001\001" +
+    "\000\004\011\101\001\001\000\004\011\100\001\001\000" +
+    "\004\011\077\001\001\000\004\011\076\001\001\000\004" +
+    "\011\075\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001" });
+    "\001\001\000\002\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -209,11 +211,14 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
 	private FuncionesFormularios funcionesFormularios = new FuncionesFormularios();
 	private FuncionesComponentes funcionesComponentes = new FuncionesComponentes();	
 	private ArrayList<BloqueParametros> listadoSolicitudes = new ArrayList();
-	private ArrayList<TokenError> listadoErrores = new ArrayList();
 	FuncionesReporteria funcionesReporteria;
 	FuncionesOperadoresLogicos funcionesOperadoresLogicos = new FuncionesOperadoresLogicos();
 	private List<ArrayList<String>> valoresTablaFinal = new ArrayList();
+	private ArrayList<TokenError> listadoErroresSintacticos = new ArrayList();
 	private int cantidadRegistros = 0;
+	private int filaInicio = 0;
+    private int columnaInicio = 0;
+
 	//private List<ArrayList<Registro>> 
 	boolean formularioValido = false;
 	//Objetos
@@ -223,10 +228,10 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
 	public void syntax_error(Symbol a){
 		Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna		
 		String msgError = "Se esperaba: ";	
-		System.out.println("error de sintaxis: linea: "+tokenError.getLexema()+" "+tokenError.getLinea()+" columna: "+tokenError.getColumna());
+		System.out.println("error de sintaxis: linea: "+tokenError.getLexema()+" "+tokenError.getLinea() + filaInicio+" columna: "+tokenError.getColumna() + columnaInicio);
 		
-		int linea = tokenError.getLinea();
-		int columna = tokenError.getColumna();
+		int linea = tokenError.getLinea() + filaInicio;
+		int columna = tokenError.getColumna() + columnaInicio;
 
 		for(int i = 0; i < expected_token_ids().size(); i++){
 			//msgError = msgError + mensajes[expected_token_ids().get(i)];
@@ -235,21 +240,22 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
 			if(i < expected_token_ids().size() - 1)
 				msgError = msgError + ", ";			
 		}
-		tokenError = null;
 
-		funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Faltan tokens", msgError, linea, columna);
+
+		//funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Faltan tokens", msgError, linea, columna);
 		//System.out.println(msgError);
 		//recibe tipo error, lexema error, mensaje, linea, columna
-		//TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
-		//listadoErroresSintacticos.add(tokenErrorAux);
+		TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		listadoErroresSintacticos.add(tokenErrorAux);
 	}
 
 	public ArrayList<TokenError> getListadoErroresReporteria(){
-		return listadoErrores;
+		return listadoErroresSintacticos;
 	}
 
 	public void agregarError(String tipoError, String mensaje, Token tokenAux){
 		TokenError tokenError = new TokenError(tipoError, tokenAux.getLexema(), mensaje, tokenAux.getLinea(), tokenAux.getColumna());
+		listadoErroresSintacticos.add(tokenError);
 	}
 
 	public void agregarSolicitud(BloqueParametros bloqueAux){
@@ -258,13 +264,6 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
 
 	public ArrayList<BloqueParametros> getListadoSolicitudes(){
 		return this.listadoSolicitudes;
-	}
-
-	public void imprimirErrores(){
-		for(int i = 0; i < listadoErrores.size(); i++){
-			//ERROR
-		}
-		
 	}
 
 	public void inicializarFormulario(Formulario formularioAux){
@@ -284,6 +283,13 @@ public class ParserReporteria extends java_cup.runtime.lr_parser {
 	public List<ArrayList<String>> obtenerTablaDatosFinal(){
 		return valoresTablaFinal;
 	}
+
+    public void setFilaInicio(int fila){
+        filaInicio = fila;
+    }
+    public void setColumna(int columna){
+        columnaInicio = columna;
+    }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/
@@ -362,6 +368,7 @@ class CUP$ParserReporteria$actions {
 				System.out.println(" El formulario es valido y tiene registros");
 			}else{
 				System.out.println(" El formulario es invalido");
+				
 				agregarError("FORMULARIO INEXISTENTE", "El usuario no posee un formulario con id/nombre igual al que ingreso", a);
 			}
 			RESULT = tablaDatos;
@@ -664,7 +671,16 @@ class CUP$ParserReporteria$actions {
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 19: // sqform_bloque_parametros_where ::= WHERE CORCHETES_INICIO sqform_parametros_where_bloque CORCHETES_FIN 
+          case 19: // sqform_valores_identificador_formulario ::= error 
+            {
+              Token RESULT =null;
+
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_identificador_formulario",4, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+            }
+          return CUP$ParserReporteria$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 20: // sqform_bloque_parametros_where ::= WHERE CORCHETES_INICIO sqform_parametros_where_bloque CORCHETES_FIN 
             {
               ArrayList<Boolean> RESULT =null;
 		int estadosleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-1)).left;
@@ -687,7 +703,16 @@ class CUP$ParserReporteria$actions {
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 20: // sqform_parametros_where_bloque ::= sqform_parametros_where_bloque AND sqform_parametros_where_bloque 
+          case 21: // sqform_bloque_parametros_where ::= error 
+            {
+              ArrayList<Boolean> RESULT =null;
+		 System.out.println("Error en las comparaciones"); 
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_bloque_parametros_where",5, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+            }
+          return CUP$ParserReporteria$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 22: // sqform_parametros_where_bloque ::= sqform_parametros_where_bloque AND sqform_parametros_where_bloque 
             {
               ArrayList<Boolean> RESULT =null;
 		int estados1left = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -705,7 +730,7 @@ class CUP$ParserReporteria$actions {
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 21: // sqform_parametros_where_bloque ::= sqform_parametros_where_bloque OR sqform_parametros_where_bloque 
+          case 23: // sqform_parametros_where_bloque ::= sqform_parametros_where_bloque OR sqform_parametros_where_bloque 
             {
               ArrayList<Boolean> RESULT =null;
 		int estados1left = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -723,7 +748,7 @@ class CUP$ParserReporteria$actions {
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 22: // sqform_parametros_where_bloque ::= NOT sqform_parametros_where_bloque 
+          case 24: // sqform_parametros_where_bloque ::= NOT sqform_parametros_where_bloque 
             {
               ArrayList<Boolean> RESULT =null;
 		int estadosleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
@@ -738,7 +763,7 @@ class CUP$ParserReporteria$actions {
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 23: // sqform_parametros_where_bloque ::= sqform_operadores_relacional 
+          case 25: // sqform_parametros_where_bloque ::= sqform_operadores_relacional 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
@@ -750,7 +775,7 @@ class CUP$ParserReporteria$actions {
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 24: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MAYOR sqform_valores_nombre_campos 
+          case 26: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MAYOR sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -776,12 +801,12 @@ class CUP$ParserReporteria$actions {
 				RESULT = null;
 			}
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 25: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MENOR sqform_valores_nombre_campos 
+          case 27: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MENOR sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -806,12 +831,12 @@ class CUP$ParserReporteria$actions {
 				RESULT = null;
 			}
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 26: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MAYOR_IGUAL sqform_valores_nombre_campos 
+          case 28: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MAYOR_IGUAL sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -836,12 +861,12 @@ class CUP$ParserReporteria$actions {
 				RESULT = null;
 			}
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 27: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MENOR_IGUAL sqform_valores_nombre_campos 
+          case 29: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MENOR_IGUAL sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -866,12 +891,12 @@ class CUP$ParserReporteria$actions {
 				RESULT = null;
 			}
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 28: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MENOR_MAYOR sqform_valores_nombre_campos 
+          case 30: // sqform_operadores_relacional ::= sqform_valores_nombre_campos MENOR_MAYOR sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -895,12 +920,12 @@ class CUP$ParserReporteria$actions {
 				RESULT = null;
 			}
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 29: // sqform_operadores_relacional ::= sqform_valores_nombre_campos IGUAL sqform_valores_nombre_campos 
+          case 31: // sqform_operadores_relacional ::= sqform_valores_nombre_campos IGUAL sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)).left;
@@ -925,12 +950,12 @@ class CUP$ParserReporteria$actions {
 			}	
 				
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.elementAt(CUP$ParserReporteria$top-2)), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 30: // sqform_operadores_relacional ::= sqform_valores_nombre_campos 
+          case 32: // sqform_operadores_relacional ::= sqform_valores_nombre_campos 
             {
               ArrayList<Boolean> RESULT =null;
 		  System.out.println (" CAMPOS, siempre sera 1 "); 
@@ -943,136 +968,136 @@ class CUP$ParserReporteria$actions {
 				RESULT = null;	
 			}
 		
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 31: // sqform_operadores_relacional ::= error 
+          case 33: // sqform_operadores_relacional ::= error 
             {
               ArrayList<Boolean> RESULT =null;
 		 System.out.println("Ocurrio un error en el bloque de where");
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",10, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_operadores_relacional",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 32: // sqform_valores_nombre_campos ::= SQFORM_VALOR_NOMRE_CAMPOS 
+          case 34: // sqform_valores_nombre_campos ::= SQFORM_VALOR_NOMRE_CAMPOS 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 33: // sqform_valores_nombre_campos ::= AND 
+          case 35: // sqform_valores_nombre_campos ::= AND 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 34: // sqform_valores_nombre_campos ::= OR 
+          case 36: // sqform_valores_nombre_campos ::= OR 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 35: // sqform_valores_nombre_campos ::= NOT 
+          case 37: // sqform_valores_nombre_campos ::= NOT 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 36: // sqform_valores_nombre_campos ::= SELECT 
+          case 38: // sqform_valores_nombre_campos ::= SELECT 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 37: // sqform_valores_nombre_campos ::= TO 
+          case 39: // sqform_valores_nombre_campos ::= TO 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 38: // sqform_valores_nombre_campos ::= FORM 
+          case 40: // sqform_valores_nombre_campos ::= FORM 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 39: // sqform_valores_nombre_campos ::= WHERE 
+          case 41: // sqform_valores_nombre_campos ::= WHERE 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 40: // sqform_valores_nombre_campos ::= SQFORM_VALOR_NUMERO 
+          case 42: // sqform_valores_nombre_campos ::= SQFORM_VALOR_NUMERO 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 41: // sqform_valores_nombre_campos ::= SQFORM_VALOR_TEXTO 
+          case 43: // sqform_valores_nombre_campos ::= SQFORM_VALOR_TEXTO 
             {
               Token RESULT =null;
 		int aleft = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()).right;
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$ParserReporteria$stack.peek()).value;
 		 RESULT = a; 
-              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",8, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
+              CUP$ParserReporteria$result = parser.getSymbolFactory().newSymbol("sqform_valores_nombre_campos",7, ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), ((java_cup.runtime.Symbol)CUP$ParserReporteria$stack.peek()), RESULT);
             }
           return CUP$ParserReporteria$result;
 

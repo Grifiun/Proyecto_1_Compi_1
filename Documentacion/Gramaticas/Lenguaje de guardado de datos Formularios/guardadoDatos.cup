@@ -1,0 +1,650 @@
+package gramatica_guardado_datos;
+
+import java_cup.runtime.*;
+import gramatica_guardado_datos.ParserGuardadoDatosSym;
+import gramatica_guardado_datos.LexerGuardadoDatos;
+import clasesDAO.Token;
+import clasesDAO.TokenError;
+import clasesDAO.TokenParametro;
+import clasesDAO.BloqueParametros;
+import java.util.ArrayList;
+import funciones.FuncionesSolicitudes;
+import funciones.FuncionesComponentes;
+import funciones.FuncionesUsuario;
+import funciones.FuncionesFormularios;
+import clasesDAOUsuario.Usuario;
+import clasesDAOFormularios.Formulario;
+import clasesDAOFormularios.Componente;
+import clasesDAOFormularios.Registro;
+
+class ParserGuardadoDatos;
+
+parser code{:
+    //Funciones a importar	
+	private FuncionesSolicitudes funcionesSolicitudes = new FuncionesSolicitudes();
+	private FuncionesUsuario funcionesUsuario = new FuncionesUsuario();
+	private FuncionesFormularios funcionesFormularios = new FuncionesFormularios();
+	private FuncionesComponentes funcionesComponentes = new FuncionesComponentes();
+		
+	//Listados
+	private ArrayList<Formulario> listadoFormularios = new ArrayList();
+	private ArrayList<Usuario> listadoUsuarios = new ArrayList();
+
+	//Controlador de error sintactico
+	@Override
+	public void syntax_error(Symbol a){
+		Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna
+		
+		String msgError = "Se esperaba: ";	
+		//System.out.println("error de sintaxis: linea: "+tokenError.getLinea()+" columna: "+tokenError.getColumna());
+		
+		for(int i = 0; i < expected_token_ids().size(); i++){
+			//msgError = msgError + mensajes[expected_token_ids().get(i)];
+			msgError = msgError + symbl_name_from_id(expected_token_ids().get(i)) + " ";
+
+			if(i < expected_token_ids().size() - 1)
+				msgError = msgError + ", ";			
+		}
+
+
+		funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		//System.out.println(msgError);
+		//recibe tipo error, lexema error, mensaje, linea, columna
+		//TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		//listadoErroresSintacticos.add(tokenErrorAux);
+	}
+
+	public ArrayList<Formulario> getListadoFormularioLeidos(){
+		return listadoFormularios;
+	}
+
+	public void agregarFormularioAlListado(Formulario formularioAux){
+		if(formularioAux != null){
+			listadoFormularios.add(formularioAux);
+		}	
+	}
+
+	public void agregarUsuarioAlListado(Usuario usuarioAux){
+		if(usuarioAux != null){
+			listadoUsuarios.add(usuarioAux);
+		}
+	}
+
+	public ArrayList<Usuario> getListadoUsuario(){
+		return listadoUsuarios;
+	}
+
+	public ArrayList<TokenError> getListadoErroresParser(){
+		return funcionesSolicitudes.getListadoErroresParser();
+	}
+
+	public void imprimirErrores(){
+		funcionesSolicitudes.imprimirListadoErrores();
+	}
+
+    public ParserGuardadoDatos(LexerGuardadoDatos lex){
+        super(lex);
+    }
+:}
+
+//PALABRAS RESERVADAS TERMINALES
+//SIMBOLOS RESERVADAS
+terminal Token LLAVES_INICIO;
+terminal Token LLAVES_FIN;
+terminal Token PARENTESIS_INICIO;
+terminal Token PARENTESIS_FIN;
+terminal Token DOS_PUNTOS;
+terminal Token COMA;
+
+//IDENTIFICADORES TIPO DE GUARDADO
+terminal Token DBFORMULARIOS;
+terminal Token DBUSUARIOS;
+
+//PARAMETROS
+terminal Token USUARIO;
+terminal Token PASSWORD;
+terminal Token USUARIO_ANTIGUO;
+terminal Token USUARIO_NUEVO;
+terminal Token NUEVO_PASSWORD;
+terminal Token FECHA_MODIFICACION;
+
+//PARAMETROS FORMULARIOS
+terminal Token ID_FORMULARIO;
+terminal Token TITULO;
+terminal Token NOMBRE;
+terminal Token TEMA;
+terminal Token USUARIO_CREACION;
+terminal Token FECHA_CREACION;
+terminal Token PUBLICO;
+
+//PARAMETROS TEMA
+terminal Token DARK;
+terminal Token BLUE;
+terminal Token WHITE;
+
+//PARAMETROS COMPONENTES
+terminal Token NOMBRE_CAMPO;
+terminal Token ID_COMPONENTE;
+terminal Token CLASE;
+terminal Token INDICE;
+terminal Token TEXTO_VISIBLE;
+terminal Token ALINEACION;
+terminal Token REQUERIDO;
+terminal Token OPCIONES;
+terminal Token FILAS;
+terminal Token COLUMNAS;
+terminal Token URL;
+
+//CLASE PARAMETROS
+terminal Token CAMPO_TEXTO;
+terminal Token AREA_TEXTO;
+terminal Token CHECKBOX;
+terminal Token RADIO;
+terminal Token FICHERO;
+terminal Token IMAGEN;
+terminal Token COMBO;
+terminal Token BOTON;
+
+//ALINEACION PARAMETROS
+terminal Token CENTRO;
+terminal Token IZQUIERDA;
+terminal Token DERECHA;
+terminal Token JUSTIFICAR;
+
+//REQUERIDO PARAMETROS
+terminal Token SI;
+terminal Token NO;
+
+//EXTRAS
+terminal Token REGISTRO;
+terminal Token ESTRUCTURA;
+terminal Token DATOS_RECOPILADOS;
+
+//VALORES
+terminal Token VALOR_TEXTO_VISIBLE_CON_ESPACIO;
+terminal Token VALOR_ITEMS_CON_ESPACIO;
+terminal Token VALOR_ITEMS_SIN_ESPACIO;
+terminal Token VALOR_PASSWORD;
+terminal Token VALOR_FECHA;
+terminal Token VALOR_ID;
+terminal Token DIGITO;
+
+//NO TERMINALES
+non terminal s;
+non terminal db_formularios;
+non terminal bloque_datos_formularios;
+non terminal Formulario sub_bloque_datos_formularios;
+non terminal TokenParametro datos_formularios;
+
+//ESTRUCTURA FORMULARIO
+non terminal ArrayList<Componente> estructura_formulario;
+non terminal ArrayList<Componente> bloque_datos_estructura_fornulario;
+non terminal Componente datos_estructura_fornulario;
+non terminal BloqueParametros bloque_parametros_parametros;
+non terminal TokenParametro parametros_componente;
+
+//DATOS RECOPILADOS FORMUAROP
+non terminal ArrayList<Registro> datos_recopilados_formulario;
+non terminal ArrayList<Registro> bloque_datos_recopilados_fornulario;
+non terminal ArrayList<Registro> bloque_parametros_datos_recopilados;
+
+//USUARIOS
+non terminal db_usuarios;
+non terminal bloque_datos_usuarios;
+non terminal BloqueParametros sub_bloque_datos_usuarios;
+non terminal TokenParametro datos_usuario;
+
+//parametros de usuarios
+non terminal TokenParametro parametro_usuario;
+non terminal TokenParametro parametro_password;
+non terminal TokenParametro parametro_fecha_creacion;
+non terminal TokenParametro parametro_usuario_antiguo;
+non terminal TokenParametro parametro_usuario_nuevo;
+non terminal TokenParametro parametro_nuevo_password;
+non terminal TokenParametro parametro_fecha_modificacion;
+//parametros de formularios
+non terminal TokenParametro parametro_id_form;
+non terminal TokenParametro parametro_id_componente;
+non terminal TokenParametro parametro_titulo;
+non terminal TokenParametro parametro_nombre;
+non terminal TokenParametro parametro_tema;
+non terminal TokenParametro parametro_usuario_creacion;
+non terminal TokenParametro parametro_publico;
+//parametros de componentes
+non terminal TokenParametro parametro_nombre_campo;
+non terminal TokenParametro parametro_clase;
+non terminal TokenParametro parametro_indice;
+non terminal TokenParametro parametro_texto_visible;
+non terminal TokenParametro parametro_alineacion;
+non terminal TokenParametro parametro_requerido;
+non terminal TokenParametro parametro_opciones;
+non terminal TokenParametro parametro_filas;
+non terminal TokenParametro parametro_columnas;
+non terminal TokenParametro parametro_URL;
+//parametros registros
+non terminal TokenParametro parametro_registro;
+//CLASE PARAMETROS VALORES
+non terminal Token valores_clase;
+non terminal Token valores_alineacion;
+non terminal Token valores_requerido;
+non terminal Token valores_opciones;
+non terminal Token valores_tema;
+non terminal Token valores_password;
+non terminal Token valores_usuario_id;
+non terminal Token valores_texto_visible;
+non terminal Token valores_id;
+non terminal Token valores_fecha;
+non terminal Token valores_digito;
+non terminal Token valores_reservados;
+
+//Agregamos que sea de tipo String para obtener el producto
+
+start with s;
+
+///////////////////////GENERAL
+
+s ::= db_formularios {: System.out.println("Se leyeron formularios");:}
+    | db_usuarios {: System.out.println("se leyeron usuarios");:};
+
+//////////////////////Bloque de formularios
+db_formularios ::= DBFORMULARIOS PARENTESIS_INICIO bloque_datos_formularios PARENTESIS_FIN;
+
+bloque_datos_formularios ::= bloque_datos_formularios COMA LLAVES_INICIO sub_bloque_datos_formularios:formularioAux LLAVES_FIN 
+		{:
+			listadoFormularios.add(formularioAux);
+		:}
+    | LLAVES_INICIO sub_bloque_datos_formularios:formularioAux LLAVES_FIN
+		{:
+			listadoFormularios.add(formularioAux);
+		:}
+	;
+
+sub_bloque_datos_formularios ::= sub_bloque_datos_formularios:formularioAux COMA datos_formularios:parametro
+		{:
+			if(formularioAux == null){
+				formularioAux = new Formulario();
+			}
+
+			formularioAux = funcionesFormularios.agregarParametroFormulario(formularioAux, parametro);//agregamos el parametro
+			RESULT = formularioAux;//Enviamos el formulario a las producciones superiores
+		:}
+    | datos_formularios:parametro
+		{:
+			//Cuando el primer bloque es un parametro ordinario
+			Formulario formularioAux = new Formulario();
+			formularioAux = funcionesFormularios.agregarParametroFormulario(formularioAux, parametro);//agregamos el parametro
+
+			RESULT = formularioAux;//Enviamos el formulario a las producciones superiores
+		:}
+	| sub_bloque_datos_formularios:formularioAux COMA estructura_formulario:listadoComponentes
+		{:
+			if(formularioAux == null){
+				formularioAux = new Formulario();
+			}
+
+			formularioAux.setListadoComponentes(listadoComponentes);
+			RESULT = formularioAux;
+		:}
+	| estructura_formulario:listadoComponentes
+		{:
+			//Cuando el primer bloque es una estructura de componentes, inicalizamos
+			Formulario formularioAux = new Formulario();
+			formularioAux.setListadoComponentes(listadoComponentes);
+
+			RESULT = formularioAux;//Enviamos el formulario a las producciones superiores
+		:}	
+	;
+
+datos_formularios ::= parametro_id_form:a {: RESULT = a; :}
+    | parametro_titulo:a 				  {: RESULT = a; :}
+    | parametro_nombre:a 				  {: RESULT = a; :}
+    | parametro_tema:a 					  {: RESULT = a; :}
+    | parametro_usuario_creacion:a 		  {: RESULT = a; :}
+	| parametro_fecha_creacion:a 		  {: RESULT = a; :}
+	| parametro_publico:a				  {: RESULT = a; :}
+	;
+    //| estructura_formulario
+    //| datos_recopilados_formulario;
+
+estructura_formulario ::= ESTRUCTURA DOS_PUNTOS PARENTESIS_INICIO bloque_datos_estructura_fornulario:listadoComponentes PARENTESIS_FIN
+		{:
+			System.out.println(" Largo listado componentes: ");
+			RESULT = listadoComponentes;
+			System.out.println(" largo: "+listadoComponentes.size());
+		:}
+	;
+
+bloque_datos_estructura_fornulario ::= bloque_datos_estructura_fornulario:listadoComponentes COMA datos_estructura_fornulario:comp
+		{:
+			if(listadoComponentes == null)
+				listadoComponentes = new ArrayList();
+
+			listadoComponentes.add(comp);
+			RESULT = listadoComponentes;
+		:}
+    | datos_estructura_fornulario:comp 
+		{:	
+			ArrayList<Componente> listadoComponentes = new ArrayList();//creamos un nuevo arrList
+			listadoComponentes.add(comp);//Agregamos el componente y subimos el listado en la produccion
+			RESULT = listadoComponentes;
+		:}
+	;
+
+datos_estructura_fornulario ::= LLAVES_INICIO:inicio bloque_parametros_parametros:param LLAVES_FIN:fin
+		{:
+			//Agregamos donde inicia cada bloque por si acaso
+			param = funcionesSolicitudes.agregarInicioFinBloque(inicio, fin, param);
+			//Obtenemos el tipo de clase que tiene el componente
+			int indexClase = param.getListadoTipoParametros().indexOf("\"CLASE\"");
+			String clase = param.getListadoParametros().get(indexClase).getLexema();
+			System.out.println("Agregamos un nuevo componente");
+			Componente componenteAux;
+
+			//Creamos el tipo de componente segun la clase                               
+			componenteAux = funcionesComponentes.crearComponentePorClase(clase);
+			//Agregamos los datos al componente
+			componenteAux = funcionesComponentes.agregarDatosCompoente(param, componenteAux);
+
+			RESULT = componenteAux;//Enviamos el componente y sus datos hacia arriba
+			//listadoFormularios = funcionesComponentes.agregarComponenteFormularioPorId(componenteAux, listadoFormularios, listadoIdFormularios);
+		:}
+	| LLAVES_INICIO:inicio bloque_parametros_parametros:param LLAVES_FIN:fin datos_recopilados_formulario:listadoRegistros//CON DATOS_RECOPILADOS
+		{:
+			//Agregamos donde inicia cada bloque por si acaso
+			param = funcionesSolicitudes.agregarInicioFinBloque(inicio, fin, param);
+			//Obtenemos el tipo de clase que tiene el componente
+			int indexClase = param.getListadoTipoParametros().indexOf("\"CLASE\"");
+			String clase = param.getListadoParametros().get(indexClase).getLexema();
+			System.out.println("Agregamos un nuevo componente");
+			Componente componenteAux;
+
+			//Creamos el tipo de componente segun la clase                               
+			componenteAux = funcionesComponentes.crearComponentePorClase(clase);
+			System.out.println("Clase: "+clase+"\n");
+			//Agregamos los datos al componente
+			componenteAux = funcionesComponentes.agregarDatosCompoente(param, componenteAux);
+			System.out.println("Datos agregados al componente: \n");
+			//Agregamos los registros
+			if(listadoRegistros != null && listadoRegistros.size() > 0){
+				System.out.println("Datos recopilados agregados al componente: \n");
+				componenteAux.setListadoRegistros(listadoRegistros);
+			}
+				
+
+			RESULT = componenteAux;//Enviamos el componente y sus datos hacia arriba
+			//listadoFormularios = funcionesComponentes.agregarComponenteFormularioPorId(componenteAux, listadoFormularios, listadoIdFormularios);
+		:}
+	;
+
+bloque_parametros_parametros ::= bloque_parametros_parametros:a COMA parametros_componente:b
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "ESTRUCTURA_FORMULARIO", "PARAMETROS_COMPONENTE");
+		:} 
+    | parametros_componente:a
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "ESTRUCTURA_FORMULARIO", "PARAMETROS_COMPONENTE");	
+		:}
+	;
+
+parametros_componente ::= parametro_id_componente:a {: RESULT = a; :}
+    | parametro_nombre_campo:a 						{: RESULT = a; :}
+    | parametro_clase:a 							{: RESULT = a; :}
+    | parametro_indice:a 							{: RESULT = a; :}
+    | parametro_texto_visible:a 					{: RESULT = a; :}
+    | parametro_alineacion:a 						{: RESULT = a; :}
+    | parametro_requerido:a 						{: RESULT = a; :}
+    | parametro_opciones:a 							{: RESULT = a; :}
+    | parametro_filas:a 							{: RESULT = a; :}
+    | parametro_columnas:a 							{: RESULT = a; :}
+    | parametro_URL:a 								{: RESULT = a; :}
+	;
+
+datos_recopilados_formulario ::= DATOS_RECOPILADOS DOS_PUNTOS PARENTESIS_INICIO bloque_datos_recopilados_fornulario:listadoRegistros PARENTESIS_FIN
+		{:
+			RESULT = listadoRegistros;
+		:}
+	;
+
+bloque_datos_recopilados_fornulario ::= LLAVES_INICIO bloque_parametros_datos_recopilados:listadoRegistros LLAVES_FIN
+		{:
+			RESULT = listadoRegistros;
+		:}
+	;
+
+bloque_parametros_datos_recopilados ::= bloque_parametros_datos_recopilados:listadoRegistros COMA  parametro_registro:a
+		{:
+			if(listadoRegistros == null){
+				listadoRegistros = new ArrayList();
+			}	
+
+			String valorRegistro = a.getLexema();
+			Registro registroAux = new Registro(valorRegistro);
+			
+			listadoRegistros.add(registroAux);
+			RESULT = listadoRegistros;
+		:}
+    | parametro_registro:a
+		{:
+			String valorRegistro = a.getLexema();
+			Registro registroAux = new Registro(valorRegistro);
+
+			ArrayList<Registro> listadoRegistros = new ArrayList();
+			listadoRegistros.add(registroAux);
+
+			RESULT = listadoRegistros;
+		:}
+	;
+
+///////////////////////////////////////////Bloque de usuarios
+
+db_usuarios ::= DBUSUARIOS PARENTESIS_INICIO bloque_datos_usuarios PARENTESIS_FIN;
+
+bloque_datos_usuarios ::= bloque_datos_usuarios COMA LLAVES_INICIO:inicio sub_bloque_datos_usuarios:param LLAVES_FIN:fin
+		{:	
+			//Preparamos el bloque de parametros del usuario					
+			param = funcionesSolicitudes.agregarInicioFinBloque(inicio, fin, param);
+			//Generamos un objeto de tipo usuario como auxiliar
+			//Enviamos el bloque de paremtros como
+			Usuario usuarioAuxiliar = funcionesUsuario.agregarDatosUsuario(param);//enviamos null, porque queremos un nuevo usuario
+			//Agregamos el usuario al listado
+			agregarUsuarioAlListado(usuarioAuxiliar);
+		:}
+    | LLAVES_INICIO:inicio sub_bloque_datos_usuarios:param LLAVES_FIN:fin
+		{:	
+			//Preparamos el bloque de parametros del usuario					
+			param = funcionesSolicitudes.agregarInicioFinBloque(inicio, fin, param);
+			//Generamos un objeto de tipo usuario como auxiliar
+			//Enviamos el bloque de paremtros como
+			Usuario usuarioAuxiliar = funcionesUsuario.agregarDatosUsuario(param);//enviamos null, porque queremos un nuevo usuario
+			//Agregamos el usuario al listado
+			agregarUsuarioAlListado(usuarioAuxiliar);
+		:}	
+	;
+
+sub_bloque_datos_usuarios ::= sub_bloque_datos_usuarios:a COMA datos_usuario:b
+	 	{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(a, b, "USUARIO", "BLOQUE_DATOS_USUARIO");
+		:} 
+    | datos_usuario:a 
+		{: 
+			RESULT = funcionesSolicitudes.agregarParametroABloque(null, a, "USUARIO", "BLOQUE_DATOS_USUARIO");			
+		:}
+	;
+
+datos_usuario ::= parametro_usuario:a {: RESULT = a; :}
+    | parametro_password:a 			  {: RESULT = a; :}
+    | parametro_fecha_creacion:a      {: RESULT = a; :}
+    | parametro_fecha_modificacion:a  {: RESULT = a; :};
+
+
+////////////////////////////////////Parametros y valores
+
+//parametros usuarios
+parametro_usuario ::= USUARIO:a DOS_PUNTOS valores_usuario_id:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_password ::= PASSWORD:a DOS_PUNTOS valores_password:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_fecha_creacion ::= FECHA_CREACION:a DOS_PUNTOS valores_fecha:b 		  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_usuario_antiguo ::= USUARIO_ANTIGUO:a DOS_PUNTOS valores_usuario_id:b   {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_usuario_nuevo ::= USUARIO_NUEVO:a DOS_PUNTOS valores_usuario_id:b 	  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_nuevo_password ::= NUEVO_PASSWORD:a DOS_PUNTOS valores_password:b 	  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_fecha_modificacion ::= FECHA_MODIFICACION:a DOS_PUNTOS valores_fecha:b  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+//parametros formularios
+parametro_id_form ::= ID_FORMULARIO:a DOS_PUNTOS valores_id:b 					  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_titulo ::= TITULO:a DOS_PUNTOS valores_texto_visible:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_nombre ::= NOMBRE:a DOS_PUNTOS valores_texto_visible:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_tema ::=  TEMA:a DOS_PUNTOS valores_tema:b 					          {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_usuario_creacion ::= USUARIO_CREACION:a DOS_PUNTOS valores_usuario_id:b {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_publico ::= PUBLICO:a DOS_PUNTOS valores_requerido:b  				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+//parameros componentes
+parametro_id_componente ::= ID_COMPONENTE:a DOS_PUNTOS valores_id:b 			  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_nombre_campo ::= NOMBRE_CAMPO:a DOS_PUNTOS valores_password:b 	      {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_clase ::= CLASE:a DOS_PUNTOS valores_clase:b 							  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_indice ::= INDICE:a DOS_PUNTOS valores_digito:b 						  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_texto_visible ::= TEXTO_VISIBLE:a DOS_PUNTOS valores_texto_visible:b 	  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_alineacion ::= ALINEACION:a DOS_PUNTOS valores_alineacion:b 			  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_requerido ::= REQUERIDO:a DOS_PUNTOS valores_requerido:b 				  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_opciones ::= OPCIONES:a DOS_PUNTOS valores_opciones:b 			      {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_filas ::= FILAS:a DOS_PUNTOS valores_digito:b 						  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_columnas ::= COLUMNAS:a DOS_PUNTOS valores_digito:b 					  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+parametro_URL ::= URL:a DOS_PUNTOS valores_texto_visible:b                        {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+//registros
+parametro_registro ::= REGISTRO:a DOS_PUNTOS valores_texto_visible:b 			  {: RESULT = new TokenParametro("\""+a.getTipoToken()+"\"", b.getLexema() ,a.getLinea(), a.getColumna()); :};
+
+//VALORES PARAMETROS
+valores_id ::= VALOR_ID:a 		{: RESULT = a; :};
+valores_fecha ::= VALOR_FECHA:a {: RESULT = a; :};
+valores_digito ::= DIGITO:a 	{: RESULT = a; :};
+valores_tema ::= DARK:a 		{: RESULT = a; :}
+	| BLUE:a 					{: RESULT = a; :}
+	| WHITE:a 					{: RESULT = a; :};
+valores_clase ::= CAMPO_TEXTO:a {: RESULT = a; :}
+	| AREA_TEXTO:a 				{: RESULT = a; :}
+	| CHECKBOX:a 				{: RESULT = a; :}
+	| RADIO:a 					{: RESULT = a; :}
+	| FICHERO:a 				{: RESULT = a; :}
+	| IMAGEN:a 					{: RESULT = a; :}
+	| COMBO:a 					{: RESULT = a; :}
+	| BOTON:a 					{: RESULT = a; :};
+valores_alineacion ::= CENTRO:a {: RESULT = a; :}
+	| DERECHA:a 				{: RESULT = a; :}
+	| IZQUIERDA:a 				{: RESULT = a; :}
+	| JUSTIFICAR:a 				{: RESULT = a; :};
+valores_requerido ::= SI:a 		{: RESULT = a; :}
+	| NO:a 						{: RESULT = a; :};
+
+/*
+	Usuario Id: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos		
+		5. Items sin espacio
+		6. Cadenas pertenecientes a palabras reservadas
+*/
+valores_usuario_id ::= VALOR_PASSWORD:a {: RESULT = a; :}
+	| DIGITO:a 							{: RESULT = a; :}
+	| VALOR_FECHA:a 					{: RESULT = a; :}
+	| VALOR_ID:a 						{: RESULT = a; :}
+	| VALOR_ITEMS_SIN_ESPACIO:a 		{: RESULT = a; :}
+	| valores_reservados:a 				{: RESULT = a; :};
+/*
+	Password: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos		
+		5. Items sin espacio
+		6. Cadenas pertenecientes a palabras reservadas
+*/
+valores_password ::= VALOR_PASSWORD:a   {: RESULT = a; :}
+	| DIGITO:a 						    {: RESULT = a; :}
+	| VALOR_FECHA:a 					{: RESULT = a; :}
+	| VALOR_ID:a 						{: RESULT = a; :}
+	| VALOR_ITEMS_SIN_ESPACIO:a 		{: RESULT = a; :}
+	| valores_reservados:a 				{: RESULT = a; :};
+/*
+	Item: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos
+		5. Numeros, letrasa, simbolos, espacios
+		6. Cadenas pertenecientes a palabras reservadas
+*/
+valores_opciones ::= VALOR_ITEMS_CON_ESPACIO:a  {: RESULT = a; :} 
+	| VALOR_ITEMS_SIN_ESPACIO:a 				{: RESULT = a; :}
+	| DIGITO:a 									{: RESULT = a; :}
+	| VALOR_FECHA:a 							{: RESULT = a; :}
+	| VALOR_ID:a 								{: RESULT = a; :}
+	| valores_reservados:a 						{: RESULT = a; :};
+	//acepta todos los valores reservados
+/*
+	Texto visible: Acepta:
+		1. Numeros, letras, simbolos
+		2. valores de id
+		3. Valores de fechas
+		4. Digitos
+		5. Numeros, letrasa, simbolos, espacios y el signo or (|)
+		6. Puede terminar en el signo or (|)
+*/
+valores_texto_visible ::= VALOR_TEXTO_VISIBLE_CON_ESPACIO:a {: RESULT = a; :}
+	| VALOR_ITEMS_CON_ESPACIO:a 							{: RESULT = a; :}
+	| valores_password:a 									{: RESULT = a; :};
+	//acepta todos los valores posibles para un item, quien a su vez acepta los valores posibles para passwords
+
+/*
+	Valores de palabras reservadas
+*/
+	//SOLICITUDES
+valores_reservados ::= 
+	//PARAMETROS
+	  USUARIO:a 						{: RESULT = a; :}
+	| PASSWORD:a 						{: RESULT = a; :}
+	| USUARIO_ANTIGUO:a 				{: RESULT = a; :}
+	| USUARIO_NUEVO:a 					{: RESULT = a; :}
+	| NUEVO_PASSWORD:a 					{: RESULT = a; :}
+	| FECHA_MODIFICACION:a 				{: RESULT = a; :}
+	//PARAMETROS FORMULARIOS
+	| ID_FORMULARIO:a 				    {: RESULT = a; :}
+	| TITULO:a 							{: RESULT = a; :}
+	| NOMBRE:a 							{: RESULT = a; :}
+	| TEMA:a 							{: RESULT = a; :}
+	| USUARIO_CREACION:a 				{: RESULT = a; :}
+	| FECHA_CREACION:a 					{: RESULT = a; :}
+	//PARAMETROS TEMA
+	| DARK:a 							{: RESULT = a; :}
+	| BLUE:a 							{: RESULT = a; :}
+	| WHITE:a 							{: RESULT = a; :}
+	//PARAMETROS COMPONENTES
+    | ID_COMPONENTE:a                   {: RESULT = a; :}
+	| NOMBRE_CAMPO:a 					{: RESULT = a; :}
+	| CLASE:a 							{: RESULT = a; :}
+	| INDICE:a 							{: RESULT = a; :}
+	| TEXTO_VISIBLE:a 					{: RESULT = a; :}
+	| ALINEACION:a 						{: RESULT = a; :}
+	| REQUERIDO:a 						{: RESULT = a; :}
+	| OPCIONES:a 						{: RESULT = a; :}
+	| FILAS:a 							{: RESULT = a; :}
+	| COLUMNAS:a 						{: RESULT = a; :}
+	| URL:a 							{: RESULT = a; :}
+	//CLASE PARAMETROS
+	| CAMPO_TEXTO:a 					{: RESULT = a; :}
+	| AREA_TEXTO:a 						{: RESULT = a; :}
+	| CHECKBOX:a 						{: RESULT = a; :}
+	| RADIO:a 							{: RESULT = a; :}
+	| FICHERO:a 						{: RESULT = a; :}
+	| IMAGEN:a 							{: RESULT = a; :}
+	| COMBO:a 							{: RESULT = a; :}
+	| BOTON:a 							{: RESULT = a; :}
+	//ALINEACION PARAMETROS
+	| CENTRO:a 							{: RESULT = a; :}
+	| IZQUIERDA:a 						{: RESULT = a; :}
+	| DERECHA:a							{: RESULT = a; :}
+	| JUSTIFICAR:a 						{: RESULT = a; :}
+	//REQUERIDO PARAMETROS
+	| SI:a 								{: RESULT = a; :}
+	| NO:a 								{: RESULT = a; :}
+    //REGISTROS
+    | REGISTRO:a 						{: RESULT = a; :}
+    | DATOS_RECOPILADOS:a               {: RESULT = a; :}
+    | ESTRUCTURA:a                      {: RESULT = a; :}
+    ;

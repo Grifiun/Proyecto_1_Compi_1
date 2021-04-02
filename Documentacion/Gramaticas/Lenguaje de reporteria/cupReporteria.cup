@@ -1,0 +1,545 @@
+package gramatica_reporteria;
+
+import java_cup.runtime.*;
+import gramatica_reporteria.ParserReporteriaSym;
+import gramatica_reporteria.LexerReporteria;
+import java_cup.runtime.XMLElement;
+import clasesDAO.BloqueParametros;
+import funciones.*;
+import clasesDAO.Token;
+import clasesDAO.TokenError;
+import clasesDAO.TokenParametro;
+import java.util.ArrayList;
+import java.util.List;
+import clasesDAOFormularios.*;
+
+class ParserReporteria;
+
+parser code{:
+    //Listado de errores	
+	private FuncionesSolicitudes funcionesSolicitudes = new FuncionesSolicitudes();
+	private FuncionesFormularios funcionesFormularios = new FuncionesFormularios();
+	private FuncionesComponentes funcionesComponentes = new FuncionesComponentes();	
+	private ArrayList<BloqueParametros> listadoSolicitudes = new ArrayList();
+	FuncionesReporteria funcionesReporteria;
+	FuncionesOperadoresLogicos funcionesOperadoresLogicos = new FuncionesOperadoresLogicos();
+	private List<ArrayList<String>> valoresTablaFinal = new ArrayList();
+	private ArrayList<TokenError> listadoErroresSintacticos = new ArrayList();
+	private int cantidadRegistros = 0;
+	private int filaInicio = 0;
+    private int columnaInicio = 0;
+
+	//private List<ArrayList<Registro>> 
+	boolean formularioValido = false;
+	//Objetos
+	Formulario formularioSQForm;
+	//Controlador de error sintactico
+	@Override
+	public void syntax_error(Symbol a){
+		Token tokenError = (Token) a.value;//lo transformamos en token para obtener su lexema, fila y columna		
+		String msgError = "Se esperaba: ";	
+		System.out.println("error de sintaxis: linea: "+tokenError.getLexema()+" "+tokenError.getLinea() + filaInicio+" columna: "+tokenError.getColumna() + columnaInicio);
+		
+		int linea = tokenError.getLinea() + filaInicio;
+		int columna = tokenError.getColumna() + columnaInicio;
+
+		for(int i = 0; i < expected_token_ids().size(); i++){
+			//msgError = msgError + mensajes[expected_token_ids().get(i)];
+			msgError = msgError + symbl_name_from_id(expected_token_ids().get(i)) + " ";
+
+			if(i < expected_token_ids().size() - 1)
+				msgError = msgError + ", ";			
+		}
+
+
+		//funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Faltan tokens", msgError, linea, columna);
+		//System.out.println(msgError);
+		//recibe tipo error, lexema error, mensaje, linea, columna
+		TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
+		listadoErroresSintacticos.add(tokenErrorAux);
+	}
+
+	public ArrayList<TokenError> getListadoErroresReporteria(){
+		return listadoErroresSintacticos;
+	}
+
+	public void agregarError(String tipoError, String mensaje, Token tokenAux){
+		TokenError tokenError = new TokenError(tipoError, tokenAux.getLexema(), mensaje, tokenAux.getLinea(), tokenAux.getColumna());
+		listadoErroresSintacticos.add(tokenError);
+	}
+
+	public void agregarSolicitud(BloqueParametros bloqueAux){
+		this.listadoSolicitudes.add(bloqueAux);
+	}
+
+	public ArrayList<BloqueParametros> getListadoSolicitudes(){
+		return this.listadoSolicitudes;
+	}
+
+	public void inicializarFormulario(Formulario formularioAux){
+		this.formularioSQForm = formularioAux;
+		if(formularioSQForm != null){
+			formularioValido = true;
+			funcionesReporteria = new FuncionesReporteria (formularioAux);
+		}else{
+			formularioValido = false;
+		}
+	}
+
+    public ParserReporteria(LexerReporteria lex){
+        super(lex);
+    }
+
+	public List<ArrayList<String>> obtenerTablaDatosFinal(){
+		return valoresTablaFinal;
+	}
+
+    public void setFilaInicio(int fila){
+        filaInicio = fila;
+    }
+    public void setColumna(int columna){
+        columnaInicio = columna;
+    }
+:}
+
+
+//PALABRAS RESERVADAS TERMINALES
+//SIMBOLOS RESERVADAS
+terminal Token CORCHETES_INICIO;
+terminal Token CORCHETES_FIN;
+terminal Token MENOR;
+terminal Token MAYOR;
+terminal Token COMA;
+terminal Token IGUAL; 
+terminal Token MENOS;
+terminal Token MENOR_MAYOR;
+terminal Token MENOR_IGUAL;
+terminal Token MAYOR_IGUAL;
+
+//PARAMETROS FORMULARIOS
+terminal Token ID;
+
+//OPERADOR LOGICO
+terminal Token AND;
+terminal Token OR;
+terminal Token NOT;
+
+//SQForm
+terminal Token SELECT;
+terminal Token TO;
+terminal Token FORM;
+terminal Token WHERE;
+
+//VALORES SQForm
+terminal Token SQFORM_VALOR_NUMERO;
+terminal Token SQFORM_VALOR_TEXTO;
+terminal Token SQFORM_VALOR_NOMRE_CAMPOS;
+
+//NO TERMINALES
+non terminal s;
+
+//SQForm
+non terminal List<ArrayList<String>> sqform_bloque_parametros;
+non terminal List<ArrayList<String>> sqform_bloque_parametros_nombre_campo;
+non terminal ArrayList<Componente> sqform_parametros_nombre_campo;
+non terminal Token sqform_valores_identificador_formulario;
+non terminal ArrayList<Boolean> sqform_bloque_parametros_where;
+non terminal ArrayList<Boolean> sqform_parametros_where_bloque;
+non terminal Token sqform_valores_nombre_campos;
+non terminal ArrayList<Boolean> sqform_operadores_relacional;
+
+//PRECEDENCIA
+precedence nonassoc MAYOR_IGUAL, MENOR_IGUAL, MENOR, MAYOR;
+precedence nonassoc IGUAL, MENOR_MAYOR;
+precedence right NOT;
+precedence left AND;
+precedence left OR;
+
+start with s;
+
+//corroboraremos la estructura de la solicitud primero
+s ::= sqform_bloque_parametros:tablaDatos	
+	{: 
+		System.out.println("Se detecto una entrada para SQForm\n"); 
+		valoresTablaFinal = tablaDatos;
+		try{
+			System.out.println("Cantidad registros: "+tablaDatos.size());
+		}catch(Exception ex){System.out.println("Error al imprimir la tabla: "+ex.getMessage());}
+		
+	:};
+
+sqform_bloque_parametros ::= SELECT TO FORM MENOS MAYOR sqform_valores_identificador_formulario:a sqform_bloque_parametros_nombre_campo:tablaDatos
+		{: 
+			System.out.println("Identificador del formulario : "+ a.getLexema()); 
+			String idNombreForm = a.getLexema();
+
+			Formulario formularioAux = funcionesFormularios.obtenerFormularioPorIdYPorUsuarioCreador(idNombreForm, null);
+			if(formularioAux != null){
+				System.out.println(" El formulario es valido y tiene registros");
+			}else{
+				System.out.println(" El formulario es invalido");
+				
+				agregarError("FORMULARIO INEXISTENTE", "El usuario no posee un formulario con id/nombre igual al que ingreso", a);
+			}
+			RESULT = tablaDatos;
+
+			/*
+			formularioSQForm = funcionesFormularios.obtenerFormularioPorIdYPorUsuarioCreador(idNombreForm, null);
+			if(formularioSQForm != null){
+				formularioValido = true;
+				funcionesReporteria = new FuncionesReporteria (formularioSQForm);
+				cantidadRegistros = funcionesReporteria.getCantidadRegistros();
+				System.out.println(" El formulario es valido y tiene "+cantidadRegistros+" registros");
+			}else{
+				System.out.println(" El formulario es invalido");
+			}		*/
+		:}
+	| SELECT TO FORM MENOS MAYOR sqform_valores_identificador_formulario:a sqform_bloque_parametros_nombre_campo:tablaDatos sqform_bloque_parametros_where:validezEstados
+		{: 
+			System.out.println("Identificador del formulario : "+ a.getLexema()); 
+			String idNombreForm = a.getLexema();
+			List<ArrayList<String>> tablaDatosWhere = new ArrayList();
+			Formulario formularioAux = funcionesFormularios.obtenerFormularioPorIdYPorUsuarioCreador(idNombreForm, null);
+			if(formularioAux != null){
+				System.out.println(" El formulario es valido y tiene registros");
+				System.out.println(" cantidad de reg: "+tablaDatos.size()+" y validaciones: "+validezEstados.size());
+				/*
+					Validez estados contiene si una fila debe ser aceptada o no
+				*/
+				//agregamos titulos
+				try{
+					tablaDatosWhere.add(tablaDatos.get(0));
+					//agregamos datos
+					for(int i = 0; i < validezEstados.size(); i++){//le agregamos +1 por el titulo de cada componente
+						ArrayList<String> filaAux = tablaDatos.get(i + 1);//por el titulo, agregamos una iteracion extra
+						if(validezEstados.get(i) == true){
+							tablaDatosWhere.add(filaAux);						
+						}
+					}	
+				}catch(Exception ex){
+					System.out.println("Se proceso un error al intentar agregar los valores de la tabla");	
+				}
+
+			}else{
+				System.out.println(" El formulario es invalido");
+				agregarError("FORMULARIO INEXISTENTE", "El usuario no posee un formulario con id/nombre igual al que ingreso", a);
+			}
+			RESULT = tablaDatosWhere;
+		:}
+	//| error sqform_bloque_parametros_where {: System.out.println(" Error en el bloque de [ Ncamps2 ]");:}
+	| error {: System.out.println(" Error en el bloque de [ SQForm ]");:};
+	//;
+sqform_bloque_parametros_nombre_campo ::= CORCHETES_INICIO CORCHETES_FIN
+		{:
+			List<ArrayList<String>> tablaDatos = new ArrayList();
+ 			ArrayList<Componente> listadoComponentes;
+			try{
+				if(formularioSQForm != null){
+					System.out.println("El formulario es valido: "+formularioSQForm.getId());					
+					listadoComponentes = formularioSQForm.getListadoComponentes();
+					if(listadoComponentes != null){		
+						System.out.println("El formulario tiene componentes: "+listadoComponentes.size());				
+						tablaDatos = funcionesComponentes.valoresTabla(listadoComponentes);
+					}else{
+						System.out.println("El formulario no tiene componentes");	
+					}
+				}
+			}catch(Exception ex){
+				System.out.println(" No se pudieron obtener las tablas: "+ex.getMessage());
+			}
+			
+			RESULT = tablaDatos;
+		:}
+		
+	| CORCHETES_INICIO sqform_parametros_nombre_campo:listadoComponentes CORCHETES_FIN 
+		{:
+			List<ArrayList<String>> tablaDatos = new ArrayList();
+			try{
+				if(formularioSQForm != null){
+					if(listadoComponentes != null){						
+						tablaDatos = funcionesComponentes.valoresTabla(listadoComponentes);
+					}			
+				}	
+			}catch(Exception ex){
+				System.out.println(" No se pudieron obtener las tablas: "+ex.getMessage());
+			}			
+			RESULT = tablaDatos;
+		:}
+	| error {: System.out.println(" Error en el bloque de [ Nombre Campos ]");:}
+	;
+
+sqform_parametros_nombre_campo ::= sqform_parametros_nombre_campo:listadoComponentes COMA sqform_valores_nombre_campos:nombreComponente1
+		{:
+			if(listadoComponentes == null){
+				listadoComponentes = new ArrayList();
+			}
+
+			if(formularioSQForm != null){
+				String idNombre = nombreComponente1.getLexema();
+				Componente auxiliar = funcionesComponentes.obtenerComponentePorIdNombre(formularioSQForm, idNombre);
+				if(auxiliar != null){
+					listadoComponentes.add(auxiliar);
+				}else{
+					////////////////////ERROR
+					agregarError("COMPONENTE INEXISTENTE", "El componente con id/nombre que ingreso no existe dentro del formulario", nombreComponente1);
+				}				
+			}
+			
+			RESULT = listadoComponentes;				
+		:}
+	| sqform_valores_nombre_campos:nombreComponente1
+		{:
+			ArrayList<Componente> listadoComponentes = new ArrayList();
+			if(formularioSQForm != null){
+				String idNombre = nombreComponente1.getLexema();
+				Componente auxiliar = funcionesComponentes.obtenerComponentePorIdNombre(formularioSQForm, idNombre);
+				if(auxiliar != null){
+					listadoComponentes.add(auxiliar);
+				}else{
+					////////////////////ERROR
+					agregarError("COMPONENTE INEXISTENTE", "El componente con id/nombre que ingreso no existe dentro del formulario", nombreComponente1);
+				}				
+			}
+			
+			RESULT = listadoComponentes;
+			
+		:}
+	| error;
+
+sqform_valores_identificador_formulario ::= SQFORM_VALOR_NOMRE_CAMPOS:a {: RESULT = a; :}
+	| AND:a {: RESULT = a; :}
+	| OR:a {: RESULT = a; :}
+	| NOT:a {: RESULT = a; :}
+	| SELECT:a {: RESULT = a; :}
+	| TO:a {: RESULT = a; :}
+	| FORM:a {: RESULT = a; :}
+	| WHERE:a {: RESULT = a; :}
+	| error
+	;
+sqform_bloque_parametros_where ::= WHERE CORCHETES_INICIO sqform_parametros_where_bloque:estados CORCHETES_FIN
+		{:
+			if(estados != null){
+				System.out.println("ESTADOS FINALES");
+				for(int i = 0; i < estados.size(); i++){
+					System.out.println(i+".- "+estados.get(i));
+				}
+			}else{
+				System.out.println("Error en las comparaciones");
+			}
+
+			RESULT = estados;
+		:}
+	| error {: System.out.println("Error en las comparaciones"); :}
+	;
+
+sqform_parametros_where_bloque ::= sqform_parametros_where_bloque:estados1 AND sqform_parametros_where_bloque:estados2 
+		{:
+			System.out.println ("Se ejecuto AND");
+			RESULT = funcionesOperadoresLogicos.comparacionAnd(estados1, estados2);
+		:}
+    | sqform_parametros_where_bloque:estados1 OR sqform_parametros_where_bloque:estados2
+		{:  
+			System.out.println ("Se ejecuto OR");
+			RESULT = funcionesOperadoresLogicos.comparacionOr(estados1, estados2);
+		:}
+    | NOT sqform_parametros_where_bloque:estados
+		{:  
+			System.out.println ("Se ejecuto NOT");
+			RESULT = funcionesOperadoresLogicos.invertirBoleanos(estados);
+		:}
+	| sqform_operadores_relacional:a {: RESULT = a; :};
+    
+//El valor que envian las operaciones racionales deben ser verdadero/falso
+sqform_operadores_relacional::= sqform_valores_nombre_campos:a MAYOR sqform_valores_nombre_campos:b
+		{:  		
+			System.out.println ("Se ejecuto > ");
+			try{
+				if(formularioValido){
+					ArrayList<Boolean> resultado = new ArrayList();						
+					resultado = funcionesReporteria.getValorComparacion(a, b, "MAYOR");
+					if(resultado.size() != cantidadRegistros){
+						System.out.println(" Hay un error con la entrada de datos, revise si los campos nombrados existen y tengan datos");
+					}
+
+					RESULT = resultado;
+				}	
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;
+			}
+		:}
+    | sqform_valores_nombre_campos:a MENOR sqform_valores_nombre_campos:b
+		{:  
+			System.out.println ("Se ejecuto < "); 
+			try{
+				if(formularioValido){
+					ArrayList<Boolean> resultado = new ArrayList();						
+					resultado = funcionesReporteria.getValorComparacion(a, b, "MENOR");
+					if(resultado.size() != cantidadRegistros){
+						System.out.println(" Hay un error con la entrada de datos, revise si los campos nombrados existen y tengan datos");
+					}
+					RESULT = resultado;
+				}	
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;
+			}
+		:}
+    | sqform_valores_nombre_campos:a MAYOR_IGUAL sqform_valores_nombre_campos:b
+		{:  
+			System.out.println ("Se ejecuto >= "); 
+			try{
+				if(formularioValido){
+					ArrayList<Boolean> resultado = new ArrayList();						
+					resultado = funcionesReporteria.getValorComparacion(a, b, "MAYOR_IGUAL");
+					if(resultado.size() != cantidadRegistros){
+						System.out.println(" Hay un error con la entrada de datos, revise si los campos nombrados existen y tengan datos");
+					}
+					RESULT = resultado;
+				}	
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;
+			}
+		:}
+    | sqform_valores_nombre_campos:a MENOR_IGUAL sqform_valores_nombre_campos:b 
+		{:  
+			System.out.println ("Se ejecuto >= "); 
+			try{
+				if(formularioValido){
+					ArrayList<Boolean> resultado = new ArrayList();						
+					resultado = funcionesReporteria.getValorComparacion(a, b, "MENOR_IGUAL");
+					if(resultado.size() != cantidadRegistros){
+						System.out.println(" Hay un error con la entrada de datos, revise si los campos nombrados existen y tengan datos");
+					}
+					RESULT = resultado;
+				}	
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;
+			}
+		:}
+    | sqform_valores_nombre_campos:a MENOR_MAYOR sqform_valores_nombre_campos:b
+		{:  System.out.println ("Se ejecuto <>"); 
+			try{
+				if(formularioValido){
+					ArrayList<Boolean> resultado = new ArrayList();			
+					resultado = funcionesReporteria.getValorComparacionIgualDiferente(a, b, "MENOR_MAYOR");
+					if(resultado.size() != cantidadRegistros){
+						System.out.println(" Hay un error con la entrada de datos, revise si los campos nombrados existen y tengan datos");
+					}	
+					RESULT = resultado;		
+				}
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;
+			}
+		:} 
+    | sqform_valores_nombre_campos:a IGUAL sqform_valores_nombre_campos:b
+		{:  System.out.println ("Se ejecuto ="); 
+			try{
+				if(formularioValido){
+					ArrayList<Boolean> resultado = new ArrayList();			
+					resultado = funcionesReporteria.getValorComparacionIgualDiferente(a, b, "IGUAL");
+					if(resultado.size() != cantidadRegistros){
+						System.out.println(" Hay un error con la entrada de datos, revise si los campos nombrados existen y tengan datos");
+					}
+					RESULT = resultado;				
+				}
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;	
+			}	
+				
+		:} 
+	| sqform_valores_nombre_campos
+		{:  System.out.println (" CAMPOS, siempre sera 1 "); 
+			try{
+				ArrayList<Boolean> resultado = new ArrayList();			
+				resultado = funcionesReporteria.generarListadoBooleanos(true);
+				RESULT = resultado;	
+			}catch (Exception ex){
+				System.out.println("se produjo un error en el bloque: "+ex.getMessage());
+				RESULT = null;	
+			}
+		:} 
+    | error {: System.out.println("Ocurrio un error en el bloque de where");:}
+    ;
+
+/*
+sqform_operadores_relacional::= sqform_operadores_relacional MAYOR sqform_operadores_relacional {:  System.out.println ("Se ejecuto > "); :}
+    | sqform_operadores_relacional MENOR sqform_operadores_relacional {:  System.out.println ("Se ejecuto < "); :}
+    | sqform_operadores_relacional MAYOR_IGUAL sqform_operadores_relacional {:  System.out.println ("Se ejecuto >= "); :}
+    | sqform_operadores_relacional MENOR_IGUAL sqform_operadores_relacional {:  System.out.println ("Se ejecuto <="); :}
+    | sqform_operadores_relacional MENOR_MAYOR sqform_operadores_relacional {:  System.out.println ("Se ejecuto <>"); :}
+    | sqform_operadores_relacional IGUAL sqform_operadores_relacional {:  System.out.println ("Se ejecuto ="); :}
+    | sqform_valores_nombre_campos {:  System.out.println ("Se detecto campo "); :}
+	| sqform_valores_comparacion {:  System.out.println ("Se detecto un valor de comparacion "); :}
+    | error {: System.out.println("Ocurrio un error en el bloque de where");:}
+    ;
+
+*/
+
+
+sqform_valores_nombre_campos ::= SQFORM_VALOR_NOMRE_CAMPOS:a {: RESULT = a; :}
+	//OPCIONAL ? comandos de SQForm
+	| AND:a {: RESULT = a; :}
+	| OR:a {: RESULT = a; :}
+	| NOT:a {: RESULT = a; :}
+	| SELECT:a {: RESULT = a; :}
+	| TO:a {: RESULT = a; :}
+	| FORM:a {: RESULT = a; :}
+	| WHERE:a {: RESULT = a; :}
+	//Podrian venir signos, tipo -. +, < unicamente
+	//valores
+	| SQFORM_VALOR_NUMERO:a {: RESULT = a; :}
+	| SQFORM_VALOR_TEXTO:a {: RESULT = a; :}
+	;
+
+//sqform_valores_comparacion ::= SQFORM_VALOR_NUMERO
+	//| SQFORM_VALOR_TEXTO;
+	//| error;
+
+    ////////////////////////////////PROPUESTA INICIAL
+    /*
+sqform_parametros_where_bloque ::= sqform_parametros_where_bloque sqform_operadores_logicos sqform_parametros_where_unidad
+	| sqform_parametros_where_unidad;
+//SQFORM
+///Aun no agregamos que acepte ID
+sqform_parametros_where_unidad ::= sqform_valores_nombre_campos sqform_operadores_relacional sqform_valores_comparacion
+	| error;*/
+/*
+	1. Acepta cadenas sin espacios de numeros, digitos y simbolos
+	2. Acepta numeros como identificador
+	3. Acepta palabras reservadas como ini_solicitud
+*//*
+sqform_valores_nombre_campos ::= SQFORM_VALOR_NOMRE_CAMPOS
+	| SQFORM_VALOR_NUMERO    
+	//OPCIONAL ? comandos de SQForm
+	| AND
+	| OR
+	| NOT
+	| SELECT
+	| TO
+	| FORM
+	| WHERE
+	//Podrian venir signos, tipo -. +, < unicamente
+	;
+
+sqform_valores_comparacion ::= SQFORM_VALOR_NUMERO
+	| SQFORM_VALOR_TEXTO
+	| error;
+
+sqform_operadores_relacional ::= MAYOR
+	| MENOR
+	| MENOR MAYOR
+	| IGUAL
+	| MAYOR IGUAL
+	| MENOR IGUAL
+	//| NOT
+	| error;
+sqform_operadores_logicos ::= AND
+	| OR
+    | NOT
+	| error;
+*/

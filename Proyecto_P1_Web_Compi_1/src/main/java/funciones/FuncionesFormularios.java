@@ -185,14 +185,16 @@ public class FuncionesFormularios {
         if(usuario == null){
             usuario = UsuarioLogueado.usuarioLogueado;
             usuario = usuario.replaceAll("\"", "").trim();
+        }else{
+            usuario = usuario.replaceAll("\"", "").trim();
         }
+        idNombreFormulario = idNombreFormulario.replaceAll("\"", "").trim();
         
         CargarDatos cargarDatos = new CargarDatos();        
         cargarDatos.leerDatos("formularios");//cargamos la data de los usuarios
         ArrayList<Formulario> listadoFormularioAux = cargarDatos.getListadoFormulariosCargados();
         
         System.out.println("ID/N FORM: "+idNombreFormulario);
-        
         //Hacemos las comparaciones para obtener los formularios que creo el usuario ingresado
         
         try{

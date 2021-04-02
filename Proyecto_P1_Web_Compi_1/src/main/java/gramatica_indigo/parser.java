@@ -728,7 +728,7 @@ public class parser extends java_cup.runtime.lr_parser {
 		}
 		tokenError = null;
 
-		funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", "Faltan tokens", msgError, linea, columna);
+		funcionesSolicitudes.agregarNuevoError("ERROR SINTACTICO", tokenError.getLexema(), msgError, linea, columna);
 		//System.out.println(msgError);
 		//recibe tipo error, lexema error, mensaje, linea, columna
 		//TokenError tokenErrorAux = new TokenError("SINTACTICO", tokenError.getLexema(), msgError, tokenError.getLinea(), tokenError.getColumna());
@@ -2021,31 +2021,6 @@ class CUP$parser$actions {
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 					
 			RESULT = new TokenParametro("\""+b.getTipoToken()+"\"", a.getLexema() ,b.getLinea(), b.getColumna());
-			/*
-			String cadenaSQForm;
-			if(a != null){
-				cadenaSQForm = a.getLexema();
-				cadenaSQForm = cadenaSQForm.replaceAll("\"", "");
-				try{
-					StringReader sr = new StringReader(cadenaSQForm);
-					LexerReporteria lexer = new LexerReporteria(sr);
-					System.out.println(" Lexer SQF Ejecutado");
-					ParserReporteria pars = new ParserReporteria(lexer);
-					pars.parse();
-
-					System.out.println(" Parser SQF Ejecutado");
-					System.out.println("_____________________________________________");
-										
-					System.out.print("Texto SQFORM analizado");
-					
-				} catch (Exception ex) {
-					System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
-				} 
-
-
-			}else{
-				cadenaSQForm = "";
-			}*/
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("parametros_sqform",31, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2063,31 +2038,6 @@ class CUP$parser$actions {
 		Token a = (Token)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 					
 			RESULT = new TokenParametro("\""+b.getTipoToken()+"\"", a.getLexema() ,b.getLinea(), b.getColumna());
-			/*
-			String cadenaSQForm;
-			if(a != null){
-				cadenaSQForm = a.getLexema();
-				cadenaSQForm = a.getLexema();
-				cadenaSQForm = cadenaSQForm.replaceAll("\"", "");
-				try{
-					StringReader sr = new StringReader(cadenaSQForm);
-					LexerReporteria lexer = new LexerReporteria(sr);
-					System.out.println(" Lexer SQF Ejecutado");
-					ParserReporteria pars = new ParserReporteria(lexer);
-					pars.parse();
-
-					System.out.println(" Parser SQF Ejecutado");
-					System.out.println("_____________________________________________");
-										
-					System.out.print("Texto SQFORM analizado");
-					
-				} catch (Exception ex) {
-					System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
-				} 
-
-			}else{
-				cadenaSQForm = "";
-			}*/
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("parametros_sqform",31, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

@@ -106,7 +106,12 @@ public class Indigo extends HttpServlet {
                 LexerIndigo lexer = new LexerIndigo(sr);
                 System.out.println(" Lexer Ejecutado");
                 parser pars = new parser(lexer);
-                pars.parse();
+                
+                try{                        
+                    pars.parse();     
+                }catch(Exception ex){
+                    System.out.println("Error en el respuestas indigo");
+                }
 
                 System.out.println(" Parser Ejecutado");
                 System.out.println("_____________________________________________");    
@@ -115,13 +120,37 @@ public class Indigo extends HttpServlet {
                 FuncionesComponentes funcionesComponentes = new FuncionesComponentes(); 
                 FuncionesFormularios funcionesFormularios = new FuncionesFormularios();
                 FuncionesUsuario funcionesUsuarios = new FuncionesUsuario();
+                boolean existenciaError = false;
                 
                 /////
                 ArrayList<BloqueParametros> listadoSolicitudes;
                 listadoSolicitudes = pars.getListadoSolicitudes();    
-                String resultado = ejecutarSolicitudes(listadoSolicitudes, pars.getListadoErroresParser());                       
+                ArrayList<TokenError> listadoErroresSintacticos = pars.getListadoErroresParser();
+                ArrayList<TokenError> listadoErroresLexicos = lexer.obtenerListadoErroresLexicos();
+                if(listadoErroresLexicos != null && listadoErroresLexicos.size() > 0){
+                    for(TokenError tokenError: listadoErroresLexicos){
+                        out.print("Tipo error: "+tokenError.getTipoToken()+ ": Descripcion: "+tokenError.getLexema()+" Mensaje: "+tokenError.getMsgError()+" Lin: "+tokenError.getLinea()+" Col: "+tokenError.getColumna()+"\n");
+                        
+                    }
+                    existenciaError = true;
+                }
                 
-                out.print(resultado);
+                if(listadoErroresSintacticos != null && listadoErroresSintacticos.size() > 0){
+                    for(TokenError tokenError: listadoErroresSintacticos){
+                        out.print("Tipo error: "+tokenError.getTipoToken()+ ": Descripcion: "+tokenError.getLexema()+" Mensaje: "+tokenError.getMsgError()+" Lin: "+tokenError.getLinea()+" Col: "+tokenError.getColumna()+"\n");
+                        
+                    }
+                    existenciaError = true;
+                    
+                }
+                
+                if(existenciaError == false){//si no hay errores
+                    String resultado = ejecutarSolicitudes(listadoSolicitudes);                      
+                    out.print(resultado);
+                }
+                
+                
+               
                 
             } catch (Exception ex) {
                 System.out.println("Error irrecuperrable: "+ex.getMessage()+ex.getLocalizedMessage()+ex.toString());
@@ -176,7 +205,7 @@ public class Indigo extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String ejecutarSolicitudes(ArrayList<BloqueParametros> listadoSolicitudes, ArrayList<TokenError> listadoErroresParser) {
+    private String ejecutarSolicitudes(ArrayList<BloqueParametros> listadoSolicitudes) {
         /////////////////////CARGAMAOS LA INFORMACION
         CargarDatos cd = new CargarDatos();        
         cd.leerDatos("formularios");
@@ -185,6 +214,7 @@ public class Indigo extends HttpServlet {
         ArrayList<Formulario> listadoFormulariosAux = cd.getListadoFormulariosCargados();
         ArrayList<Usuario> listadoUsuariosAux = cd.getListadoUsuariosCargados();
         String resultado = "";
+        String resultadoErrores = "";
         boolean existenciaErrores = false;
         ////////////////////////////////REVISAMOS LAS SOLICITUDES
         FuncionesFormularios funcionesFormularios = new FuncionesFormularios();
@@ -442,24 +472,51 @@ public class Indigo extends HttpServlet {
                                     if(parametroAux != null){
                                             cadenaSQForm = parametroAux.getLexema();
                                             cadenaSQForm = cadenaSQForm.replaceAll("\"", "");
+                                            int filaAux = 0;
+                                            int colAux = 0;
+                                            try{
+                                                filaAux = parametroAux.getLinea();
+                                                colAux = parametroAux.getColumna();
+                                            }catch(Exception ex){
+                                                filaAux = 0;
+                                                colAux = 0;
+                                            }
+                                            
                                             String idFormularioAuxConsultaDatos = cadenaSQForm.substring(cadenaSQForm.indexOf(">")+1, cadenaSQForm.indexOf("[")).trim();
                                             try{       
                                                 StringReader sr = new StringReader(cadenaSQForm);
                                                 LexerReporteria lexer = new LexerReporteria(sr);
+                                                lexer.setFilaInicio(filaAux);
+                                                lexer.setColumna(colAux);
+                                                
                                                 System.out.println(" Lexer SQF Ejecutado");
                                                 ParserReporteria pars = new ParserReporteria(lexer);
                                                 //buscamos entre los formularios del cliente
                                                 Formulario formConsultasAux = funcionesFormularios.obtenerFormularioPorIdYPorUsuarioCreador(idFormularioAuxConsultaDatos, null);
                                                 pars.inicializarFormulario(formConsultasAux);
-                                                pars.parse();                                    
+                                                pars.parse();     
+                                                pars.setFilaInicio(filaAux);
+                                                pars.setColumna(colAux);
 
                                                 System.out.println(" Parser SQF Ejecutado");
                                                 System.out.println("_____________________________________________");
                                                 System.out.print("Texto SQFORM analizado");
-                                                                                                
-                                                if(pars.getListadoErroresReporteria().size() > 0){//tiene errores
+                                                                      
+                                                ArrayList<TokenError> listadoErroresLexicos = lexer.obtenerListadoErroresLexicos();
+                                                ArrayList<TokenError> listadoErroresSintacticos = pars.getListadoErroresReporteria();
                                                 
-                                                }else{
+                                                if(listadoErroresLexicos != null && listadoErroresLexicos.size() > 0){//tiene errores
+                                                    for(TokenError tokenError: listadoErroresLexicos){
+                                                        resultadoErrores += "Tipo error: "+tokenError.getTipoToken()+ ": Descripcion: "+tokenError.getLexema()+" Mensaje: "+tokenError.getMsgError()+" Lin: "+tokenError.getLinea()+" Col: "+tokenError.getColumna()+"\n";
+                                                    }
+                                                }
+                                                if(listadoErroresSintacticos != null && listadoErroresSintacticos.size() > 0){//tiene errores
+                                                    for(TokenError tokenError: listadoErroresSintacticos){
+                                                        resultadoErrores += "Tipo error: "+tokenError.getTipoToken()+ ": Descripcion: "+tokenError.getLexema()+" Mensaje: "+tokenError.getMsgError()+" Lin: "+tokenError.getLinea()+" Col: "+tokenError.getColumna()+"\n";
+                                                    }
+                                                }
+                                                
+                                                if(resultadoErrores.equals("")){//aun no se detectaron erores
                                                     List<ArrayList<String>> datos = pars.obtenerTablaDatosFinal();
                                                     try{
                                                         ///////////////////////////////////////////////////////AGREGAMOS
@@ -642,7 +699,13 @@ public class Indigo extends HttpServlet {
             
             
         }
-        return resultado;
+        if(resultadoErrores.equals("") == false){//hay errores
+            return resultadoErrores;
+        }else{
+            return resultado;
+        }
+        
+        
     }
 
 }

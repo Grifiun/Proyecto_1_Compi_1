@@ -47,13 +47,6 @@ public class GuardarDatos {
                 bw.write(contenido);
                 bw.close();
             }
-            
-           
-            
-            
-            
-            
-            
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("No se pudo guardar");
